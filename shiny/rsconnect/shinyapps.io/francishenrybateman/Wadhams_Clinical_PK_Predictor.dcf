@@ -1,0 +1,10 @@
+name: Wadhams_Clinical_PK_Predictor
+title:
+username: francishenrybateman
+account: francishenrybateman
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17483296
+bundleId: 12100928
+url: https://francishenrybateman.shinyapps.io/Wadhams_Clinical_PK_Predictor/
+version: 1

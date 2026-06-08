@@ -4,12 +4,11 @@
 # Loaded once on app start (before ui.R and server.R).
 ##############################################################################
 
-# ── Required packages ─────────────────────────────────────────────────────────
+# ── Required packages (must be present everywhere including shinyapps.io) ─────
 required_pkgs <- c(
   "shiny", "bslib", "bsicons", "shinyjs",
   "DT", "plotly", "httr2", "jsonlite",
-  "dplyr", "tibble", "htmltools",
-  "r3dmol", "reticulate", "readxl", "digest"
+  "dplyr", "tibble", "htmltools"
 )
 
 missing_pkgs <- required_pkgs[!sapply(required_pkgs, requireNamespace, quietly = TRUE)]
@@ -22,6 +21,17 @@ if (length(missing_pkgs) > 0) {
   )
 }
 invisible(lapply(required_pkgs, library, character.only = TRUE))
+
+# ── Optional packages (local only — 3D viewer via RDKit) ─────────────────────
+# r3dmol / reticulate / digest are only used for the local RDKit 3D viewer.
+# On shinyapps.io these are absent and the viewer falls back gracefully.
+HAS_R3DMOL     <- requireNamespace("r3dmol",     quietly = TRUE)
+HAS_RETICULATE <- requireNamespace("reticulate",  quietly = TRUE)
+HAS_DIGEST     <- requireNamespace("digest",      quietly = TRUE)
+
+if (HAS_R3DMOL)     library(r3dmol)
+if (HAS_RETICULATE) library(reticulate)
+if (HAS_DIGEST)     library(digest)
 
 # ── App-level options ─────────────────────────────────────────────────────────
 options(

@@ -14,14 +14,21 @@ library(httr2)
 library(jsonlite)
 library(DT)
 library(plotly)
-library(r3dmol)
 library(dplyr)
 library(tibble)
 
 source("R/api_client.R")
 source("R/plots.R")
 source("R/utils.R")
-source("R/conformer.R")
+
+# conformer.R requires reticulate + r3dmol — only load when available
+if (exists("HAS_RETICULATE") && HAS_RETICULATE && exists("HAS_R3DMOL") && HAS_R3DMOL) {
+  source("R/conformer.R")
+} else {
+  # Stub so the rest of server.R doesn't error
+  rdkit_available <- function() FALSE
+  get_molblock    <- function(smiles) NULL
+}
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 EXAMPLE_SMILES  <- "CC(C)Cc1ccc(cc1)C(C)C(=O)O"   # Ibuprofen
@@ -346,54 +353,26 @@ server <- function(input, output, session) {
     )
   })
 
-  # RDKit availability warning
-  output$struct_rdkit_warning_ui <- renderUI({
-    if (!rdkit_available()) {
-      div(class = "alert alert-warning mb-2",
-          bsicons::bs_icon("exclamation-triangle"),
-          " RDKit not found in pkip-env. Launch RStudio after activating the ",
-          "conda environment, or set reticulate to use pkip-env.")
-    }
-  })
-
-  # 3D viewer
-  output$viewer_3d <- renderR3dmol({
+  # 3D viewer — send SMILES to 3Dmol.js via custom message
+  # Works on shinyapps.io, mobile, and all browsers (no Python required)
+  observe({
     req(input$struct_selected, nchar(input$struct_selected) > 0)
-
-    smiles   <- input$struct_selected
-    style_in <- input$viewer_style  %||% "stick"
-    colour   <- input$viewer_colour %||% "element"
-
-    mb <- get_molblock(smiles)
-
-    if (is.null(mb)) {
-      return(r3dmol(backgroundColor = "white") |> m_zoom_to())
-    }
-
-    # Colour scheme (camelCase — r3dmol requirement)
-    cs <- switch(colour,
-      element  = "Jmol",
-      chain    = "chainHetatm",
-      residue  = "amino",
-      "Jmol"
-    )
-
-    # Style spec with correct colorScheme
-    style_spec <- switch(style_in,
-      stick   = m_style_stick(colorScheme = cs),
-      sphere  = m_style_sphere(colorScheme = cs, scale = 0.4),
-      line    = m_style_line(colorScheme = cs),
-      cartoon = m_style_cartoon(),
-      m_style_stick(colorScheme = cs)
-    )
-
-    r3dmol(backgroundColor = "white") |>
-      m_add_model(data = mb, format = "sdf") |>
-      m_set_style(style = style_spec) |>
-      m_add_surface(style = m_style_surface(opacity = 0.07, color = "#0072B2")) |>
-      m_zoom_to() |>
-      m_spin(axis = "y", speed = 0.3)
+    session$sendCustomMessage("loadMolecule", list(
+      smiles = input$struct_selected,
+      name   = input$struct_selected,
+      style  = input$viewer_style  %||% "stick",
+      colour = input$viewer_colour %||% "element"
+    ))
   })
+
+  # Restyle without re-fetching when only display options change
+  observeEvent(list(input$viewer_style, input$viewer_colour), {
+    req(input$struct_selected, nchar(input$struct_selected) > 0)
+    session$sendCustomMessage("restyleMolecule", list(
+      style  = input$viewer_style  %||% "stick",
+      colour = input$viewer_colour %||% "element"
+    ))
+  }, ignoreInit = TRUE)
 
   # ── Performance table (About tab) ─────────────────────────────────────────────
   output$perf_table_ui <- renderUI({

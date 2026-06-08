@@ -276,12 +276,16 @@ ui <- page_navbar(
           plotlyOutput("interval_plot", height = "500px")
         ),
 
-        # ── Structure viewer (3D) ─────────────────────────────────────────────
+        # ── Structure viewer (3D — pure browser, no Python) ───────────────────
         nav_panel(
           title = tagList(bsicons::bs_icon("badge-3d"), " Structures"),
 
+          # 3Dmol.js from CDN — works on any browser, no R packages needed
+          tags$script(src = "https://3dmol.org/build/3Dmol-min.js"),
+          tags$script(src = "molviewer.js"),
+
           fluidRow(
-            # Left: compound selector + metadata
+            # Left: compound selector + display controls
             column(
               4,
               div(
@@ -290,40 +294,66 @@ ui <- page_navbar(
                 uiOutput("struct_compound_select_ui")
               ),
               uiOutput("struct_metadata_ui"),
-              div(
-                class = "mt-3 d-grid gap-2",
-                tags$label("Display style", class = "form-label fw-semibold"),
-                radioButtons(
-                  "viewer_style",
-                  label   = NULL,
-                  choices = c("Stick"      = "stick",
-                              "Sphere"     = "sphere",
-                              "Line"       = "line",
-                              "Cartoon"    = "cartoon"),
-                  selected = "stick",
-                  inline   = TRUE
-                ),
-                tags$label("Colour scheme", class = "form-label fw-semibold mt-1"),
-                radioButtons(
-                  "viewer_colour",
-                  label    = NULL,
-                  choices  = c("Element"   = "element",
-                               "Chain"     = "chain",
-                               "Residue"   = "residue"),
-                  selected = "element",
-                  inline   = TRUE
-                )
+              hr(),
+              tags$label("Display style", class = "form-label fw-semibold"),
+              radioButtons(
+                "viewer_style",
+                label    = NULL,
+                choices  = c("Stick" = "stick", "Sphere" = "sphere",
+                             "Line"  = "line",  "Surface" = "surface"),
+                selected = "stick",
+                inline   = TRUE
+              ),
+              tags$label("Colour scheme", class = "form-label fw-semibold mt-1"),
+              radioButtons(
+                "viewer_colour",
+                label    = NULL,
+                choices  = c("Element" = "element",
+                             "Chain"   = "chain",
+                             "Residue" = "residue"),
+                selected = "element",
+                inline   = TRUE
+              ),
+              hr(),
+              tags$small(
+                class = "text-muted",
+                bsicons::bs_icon("globe"),
+                " 3D structure from PubChem / NIH CACTUS.",
+                tags$br(),
+                "Works on mobile and all browsers."
               )
             ),
-            # Right: 3D viewer
+
+            # Right: 3D viewer div (3Dmol.js renders into this)
             column(
               8,
-              uiOutput("struct_rdkit_warning_ui"),
-              r3dmolOutput("viewer_3d", height = "480px"),
+              # Spinner shown while fetching
+              div(
+                id    = "mol_3d_spinner",
+                style = "display:none; align-items:center; justify-content:center;
+                         height:60px; gap:10px;",
+                tags$div(class = "spinner-border spinner-border-sm text-primary"),
+                tags$span(id = "mol_3d_status",
+                          class = "text-muted",
+                          style = "font-size:0.85rem;",
+                          "Loading…")
+              ),
+              # Status line (errors appear here)
+              tags$p(id    = "mol_3d_status",
+                     class = "text-muted mb-1",
+                     style = "font-size:0.82rem; min-height:1.2em;"),
+
+              # The viewer canvas — 3Dmol.js targets this div by id
+              div(
+                id    = VIEWER_ID <- "mol_3d_viewer",
+                style = "width:100%; height:480px; border-radius:0.4rem;
+                         border:1px solid #DEE2E6; background:#fff;
+                         position:relative; overflow:hidden;"
+              ),
+
               tags$small(
                 class = "text-muted mt-1 d-block",
-                "3D conformer generated with RDKit ETKDGv3 + MMFF94 optimisation. ",
-                "Drag to rotate · Scroll to zoom · Right-click to pan."
+                "Drag to rotate · Scroll to zoom · Right-click to pan"
               )
             )
           )
