@@ -87,6 +87,55 @@
     });
   }
 
+  // ── Color legend ────────────────────────────────────────────────────────────
+  var JMOL_LEGEND = [
+    { symbol: "C",  color: "#909090", label: "Carbon"   },
+    { symbol: "H",  color: "#FFFFFF", label: "Hydrogen", border: "#ccc" },
+    { symbol: "N",  color: "#3050F8", label: "Nitrogen"  },
+    { symbol: "O",  color: "#FF0D0D", label: "Oxygen"    },
+    { symbol: "S",  color: "#FFFF30", label: "Sulfur",   border: "#ccc" },
+    { symbol: "F",  color: "#90E050", label: "Fluorine"  },
+    { symbol: "Cl", color: "#1FF01F", label: "Chlorine"  },
+    { symbol: "Br", color: "#A62929", label: "Bromine"   },
+    { symbol: "P",  color: "#FF8000", label: "Phosphorus"},
+    { symbol: "I",  color: "#940094", label: "Iodine"    }
+  ];
+
+  function buildLegend(colourScheme) {
+    var el = document.getElementById("mol_legend");
+    if (!el) return;
+    el.innerHTML = "";
+
+    if (colourScheme !== "element") {
+      el.innerHTML = '<span style="font-size:0.75rem;color:#6c757d;">' +
+        (colourScheme === "chain"   ? "Colour by chain" : "Colour by residue") +
+        "</span>";
+      return;
+    }
+
+    JMOL_LEGEND.forEach(function(e) {
+      var swatch = document.createElement("span");
+      swatch.title = e.label;
+      swatch.style.cssText = [
+        "display:inline-flex", "align-items:center", "gap:3px",
+        "margin:2px 4px", "font-size:0.72rem", "color:#333"
+      ].join(";");
+
+      var dot = document.createElement("span");
+      dot.style.cssText = [
+        "display:inline-block", "width:12px", "height:12px",
+        "border-radius:50%",
+        "background:" + e.color,
+        "border:1px solid " + (e.border || "#888"),
+        "flex-shrink:0"
+      ].join(";");
+
+      swatch.appendChild(dot);
+      swatch.appendChild(document.createTextNode(e.symbol));
+      el.appendChild(swatch);
+    });
+  }
+
   // ── Status / spinner helpers ────────────────────────────────────────────────
   function showSpinner(msg) {
     var sp = document.getElementById(SPINNER_ID);
@@ -128,6 +177,7 @@
 
     hideSpinner();
     clearStatus();
+    buildLegend(colour);
     console.log("[molviewer] Rendered:", name);
   }
 
@@ -188,8 +238,10 @@
   Shiny.addCustomMessageHandler("restyleMolecule", function (msg) {
     var v = viewer;
     if (!v) return;
-    applyStyle(v, msg.style || "stick", msg.colour || "element");
+    var colour = msg.colour || "element";
+    applyStyle(v, msg.style || "stick", colour);
     v.render();
+    buildLegend(colour);
   });
 
 })();

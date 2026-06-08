@@ -48,9 +48,10 @@ server <- function(input, output, session) {
 
   # ── Reactive values ──────────────────────────────────────────────────────────
   rv <- reactiveValues(
-    results   = NULL,    # data.frame of predictions
-    api_error = NULL,    # error message string or NULL
-    busy      = FALSE
+    results      = NULL,
+    api_error    = NULL,
+    busy         = FALSE,
+    n_compare    = 2       # number of rows in compare mode
   )
 
   # ── Populate repo search (server-side for 1,000+ compounds) ──────────────────
@@ -82,6 +83,43 @@ server <- function(input, output, session) {
     updateTextAreaInput(session, "smiles_input",  value = "")
     updateTextInput(session,    "compound_name",  value = "")
     updateSelectizeInput(session, "repo_search",  selected = "")
+  })
+
+  # ── Compare mode: dynamic rows ────────────────────────────────────────────────
+  observeEvent(input$add_compound_btn, {
+    rv$n_compare <- min(rv$n_compare + 1, 8)
+  })
+  observeEvent(input$remove_compound_btn, {
+    rv$n_compare <- max(rv$n_compare - 1, 1)
+  })
+
+  output$compare_rows_ui <- renderUI({
+    n <- rv$n_compare
+    rows <- lapply(seq_len(n), function(i) {
+      div(
+        class = "mb-2 p-2 border rounded",
+        style = "background:#fff;",
+        fluidRow(
+          column(4,
+            textInput(paste0("cmp_name_", i), label = NULL,
+                      placeholder = paste0("Name ", i), width = "100%")
+          ),
+          column(8,
+            textInput(paste0("cmp_smiles_", i), label = NULL,
+                      placeholder = "SMILES", width = "100%")
+          )
+        )
+      )
+    })
+    tagList(
+      tags$div(
+        class = "d-flex mb-1",
+        style = "font-size:0.78rem; color:#6c757d;",
+        tags$span(style = "width:33%;", "Name"),
+        tags$span("SMILES")
+      ),
+      rows
+    )
   })
 
   # ── CSV upload preview ────────────────────────────────────────────────────────
@@ -147,6 +185,24 @@ server <- function(input, output, session) {
         showNotification("Please enter a SMILES string.", type = "warning")
         return()
       }
+
+    } else if (input$input_mode == "compare") {
+      n <- rv$n_compare
+      smiles_vec <- character(0)
+      names_vec  <- character(0)
+      for (i in seq_len(n)) {
+        s <- trimws(input[[paste0("cmp_smiles_", i)]])
+        nm <- trimws(input[[paste0("cmp_name_", i)]])
+        if (nchar(s) > 0) {
+          smiles_vec <- c(smiles_vec, s)
+          names_vec  <- c(names_vec, if (nchar(nm) > 0) nm else paste0("Compound ", i))
+        }
+      }
+      if (length(smiles_vec) == 0) {
+        showNotification("Enter at least one SMILES string.", type = "warning")
+        return()
+      }
+
     } else {
       df <- csv_data()
       smiles_vec <- df$smiles
@@ -258,9 +314,29 @@ server <- function(input, output, session) {
   # ── Interval plot ─────────────────────────────────────────────────────────────
   output$interval_plot <- renderPlotly({
     req(rv$results)
-    param  <- input$plot_param
-    scale  <- input$plot_scale
-    make_interval_plot(rv$results, param, scale)
+    make_interval_plot(rv$results, input$plot_param, input$plot_scale)
+  })
+
+  # ── Derived parameters table (t½ and λz) ──────────────────────────────────────
+  output$derived_table <- renderDT({
+    req(rv$results)
+    ok <- rv$results[rv$results$status == "ok", ]
+    req(nrow(ok) > 0)
+
+    df <- data.frame(
+      Name          = ok$name,
+      "t½ (h)"      = ifelse(is.na(ok$thalf_pred),   "—", sprintf("%.2f", ok$thalf_pred)),
+      "λz (1/h)"    = ifelse(is.na(ok$lambdaz_pred), "—", sprintf("%.4f", ok$lambdaz_pred)),
+      "CL (mL/min/kg)" = ifelse(is.na(ok$CL_pred), "—", sprintf("%.3f", ok$CL_pred)),
+      "Vd (L/kg)"   = ifelse(is.na(ok$Vd_pred),   "—", sprintf("%.3f", ok$Vd_pred)),
+      check.names   = FALSE,
+      stringsAsFactors = FALSE
+    )
+
+    datatable(df, rownames = FALSE, escape = FALSE,
+              options = list(dom = "t", scrollX = TRUE, pageLength = 20)) |>
+      formatStyle("t½ (h)",   color = "#0072B2", fontWeight = "bold") |>
+      formatStyle("λz (1/h)", color = "#009E73", fontWeight = "bold")
   })
 
   # ── 3D Structure viewer ────────────────────────────────────────────────────────

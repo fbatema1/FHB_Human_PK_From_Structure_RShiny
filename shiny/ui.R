@@ -69,7 +69,9 @@ ui <- page_navbar(
           radioButtons(
             "input_mode",
             label   = NULL,
-            choices = c("Single SMILES" = "single", "Batch CSV upload" = "batch"),
+            choices = c("Single"  = "single",
+                        "Compare" = "compare",
+                        "Batch CSV" = "batch"),
             inline  = TRUE
           )
         ),
@@ -142,6 +144,29 @@ ui <- page_navbar(
                          style = "font-size:0.82rem;"),
               actionLink("clear_inputs", "Clear",
                          style = "font-size:0.82rem; color:#6c757d;")
+            )
+          )
+        ),
+
+        # ── Compare panel ─────────────────────────────────────────────────────
+        conditionalPanel(
+          condition = "input.input_mode == 'compare'",
+
+          div(
+            class = "mb-2",
+            tags$label(
+              tagList(bsicons::bs_icon("plus-circle"), " Compounds to compare"),
+              class = "form-label fw-semibold"
+            ),
+            tags$small(class = "text-muted d-block mb-2",
+                       "Up to 8 compounds. Each row: name + SMILES."),
+            uiOutput("compare_rows_ui"),
+            div(
+              class = "d-flex gap-2 mt-2",
+              actionButton("add_compound_btn", "＋ Add compound",
+                           class = "btn btn-outline-primary btn-sm"),
+              actionButton("remove_compound_btn", "－ Remove last",
+                           class = "btn btn-outline-secondary btn-sm")
             )
           )
         ),
@@ -255,9 +280,7 @@ ui <- page_navbar(
                 "plot_param",
                 "Parameter",
                 choices = c("CL (mL/min/kg)" = "CL",
-                            "Vd (L/kg)"       = "Vd",
-                            "t½ (h)"          = "thalf",
-                            "λz (1/h)"        = "lambdaz"),
+                            "Vd (L/kg)"       = "Vd"),
                 width = "100%"
               )
             ),
@@ -273,7 +296,16 @@ ui <- page_navbar(
             column(6)
           ),
 
-          plotlyOutput("interval_plot", height = "500px")
+          plotlyOutput("interval_plot", height = "500px"),
+
+          hr(),
+
+          # Derived parameters table (t½ and λz — no CI, shown as table)
+          tags$h6(class = "fw-semibold mt-2",
+                  bsicons::bs_icon("table"), " Derived parameters"),
+          tags$small(class = "text-muted d-block mb-2",
+                     "t½ = 0.693 × Vd / CL    |    λz = CL / Vd    |    No prediction interval (derived from CL and Vd estimates)"),
+          DTOutput("derived_table")
         ),
 
         # ── Structure viewer (3D — pure browser, no Python) ───────────────────
@@ -351,6 +383,12 @@ ui <- page_navbar(
                          position:relative; overflow:hidden;"
               ),
 
+              # Color legend (populated by molviewer.js)
+              div(
+                id    = "mol_legend",
+                class = "mt-2 d-flex flex-wrap align-items-center",
+                style = "min-height:1.4rem;"
+              ),
               tags$small(
                 class = "text-muted mt-1 d-block",
                 "Drag to rotate · Scroll to zoom · Right-click to pan"

@@ -203,18 +203,20 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
         )))
       }
 
-      # Numeric labels — always show for single compound; for multiples
-      # show when label_all = TRUE or at the topmost row (y_pos == n)
+      # Numeric labels — show in the same units as the axis
+      # Original scale → original values; log10 scale → log10 values
       if (label_all || y_pos[i] == n) {
-        orig_lo_i <- if (scale == "log10") 10^y_lo[i] else y_lo[i]
-        orig_hi_i <- if (scale == "log10") 10^y_hi[i] else y_hi[i]
-        label_y   <- y_pos[i] + 0.52   # just above the band
+        label_lo  <- if (scale == "log10") y_lo[i]   else y_lo[i]
+        label_hi  <- if (scale == "log10") y_hi[i]   else y_hi[i]
+        fmt_lo    <- if (scale == "log10") sprintf("<i>%.3f</i>", label_lo) else sprintf("<i>%.3g</i>", label_lo)
+        fmt_hi    <- if (scale == "log10") sprintf("<i>%.3f</i>", label_hi) else sprintf("<i>%.3g</i>", label_hi)
+        label_y   <- y_pos[i] + 0.52
 
         annotations <- c(annotations,
           list(list(
             x = y_lo[i], y = label_y,
             xref = "x", yref = "y",
-            text = sprintf("<i>%.3g</i>", orig_lo_i),
+            text = fmt_lo,
             showarrow = FALSE,
             font = list(size = 9, color = model_col[i]),
             xanchor = "center", yanchor = "bottom"
@@ -222,7 +224,7 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
           list(list(
             x = y_hi[i], y = label_y,
             xref = "x", yref = "y",
-            text = sprintf("<i>%.3g</i>", orig_hi_i),
+            text = fmt_hi,
             showarrow = FALSE,
             font = list(size = 9, color = model_col[i]),
             xanchor = "center", yanchor = "bottom"
@@ -234,8 +236,9 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
 
   # ── 5. Median reference line + label ─────────────────────────────────────
   med_x   <- median(y_pred, na.rm = TRUE)
+  # Median label matches axis scale
   med_lab <- if (scale == "log10") {
-    sprintf("median = %.3g %s", 10^med_x, m$xlab)
+    sprintf("median = %.3f (log₁₀)", med_x)
   } else {
     sprintf("median = %.3g %s", med_x, m$xlab)
   }
