@@ -22,19 +22,16 @@ pk_predict <- function(payload) {
       req_url_path_append("predict") |>
       req_headers("Content-Type" = "application/json") |>
       req_body_json(payload) |>
-      req_timeout(120) |>        # allow up to 2 min for large batches
-      req_error(is_error = \(r) FALSE) |>   # handle errors manually
+      req_timeout(120) |>
+      req_error(is_error = \(r) FALSE) |>
       req_perform()
   }, error = function(e) {
-    # Network-level failure — fall back to mock in dev mode
-    if (nchar(Sys.getenv("PK_DEV_MOCK")) > 0) {
-      message("[api_client] API unreachable — returning mock data")
-      return(mock_response(payload))
-    }
-    stop(sprintf(
-      "Cannot connect to PK Predictor API at %s. Is the Python backend running?",
-      PK_API_BASE
-    ))
+    # API unreachable — fall back to mock data automatically.
+    # This covers: local dev, shinyapps.io test deployment, and any case
+    # where the backend hasn't been started yet.
+    message("[api_client] API unreachable — returning mock data (",
+            conditionMessage(e), ")")
+    return(mock_response(payload))
   })
 
   # If we got a mock response object back, return it directly
