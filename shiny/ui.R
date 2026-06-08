@@ -48,6 +48,13 @@ ui <- page_navbar(
   ),
   bg       = "#2C3E50",
   fillable = TRUE,
+  header = tags$style(HTML("
+    .navbar-nav {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  ")),
 
   # ── PREDICT tab ──────────────────────────────────────────────────────────────
   nav_panel(
