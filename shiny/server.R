@@ -58,6 +58,7 @@ server <- function(input, output, session) {
   updateSelectizeInput(
     session, "repo_search",
     choices  = REFERENCE_CHOICES,
+    selected = character(0),
     server   = TRUE
   )
 
