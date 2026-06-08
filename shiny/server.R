@@ -431,22 +431,30 @@ server <- function(input, output, session) {
 
   # 3D viewer — send SMILES to 3Dmol.js via custom message
   # Works on shinyapps.io, mobile, and all browsers (no Python required)
+  # Helper: current mono colour (hex from colour picker, default blue)
+  mono_colour <- reactive({
+    col <- input$mono_colour %||% "#0072B2"
+    if (is.null(col) || nchar(col) == 0) "#0072B2" else col
+  })
+
   observe({
     req(input$struct_selected, nchar(input$struct_selected) > 0)
     session$sendCustomMessage("loadMolecule", list(
-      smiles = input$struct_selected,
-      name   = input$struct_selected,
-      style  = input$viewer_style  %||% "stick",
-      colour = input$viewer_colour %||% "element"
+      smiles     = input$struct_selected,
+      name       = input$struct_selected,
+      style      = input$viewer_style  %||% "stick",
+      colour     = input$viewer_colour %||% "element",
+      monoColour = mono_colour()
     ))
   })
 
-  # Restyle without re-fetching when only display options change
-  observeEvent(list(input$viewer_style, input$viewer_colour), {
+  # Restyle without re-fetching when display options change
+  observeEvent(list(input$viewer_style, input$viewer_colour, mono_colour()), {
     req(input$struct_selected, nchar(input$struct_selected) > 0)
     session$sendCustomMessage("restyleMolecule", list(
-      style  = input$viewer_style  %||% "stick",
-      colour = input$viewer_colour %||% "element"
+      style      = input$viewer_style  %||% "stick",
+      colour     = input$viewer_colour %||% "element",
+      monoColour = mono_colour()
     ))
   }, ignoreInit = TRUE)
 

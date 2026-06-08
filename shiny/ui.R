@@ -340,11 +340,28 @@ ui <- page_navbar(
               radioButtons(
                 "viewer_colour",
                 label    = NULL,
-                choices  = c("Element"   = "element",
-                             "Spectrum"  = "spectrum",
+                choices  = c("Element"    = "element",
+                             "Spectrum"   = "spectrum",
                              "Monochrome" = "mono"),
                 selected = "element",
                 inline   = TRUE
+              ),
+              # Colour picker — only visible in Monochrome mode
+              conditionalPanel(
+                condition = "input.viewer_colour == 'mono'",
+                div(
+                  class = "mt-1 d-flex align-items-center gap-2",
+                  tags$label("Pick colour:",
+                             class = "form-label mb-0",
+                             style = "font-size:0.82rem; white-space:nowrap;"),
+                  tags$input(
+                    id    = "mono_colour",
+                    type  = "color",
+                    value = "#0072B2",
+                    class = "form-control form-control-color",
+                    style = "width:42px; height:32px; padding:2px; cursor:pointer;"
+                  )
+                )
               ),
               hr(),
               tags$small(

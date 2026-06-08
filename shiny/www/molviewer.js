@@ -56,18 +56,19 @@
   }
 
   // ── Style helpers ───────────────────────────────────────────────────────────
-  // Build a style spec object for a given colour scheme
-  function colourSpec(colour) {
-    switch (colour) {
-      case "spectrum":  return { color: "spectrum" };
-      case "mono":      return { color: "#0072B2"  };
-      default:          return { colorscheme: "Jmol" };   // element
-    }
-  }
-
-  function applyStyle(v, style, colour) {
-    var cs = colourSpec(colour);
+  function applyStyle(v, style, colour, monoColour) {
+    var hexColour = monoColour || "#0072B2";
     v.setStyle({}, {});   // clear existing
+
+    var cs;
+    if (colour === "spectrum") {
+      // ROYGB gradient along atom serial number — works for small molecules
+      cs = { colorscheme: { gradient: "ROYGB", prop: "serial", min: 0, max: 50 } };
+    } else if (colour === "mono") {
+      cs = { color: hexColour };
+    } else {
+      cs = { colorscheme: "Jmol" };
+    }
 
     switch (style) {
       case "sphere":
@@ -76,14 +77,14 @@
       case "line":
         v.setStyle({}, { line: cs });
         break;
-      default:   // stick (default and most readable for small molecules)
+      default:   // stick
         v.setStyle({}, { stick: Object.assign({ radius: 0.15 }, cs) });
     }
 
     // Translucent SAS surface overlay
     v.addSurface($3Dmol.SurfaceType.SAS, {
       opacity: 0.07,
-      color:   "#0072B2"
+      color:   hexColour
     });
   }
 
@@ -101,7 +102,7 @@
     { symbol: "I",  color: "#940094", label: "Iodine"    }
   ];
 
-  function buildLegend(colourScheme) {
+  function buildLegend(colourScheme, monoColour) {
     var el = document.getElementById("mol_legend");
     if (!el) return;
     el.innerHTML = "";
@@ -116,10 +117,12 @@
       return;
     }
     if (colourScheme === "mono") {
+      var hex = monoColour || "#0072B2";
       el.innerHTML =
         '<span style="font-size:0.75rem;color:#6c757d;margin-right:6px;">Monochrome:</span>' +
         '<span style="display:inline-block;width:16px;height:16px;border-radius:3px;' +
-        'background:#0072B2;vertical-align:middle;border:1px solid #888;"></span>';
+        'background:' + hex + ';vertical-align:middle;border:1px solid #888;"></span>' +
+        '<span style="font-size:0.75rem;color:#6c757d;margin-left:4px;">' + hex + '</span>';
       return;
     }
 
@@ -174,28 +177,29 @@
   }
 
   // ── Fetch SDF and render ────────────────────────────────────────────────────
-  function loadFromSdf(sdf, style, colour, name) {
+  function loadFromSdf(sdf, style, colour, monoColour, name) {
     var v = initViewer();
     if (!v) return;
 
     v.clear();
     v.addModel(sdf, "sdf");
-    applyStyle(v, style, colour);
+    applyStyle(v, style, colour, monoColour);
     v.zoomTo();
     v.spin("y", 0.5);
     v.render();
 
     hideSpinner();
     clearStatus();
-    buildLegend(colour);
+    buildLegend(colour, monoColour);
     console.log("[molviewer] Rendered:", name);
   }
 
   function fetchAndRender(msg) {
-    var smiles = msg.smiles;
-    var style  = msg.style  || "stick";
-    var colour = msg.colour || "element";
-    var name   = msg.name   || smiles;
+    var smiles     = msg.smiles;
+    var style      = msg.style      || "stick";
+    var colour     = msg.colour     || "element";
+    var monoColour = msg.monoColour || "#0072B2";
+    var name       = msg.name       || smiles;
 
     showSpinner("Fetching 3D structure…");
 
@@ -207,7 +211,7 @@
       })
       .then(function (sdf) {
         if (!sdf || sdf.trim().length === 0) throw new Error("Empty SDF");
-        loadFromSdf(sdf, style, colour, name);
+        loadFromSdf(sdf, style, colour, monoColour, name);
       })
       .catch(function (err) {
         console.warn("[molviewer] PubChem failed:", err.message,
@@ -224,7 +228,7 @@
             if (!sdf || sdf.includes("Page not found") || sdf.trim().length === 0) {
               throw new Error("CACTUS returned no structure");
             }
-            loadFromSdf(sdf, style, colour, name);
+            loadFromSdf(sdf, style, colour, monoColour, name);
           })
           .catch(function (err2) {
             console.error("[molviewer] Both sources failed:", err2.message);
@@ -248,10 +252,11 @@
   Shiny.addCustomMessageHandler("restyleMolecule", function (msg) {
     var v = viewer;
     if (!v) return;
-    var colour = msg.colour || "element";
-    applyStyle(v, msg.style || "stick", colour);
+    var colour     = msg.colour     || "element";
+    var monoColour = msg.monoColour || "#0072B2";
+    applyStyle(v, msg.style || "stick", colour, monoColour);
     v.render();
-    buildLegend(colour);
+    buildLegend(colour, monoColour);
   });
 
 })();
