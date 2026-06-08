@@ -14,9 +14,15 @@ venv/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data — large files not committed; use data/raw/README.md to document sources
-data/processed/
-*.db          # ChEMBL SQLite (~7GB)
+# Data — large intermediate files excluded; cleaned outputs are committed
+data/processed/*.csv        # large featurized outputs
+data/processed/*.npy        # numpy arrays
+data/processed/*.npz
+*.db                        # ChEMBL SQLite (~7GB)
+
+# Allow cleaned dataset and log
+!data/processed/master_dataset_cleaned.xlsx
+!data/processed/cleaning_log.xlsx
 
 # Models — serialized model weights (too large for GitHub)
 *.pkl
