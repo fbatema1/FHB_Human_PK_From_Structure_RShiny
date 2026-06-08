@@ -101,12 +101,23 @@ server <- function(input, output, session) {
         style = "background:#fff;",
         fluidRow(
           column(4,
-            textInput(paste0("cmp_name_", i), label = NULL,
-                      placeholder = paste0("Name ", i), width = "100%")
+            selectizeInput(
+              paste0("cmp_name_", i),
+              label   = NULL,
+              choices = NULL,          # populated server-side
+              options = list(
+                placeholder  = paste0("Name ", i, "…"),
+                create       = TRUE,   # allow novel names not in dataset
+                maxOptions   = 20,
+                openOnFocus  = FALSE
+              ),
+              width = "100%"
+            )
           ),
           column(8,
             textInput(paste0("cmp_smiles_", i), label = NULL,
-                      placeholder = "SMILES", width = "100%")
+                      placeholder = "SMILES (auto-filled or enter manually)",
+                      width = "100%")
           )
         )
       )
@@ -120,6 +131,46 @@ server <- function(input, output, session) {
       ),
       rows
     )
+  })
+
+  # Populate each name selectize server-side and watch for autofill
+  observe({
+    n <- rv$n_compare
+    for (i in seq_len(n)) {
+      local({
+        idx <- i
+        # Populate dropdown with training reference names
+        updateSelectizeInput(
+          session,
+          paste0("cmp_name_", idx),
+          choices  = REFERENCE_CHOICES,   # named vector: name -> smiles
+          server   = TRUE
+        )
+      })
+    }
+  })
+
+  # Autofill SMILES when a known name is selected in any compare row
+  observe({
+    n <- rv$n_compare
+    for (i in seq_len(n)) {
+      local({
+        idx       <- i
+        input_id  <- paste0("cmp_name_",   idx)
+        smiles_id <- paste0("cmp_smiles_", idx)
+        selected  <- input[[input_id]]
+        req(!is.null(selected), nchar(selected) > 0)
+
+        # REFERENCE_CHOICES is named: names = compound names, values = SMILES
+        # selectize returns the VALUE (smiles) when a known entry is picked
+        is_known_smiles <- selected %in% REFERENCE_CHOICES
+        if (is_known_smiles) {
+          # Selected value is already the SMILES string
+          updateTextInput(session, smiles_id, value = selected)
+        }
+        # If user typed a novel name (create=TRUE), leave SMILES blank
+      })
+    }
   })
 
   # ── CSV upload preview ────────────────────────────────────────────────────────
@@ -191,11 +242,25 @@ server <- function(input, output, session) {
       smiles_vec <- character(0)
       names_vec  <- character(0)
       for (i in seq_len(n)) {
-        s <- trimws(input[[paste0("cmp_smiles_", i)]])
-        nm <- trimws(input[[paste0("cmp_name_", i)]])
+        # SMILES field takes priority (manual entry or autofilled)
+        s  <- trimws(input[[paste0("cmp_smiles_", i)]])
+        nm <- trimws(input[[paste0("cmp_name_",   i)]])
+
+        # If SMILES is empty but name matched a known compound, use name value
+        if (nchar(s) == 0 && nm %in% REFERENCE_CHOICES) s <- nm
+
+        # Resolve display name: if nm is a SMILES string, look up the real name
+        display_name <- if (nm %in% REFERENCE_CHOICES) {
+          names(REFERENCE_CHOICES)[REFERENCE_CHOICES == nm][1]
+        } else if (nchar(nm) > 0) {
+          nm
+        } else {
+          paste0("Compound ", i)
+        }
+
         if (nchar(s) > 0) {
           smiles_vec <- c(smiles_vec, s)
-          names_vec  <- c(names_vec, if (nchar(nm) > 0) nm else paste0("Compound ", i))
+          names_vec  <- c(names_vec, display_name)
         }
       }
       if (length(smiles_vec) == 0) {
