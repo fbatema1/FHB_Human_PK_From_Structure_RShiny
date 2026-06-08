@@ -181,17 +181,19 @@ ui <- page_navbar(
             fileInput(
               "csv_upload",
               label       = NULL,
-              accept      = ".csv",
+              accept      = c(".csv", "text/csv", "text/plain"),
               placeholder = "Choose CSV file…"
             ),
             tags$small(
               class = "text-muted",
-              "Required columns: ", tags$code("smiles"),
-              ". Optional: ", tags$code("name"), "."
+              "Any CSV with a SMILES column. Column names are mapped below."
             )
           ),
 
-          # CSV preview
+          # ── Column mapping panel (appears after upload) ───────────────────
+          uiOutput("csv_col_map_ui"),
+
+          # ── Mapped preview ────────────────────────────────────────────────
           uiOutput("csv_preview_ui")
         ),
 

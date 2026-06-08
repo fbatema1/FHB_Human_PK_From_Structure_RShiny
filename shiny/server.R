@@ -176,27 +176,133 @@ server <- function(input, output, session) {
     }
   })
 
-  # ── CSV upload preview ────────────────────────────────────────────────────────
-  csv_data <- reactive({
+  # ── CSV upload — raw reader (no assumed column names) ─────────────────────────
+  csv_raw <- reactive({
     req(input$csv_upload)
-    df <- tryCatch(
-      read.csv(input$csv_upload$datapath, stringsAsFactors = FALSE),
-      error = function(e) NULL
+    tryCatch(
+      read.csv(input$csv_upload$datapath,
+               stringsAsFactors = FALSE,
+               check.names      = FALSE,
+               encoding         = "UTF-8"),
+      error = function(e) {
+        tryCatch(
+          read.csv(input$csv_upload$datapath,
+                   stringsAsFactors = FALSE,
+                   check.names      = FALSE,
+                   fileEncoding     = "latin1"),
+          error = function(e2) NULL
+        )
+      }
     )
-    validate(need(!is.null(df), "Could not read CSV. Please check the file format."))
-    validate(need("smiles" %in% tolower(names(df)),
-                  "CSV must contain a column named 'smiles'."))
-    names(df) <- tolower(names(df))
-    df
+  })
+
+  # ── Column-mapping UI ─────────────────────────────────────────────────────────
+  output$csv_col_map_ui <- renderUI({
+    req(input$input_mode == "batch")
+    df <- csv_raw()
+    req(!is.null(df))
+
+    cols      <- names(df)
+    n_rows    <- nrow(df)
+    n_cols    <- ncol(df)
+
+    # Best-guess auto-detect for SMILES column
+    smiles_guess <- cols[which(tolower(cols) %in%
+                               c("smiles","smi","structure","canonical_smiles",
+                                 "isomeric_smiles"))[1]]
+    if (is.na(smiles_guess)) smiles_guess <- cols[1]
+
+    # Best-guess for Name column
+    name_guess <- cols[which(tolower(cols) %in%
+                             c("name","compound_name","compoundname","compound",
+                               "drug","molecule","id","cmpd_name"))[1]]
+    name_default <- if (is.na(name_guess)) "— none —" else name_guess
+
+    tagList(
+      div(
+        class = "p-2 mb-2 rounded",
+        style = "background:#EEF4FB; border:1px solid #C5D9EE;",
+
+        tags$p(
+          class = "fw-semibold mb-2",
+          style = "font-size:0.82rem;",
+          bsicons::bs_icon("table"), sprintf(" %s detected  ·  %d rows  ·  %d columns",
+                                             input$csv_upload$name, n_rows, n_cols)
+        ),
+
+        # SMILES column selector
+        div(
+          class = "mb-2",
+          tags$label(
+            tagList(bsicons::bs_icon("asterisk", style = "color:#D55E00;"),
+                    " SMILES column"),
+            class = "form-label mb-1",
+            style = "font-size:0.82rem; font-weight:600;"
+          ),
+          selectInput(
+            "csv_smiles_col",
+            label    = NULL,
+            choices  = cols,
+            selected = smiles_guess,
+            width    = "100%"
+          )
+        ),
+
+        # Name column selector (optional)
+        div(
+          class = "mb-1",
+          tags$label(
+            tagList(bsicons::bs_icon("tag"), " Name column ",
+                    tags$span("(optional)", class = "text-muted fw-normal")),
+            class = "form-label mb-1",
+            style = "font-size:0.82rem; font-weight:600;"
+          ),
+          selectInput(
+            "csv_name_col",
+            label    = NULL,
+            choices  = c("— none —", cols),
+            selected = name_default,
+            width    = "100%"
+          )
+        )
+      )
+    )
+  })
+
+  # ── Mapped CSV (used by predict + preview) ────────────────────────────────────
+  csv_data <- reactive({
+    df <- csv_raw()
+    req(!is.null(df), input$csv_smiles_col, input$csv_smiles_col %in% names(df))
+
+    smiles_col <- input$csv_smiles_col
+    name_col   <- input$csv_name_col
+
+    out <- data.frame(
+      smiles = as.character(df[[smiles_col]]),
+      stringsAsFactors = FALSE
+    )
+
+    if (!is.null(name_col) && name_col != "— none —" && name_col %in% names(df)) {
+      out$name <- as.character(df[[name_col]])
+    } else {
+      out$name <- paste0("Compound_", seq_len(nrow(out)))
+    }
+
+    # Drop rows with blank/NA SMILES
+    out <- out[!is.na(out$smiles) & nchar(trimws(out$smiles)) > 0, ]
+    out$smiles <- trimws(out$smiles)
+    out
   })
 
   output$csv_preview_ui <- renderUI({
-    req(input$input_mode == "batch", input$csv_upload)
+    req(input$input_mode == "batch", input$csv_upload, input$csv_smiles_col)
     df <- csv_data()
     tagList(
-      tags$small(class = "text-success fw-semibold",
-                 sprintf("✓ %d compound(s) loaded", nrow(df))),
-      br(), br(),
+      tags$small(
+        class = "text-success fw-semibold d-block mb-2",
+        bsicons::bs_icon("check-circle-fill"),
+        sprintf(" %d compound(s) ready", nrow(df))
+      ),
       DTOutput("csv_preview_tbl")
     )
   })
@@ -204,9 +310,10 @@ server <- function(input, output, session) {
   output$csv_preview_tbl <- renderDT({
     req(csv_data())
     datatable(
-      head(csv_data(), 5),
-      options = list(dom = "t", scrollX = TRUE),
-      rownames = FALSE
+      head(csv_data(), 6),
+      options  = list(dom = "t", scrollX = TRUE, pageLength = 6),
+      rownames = FALSE,
+      colnames = c("SMILES", "Name")
     )
   })
 
@@ -272,9 +379,9 @@ server <- function(input, output, session) {
       }
 
     } else {
-      df <- csv_data()
+      df         <- csv_data()
       smiles_vec <- df$smiles
-      names_vec  <- if ("name" %in% names(df)) df$name else paste0("Compound_", seq_len(nrow(df)))
+      names_vec  <- df$name   # always present — set to Compound_N if no name col
     }
 
     payload <- list(
