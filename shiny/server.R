@@ -258,26 +258,59 @@ server <- function(input, output, session) {
 
   # ── 3D Structure viewer ────────────────────────────────────────────────────────
 
-  # Compound selector — built from current prediction results
+  # Compound selector — uses prediction results if available, else training repo
   output$struct_compound_select_ui <- renderUI({
-    req(rv$results)
-    ok_rows <- rv$results[rv$results$status == "ok", ]
-    req(nrow(ok_rows) > 0)
-    choices <- setNames(ok_rows$smiles, ok_rows$name)
-    selectInput("struct_selected", label = NULL,
-                choices = choices, width = "100%")
+    if (!is.null(rv$results)) {
+      ok_rows <- rv$results[rv$results$status == "ok", ]
+      if (nrow(ok_rows) > 0) {
+        choices <- setNames(ok_rows$smiles, ok_rows$name)
+        return(selectInput("struct_selected", label = NULL,
+                           choices = choices, width = "100%"))
+      }
+    }
+    # Fallback: browse training reference directly
+    if (!is.null(TRAINING_REF) && nrow(TRAINING_REF) > 0) {
+      choices <- setNames(TRAINING_REF$smiles, TRAINING_REF$name)
+      return(tagList(
+        selectizeInput("struct_selected", label = NULL,
+                       choices  = NULL,
+                       options  = list(placeholder = "Type a compound name…",
+                                       maxOptions  = 20),
+                       width    = "100%"),
+        tags$small(class = "text-muted",
+                   "No prediction run yet — browsing training library")
+      ))
+    }
+    tags$p(class = "text-muted fst-italic", "Run a prediction to view structures.")
   })
 
-  # Metadata card for selected compound
-  output$struct_metadata_ui <- renderUI({
-    req(rv$results, input$struct_selected)
-    r <- rv$results[rv$results$smiles == input$struct_selected, ][1, ]
-    req(!is.null(r), nrow(r) > 0)
+  # Populate training-repo selectize server-side when no predictions exist
+  observe({
+    if (is.null(rv$results) && !is.null(TRAINING_REF)) {
+      updateSelectizeInput(session, "struct_selected",
+                           choices = setNames(TRAINING_REF$smiles, TRAINING_REF$name),
+                           server  = TRUE)
+    }
+  })
 
-    # Check if this compound is in the training reference
+  # Metadata card
+  output$struct_metadata_ui <- renderUI({
+    req(input$struct_selected, nchar(input$struct_selected) > 0)
+
+    # Predicted values (if available)
+    pred_rows <- if (!is.null(rv$results)) {
+      rv$results[rv$results$smiles == input$struct_selected, ]
+    } else NULL
+
+    # Observed values from training reference
     ref_row <- if (!is.null(TRAINING_REF)) {
       TRAINING_REF[TRAINING_REF$smiles == input$struct_selected, ]
     } else NULL
+
+    has_pred <- !is.null(pred_rows) && nrow(pred_rows) > 0
+    has_obs  <- !is.null(ref_row)   && nrow(ref_row)   > 0
+
+    if (!has_pred && !has_obs) return(NULL)
 
     card(
       class = "mt-2",
@@ -287,29 +320,28 @@ server <- function(input, output, session) {
           class = "table table-sm table-borderless mb-0",
           style = "font-size:0.82rem;",
           tags$tbody(
-            tags$tr(tags$th("CL pred"),
-                    tags$td(sprintf("%.3f mL/min/kg", r$CL_pred))),
-            tags$tr(tags$th("Vd pred"),
-                    tags$td(sprintf("%.3f L/kg", r$Vd_pred))),
-            tags$tr(tags$th("t½ pred"),
-                    tags$td(sprintf("%.2f h", r$thalf_pred))),
-            if (!is.null(ref_row) && nrow(ref_row) > 0) {
-              tagList(
-                tags$tr(tags$th(class="text-success", "CL obs"),
-                        tags$td(class="text-success",
-                                sprintf("%.3f mL/min/kg", ref_row$CL_measured[1]))),
-                tags$tr(tags$th(class="text-success", "Vd obs"),
-                        tags$td(class="text-success",
-                                sprintf("%.3f L/kg", ref_row$Vd_measured[1])))
-              )
-            }
+            if (has_pred) tagList(
+              tags$tr(tags$th("CL pred"),
+                      tags$td(sprintf("%.3f mL/min/kg", pred_rows$CL_pred[1]))),
+              tags$tr(tags$th("Vd pred"),
+                      tags$td(sprintf("%.3f L/kg",      pred_rows$Vd_pred[1]))),
+              tags$tr(tags$th("t½ pred"),
+                      tags$td(sprintf("%.2f h",         pred_rows$thalf_pred[1])))
+            ),
+            if (has_obs) tagList(
+              tags$tr(tags$th(class = "text-success", "CL obs"),
+                      tags$td(class = "text-success",
+                              sprintf("%.3f mL/min/kg", ref_row$CL_measured[1]))),
+              tags$tr(tags$th(class = "text-success", "Vd obs"),
+                      tags$td(class = "text-success",
+                              sprintf("%.3f L/kg",     ref_row$Vd_measured[1])))
+            )
           )
         ),
-        if (!is.null(ref_row) && nrow(ref_row) > 0) {
-          tags$small(class="text-success",
+        if (has_obs)
+          tags$small(class = "text-success",
                      bsicons::bs_icon("database-check"),
-                     " In training set — observed values shown in green")
-        }
+                     " Observed values from training set")
       )
     )
   })
@@ -319,57 +351,46 @@ server <- function(input, output, session) {
     if (!rdkit_available()) {
       div(class = "alert alert-warning mb-2",
           bsicons::bs_icon("exclamation-triangle"),
-          " RDKit not found in pkip-env. 3D viewer unavailable. ",
-          "Run: ", tags$code("conda activate pkip-env"), " before launching Shiny.")
+          " RDKit not found in pkip-env. Launch RStudio after activating the ",
+          "conda environment, or set reticulate to use pkip-env.")
     }
   })
 
-  # 3D viewer — render on compound selection or style change
+  # 3D viewer
   output$viewer_3d <- renderR3dmol({
-    req(rv$results, input$struct_selected)
+    req(input$struct_selected, nchar(input$struct_selected) > 0)
 
     smiles   <- input$struct_selected
-    style_in <- input$viewer_style   %||% "stick"
-    colour   <- input$viewer_colour  %||% "element"
+    style_in <- input$viewer_style  %||% "stick"
+    colour   <- input$viewer_colour %||% "element"
 
-    # Generate mol-block (cached after first call)
     mb <- get_molblock(smiles)
 
     if (is.null(mb)) {
-      # Fallback: empty viewer with message
-      return(
-        r3dmol(backgroundColor = "white") |>
-          m_set_style(style = m_style_cartoon()) |>
-          m_zoom_to()
-      )
+      return(r3dmol(backgroundColor = "white") |> m_zoom_to())
     }
 
-    # Build colour spec
-    colour_spec <- switch(colour,
-      element  = m_style_stick(colorscheme = "Jmol"),
-      chain    = m_style_stick(colorscheme = "chainHetatm"),
-      residue  = m_style_stick(colorscheme = "amino")
+    # Colour scheme (camelCase — r3dmol requirement)
+    cs <- switch(colour,
+      element  = "Jmol",
+      chain    = "chainHetatm",
+      residue  = "amino",
+      "Jmol"
     )
 
-    # Build style spec
+    # Style spec with correct colorScheme
     style_spec <- switch(style_in,
-      stick   = m_style_stick(),
-      sphere  = m_style_sphere(scale = 0.4),
-      line    = m_style_line(),
-      cartoon = m_style_cartoon()
+      stick   = m_style_stick(colorScheme = cs),
+      sphere  = m_style_sphere(colorScheme = cs, scale = 0.4),
+      line    = m_style_line(colorScheme = cs),
+      cartoon = m_style_cartoon(),
+      m_style_stick(colorScheme = cs)
     )
 
-    r3dmol(
-      backgroundColor = "white",
-      elementId       = "mol_viewer"
-    ) |>
+    r3dmol(backgroundColor = "white") |>
       m_add_model(data = mb, format = "mol") |>
       m_set_style(style = style_spec) |>
-      m_add_surface(
-        type    = "SAS",
-        opacity = 0.08,
-        color   = "#0072B2"
-      ) |>
+      m_add_surface(style = m_style_surface(opacity = 0.07, color = "#0072B2")) |>
       m_zoom_to() |>
       m_spin(axis = "y", speed = 0.3)
   })
