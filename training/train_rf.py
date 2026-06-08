@@ -292,11 +292,26 @@ def train_rf():
         final_model.feat_idx  = feat_idx
         final_model.top_n_desc = top_n
 
+        # ── Evaluate on train set (overfitting diagnostic) ────────────────────
+        y_pred_tr  = final_model.predict(X_tr_sel)
+        res_train  = evaluate(y_tr, y_pred_tr, param_name=f'RF {param_name} [TRAIN]', log_scale=True)
+        print(f"\nTrain set evaluation — {param_name}:")
+        print(f"  GMFE={res_train['gmfe']:.3f}  R²={res_train['r2']:.3f}  within-2fold={res_train['within_2fold']:.1f}%")
+
         # ── Evaluate on test set ──────────────────────────────────────────────
         print(f"\nTest set evaluation — {param_name}:")
         y_pred = final_model.predict(X_te_sel)
         results = evaluate(y_te, y_pred, param_name=f'RF {param_name}', log_scale=True)
+        results['train_gmfe'] = float(res_train['gmfe'])
+        results['train_r2']   = float(res_train['r2'])
         all_results[param_name] = results
+
+        # Overfitting flag
+        gmfe_gap = res_train['gmfe'] / results['gmfe']   # <1 means train better than test
+        if gmfe_gap < 0.7:
+            print(f"  ⚠️  Possible overfit: train GMFE {res_train['gmfe']:.3f} vs test GMFE {results['gmfe']:.3f}")
+        else:
+            print(f"  ✅ Generalisation gap acceptable (train/test GMFE ratio: {gmfe_gap:.2f})")
 
         # Save model
         model_path = SAVE_DIR / f"rf_{param_name}_best.pkl"

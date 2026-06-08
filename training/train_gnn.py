@@ -327,6 +327,23 @@ def train_gnn():
     )
     final_model.eval()
 
+    # ── Evaluate on train set (overfitting diagnostic) ────────────────────────
+    print(f"\nTrain set evaluation (overfitting check):")
+    train_loader_all = DataLoader(train_graphs, batch_size=best['batch_size'], shuffle=False)
+    y_pred_tr_all    = predict_all(final_model, train_loader_all, device)
+    y_true_tr_all    = np.stack([g.y.numpy() for g in train_graphs])
+
+    train_results = {}
+    for param_idx, param_name in enumerate(PARAMS):
+        res_tr = evaluate(
+            y_true_tr_all[:, param_idx],
+            y_pred_tr_all[:, param_idx],
+            param_name = f'GNN {param_name} [TRAIN]',
+            log_scale  = True,
+        )
+        train_results[param_name] = res_tr
+        print(f"  {param_name}: GMFE={res_tr['gmfe']:.3f}  R²={res_tr['r2']:.3f}  within-2fold={res_tr['within_2fold']:.1f}%")
+
     # ── Evaluate on test set ──────────────────────────────────────────────────
     print(f"\nTest set evaluation:")
     test_loader = DataLoader(test_graphs, batch_size=best['batch_size'], shuffle=False)
@@ -341,7 +358,15 @@ def train_gnn():
             param_name = f'GNN {param_name}',
             log_scale  = True,
         )
+        results['train_gmfe'] = float(train_results[param_name]['gmfe'])
+        results['train_r2']   = float(train_results[param_name]['r2'])
         all_results[param_name] = results
+
+        gmfe_gap = train_results[param_name]['gmfe'] / results['gmfe']
+        if gmfe_gap < 0.7:
+            print(f"  ⚠️  {param_name}: possible overfit — train GMFE {train_results[param_name]['gmfe']:.3f} vs test GMFE {results['gmfe']:.3f}")
+        else:
+            print(f"  ✅ {param_name}: generalisation gap acceptable (train/test GMFE ratio: {gmfe_gap:.2f})")
 
     # ── Summary ───────────────────────────────────────────────────────────────
     print(f"\n{'='*55}")
