@@ -14,12 +14,14 @@ library(httr2)
 library(jsonlite)
 library(DT)
 library(plotly)
+library(r3dmol)
 library(dplyr)
 library(tibble)
 
 source("R/api_client.R")
 source("R/plots.R")
 source("R/utils.R")
+source("R/conformer.R")
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 EXAMPLE_SMILES  <- "CC(C)Cc1ccc(cc1)C(C)C(=O)O"   # Ibuprofen
@@ -44,10 +46,35 @@ server <- function(input, output, session) {
     busy      = FALSE
   )
 
+  # ── Populate repo search (server-side for 1,000+ compounds) ──────────────────
+  updateSelectizeInput(
+    session, "repo_search",
+    choices  = REFERENCE_CHOICES,
+    server   = TRUE
+  )
+
+  # ── Autofill from repository search ──────────────────────────────────────────
+  observeEvent(input$repo_search, {
+    req(nchar(input$repo_search) > 0)
+    smiles <- input$repo_search
+    # Look up the name from the reference table
+    idx  <- which(TRAINING_REF$smiles == smiles)[1]
+    name <- if (!is.na(idx)) TRAINING_REF$name[idx] else ""
+    updateTextAreaInput(session, "smiles_input",  value = smiles)
+    updateTextInput(session,    "compound_name",  value = name)
+  }, ignoreInit = TRUE)
+
   # ── Load example ─────────────────────────────────────────────────────────────
   observeEvent(input$load_example, {
     updateTextAreaInput(session, "smiles_input", value = EXAMPLE_SMILES)
     updateTextInput(session, "compound_name",   value = EXAMPLE_NAME)
+  })
+
+  # ── Clear inputs ──────────────────────────────────────────────────────────────
+  observeEvent(input$clear_inputs, {
+    updateTextAreaInput(session, "smiles_input",  value = "")
+    updateTextInput(session,    "compound_name",  value = "")
+    updateSelectizeInput(session, "repo_search",  selected = "")
   })
 
   # ── CSV upload preview ────────────────────────────────────────────────────────
@@ -229,75 +256,122 @@ server <- function(input, output, session) {
     make_interval_plot(rv$results, param, scale)
   })
 
-  # ── Structure grid ────────────────────────────────────────────────────────────
-  output$structure_warning_ui <- renderUI({
-    if (is.null(rv$results)) {
-      return(
-        div(class = "alert alert-info",
-            bsicons::bs_icon("info-circle"), " Run a prediction first.")
-      )
-    }
-    div(class = "alert alert-secondary",
-        bsicons::bs_icon("image"),
-        " 2D structure depictions require the ",
-        tags$code("ChemmineR"), " package or an internet connection for PubChem.",
-        " SMILES strings are shown as fallback.")
+  # ── 3D Structure viewer ────────────────────────────────────────────────────────
+
+  # Compound selector — built from current prediction results
+  output$struct_compound_select_ui <- renderUI({
+    req(rv$results)
+    ok_rows <- rv$results[rv$results$status == "ok", ]
+    req(nrow(ok_rows) > 0)
+    choices <- setNames(ok_rows$smiles, ok_rows$name)
+    selectInput("struct_selected", label = NULL,
+                choices = choices, width = "100%")
   })
 
-  output$structure_grid_ui <- renderUI({
-    req(rv$results)
-    page  <- input$struct_page
-    total <- nrow(rv$results)
-    n_pages <- ceiling(total / STRUCTS_PER_PAGE)
+  # Metadata card for selected compound
+  output$struct_metadata_ui <- renderUI({
+    req(rv$results, input$struct_selected)
+    r <- rv$results[rv$results$smiles == input$struct_selected, ][1, ]
+    req(!is.null(r), nrow(r) > 0)
 
-    # Update page input
-    updateNumericInput(session, "struct_page", max = n_pages,
-                       label = sprintf("Page (1–%d)", n_pages))
+    # Check if this compound is in the training reference
+    ref_row <- if (!is.null(TRAINING_REF)) {
+      TRAINING_REF[TRAINING_REF$smiles == input$struct_selected, ]
+    } else NULL
 
-    start_i <- (page - 1) * STRUCTS_PER_PAGE + 1
-    end_i   <- min(page * STRUCTS_PER_PAGE, total)
-    rows    <- rv$results[start_i:end_i, ]
-
-    cards <- lapply(seq_len(nrow(rows)), function(i) {
-      r <- rows[i, ]
-      card(
-        full_screen = FALSE,
-        style       = "font-size:0.8rem;",
-        card_header(
-          style = "padding:0.4rem 0.6rem;",
-          tags$strong(r$name)
-        ),
-        card_body(
-          padding = "0.5rem",
-          # Inline SMILES display — swap for actual structure image when available
-          tags$div(
-            class = "font-monospace text-break text-muted",
-            style = "font-size:0.68rem; word-break:break-all;",
-            r$smiles
-          ),
-          tags$hr(style = "margin:0.4rem 0;"),
-          tags$table(
-            class = "table table-sm mb-0",
-            tags$tbody(
-              tags$tr(
-                tags$td("CL"),
-                tags$td(class="text-end", sprintf("%.3f", r$CL_pred))
-              ),
-              tags$tr(
-                tags$td("Vd"),
-                tags$td(class="text-end", sprintf("%.3f", r$Vd_pred))
-              ),
-              tags$tr(
-                tags$td("t½"),
-                tags$td(class="text-end", sprintf("%.2f", r$thalf_pred))
+    card(
+      class = "mt-2",
+      card_body(
+        padding = "0.6rem",
+        tags$table(
+          class = "table table-sm table-borderless mb-0",
+          style = "font-size:0.82rem;",
+          tags$tbody(
+            tags$tr(tags$th("CL pred"),
+                    tags$td(sprintf("%.3f mL/min/kg", r$CL_pred))),
+            tags$tr(tags$th("Vd pred"),
+                    tags$td(sprintf("%.3f L/kg", r$Vd_pred))),
+            tags$tr(tags$th("t½ pred"),
+                    tags$td(sprintf("%.2f h", r$thalf_pred))),
+            if (!is.null(ref_row) && nrow(ref_row) > 0) {
+              tagList(
+                tags$tr(tags$th(class="text-success", "CL obs"),
+                        tags$td(class="text-success",
+                                sprintf("%.3f mL/min/kg", ref_row$CL_measured[1]))),
+                tags$tr(tags$th(class="text-success", "Vd obs"),
+                        tags$td(class="text-success",
+                                sprintf("%.3f L/kg", ref_row$Vd_measured[1])))
               )
-            )
+            }
           )
-        )
+        ),
+        if (!is.null(ref_row) && nrow(ref_row) > 0) {
+          tags$small(class="text-success",
+                     bsicons::bs_icon("database-check"),
+                     " In training set — observed values shown in green")
+        }
       )
-    })
+    )
+  })
 
-    layout_column_wrap(width = 1/3, !!!cards)
+  # RDKit availability warning
+  output$struct_rdkit_warning_ui <- renderUI({
+    if (!rdkit_available()) {
+      div(class = "alert alert-warning mb-2",
+          bsicons::bs_icon("exclamation-triangle"),
+          " RDKit not found in pkip-env. 3D viewer unavailable. ",
+          "Run: ", tags$code("conda activate pkip-env"), " before launching Shiny.")
+    }
+  })
+
+  # 3D viewer — render on compound selection or style change
+  output$viewer_3d <- renderR3dmol({
+    req(rv$results, input$struct_selected)
+
+    smiles   <- input$struct_selected
+    style_in <- input$viewer_style   %||% "stick"
+    colour   <- input$viewer_colour  %||% "element"
+
+    # Generate mol-block (cached after first call)
+    mb <- get_molblock(smiles)
+
+    if (is.null(mb)) {
+      # Fallback: empty viewer with message
+      return(
+        r3dmol(backgroundColor = "white") |>
+          m_set_style(style = m_style_cartoon()) |>
+          m_zoom_to()
+      )
+    }
+
+    # Build colour spec
+    colour_spec <- switch(colour,
+      element  = m_style_stick(colorscheme = "Jmol"),
+      chain    = m_style_stick(colorscheme = "chainHetatm"),
+      residue  = m_style_stick(colorscheme = "amino")
+    )
+
+    # Build style spec
+    style_spec <- switch(style_in,
+      stick   = m_style_stick(),
+      sphere  = m_style_sphere(scale = 0.4),
+      line    = m_style_line(),
+      cartoon = m_style_cartoon()
+    )
+
+    r3dmol(
+      backgroundColor = "white",
+      elementId       = "mol_viewer"
+    ) |>
+      m_add_model(data = mb, format = "mol") |>
+      m_set_style(style = style_spec) |>
+      m_add_surface(
+        type    = "SAS",
+        opacity = 0.08,
+        color   = "#0072B2"
+      ) |>
+      m_zoom_to() |>
+      m_spin(axis = "y", speed = 0.3)
   })
 
   # ── Performance table (About tab) ─────────────────────────────────────────────

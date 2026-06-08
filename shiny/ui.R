@@ -78,6 +78,43 @@ ui <- page_navbar(
         conditionalPanel(
           condition = "input.input_mode == 'single'",
 
+          # Repository search
+          div(
+            class = "mb-2",
+            tags$label(
+              tagList(bsicons::bs_icon("database"), " Search training library"),
+              class = "form-label fw-semibold"
+            ),
+            selectizeInput(
+              "repo_search",
+              label   = NULL,
+              choices = NULL,    # populated server-side for performance
+              options = list(
+                placeholder    = "Type a compound name…",
+                maxOptions     = 20,
+                searchField    = "label",
+                valueField     = "value",
+                labelField     = "label",
+                render = I("{
+                  option: function(item, escape) {
+                    return '<div><strong>' + escape(item.label) + '</strong></div>';
+                  }
+                }")
+              ),
+              width = "100%"
+            ),
+            tags$small(
+              class = "text-muted",
+              sprintf("Search %s training compounds — autofills Name & SMILES",
+                      if (exists("TRAINING_REF") && !is.null(TRAINING_REF))
+                        formatC(nrow(TRAINING_REF), format="d", big.mark=",")
+                      else "?")
+            )
+          ),
+
+          tags$hr(style = "margin: 0.6rem 0;"),
+
+          # Compound name + SMILES manual entry
           div(
             class = "mb-3",
             tags$label("Compound name", class = "form-label fw-semibold"),
@@ -100,9 +137,11 @@ ui <- page_navbar(
               style       = "font-size:0.82rem; resize:vertical;"
             ),
             tags$div(
-              class = "mt-1",
+              class = "mt-1 d-flex gap-3",
               actionLink("load_example", "Load example (Ibuprofen)",
-                         style = "font-size:0.82rem;")
+                         style = "font-size:0.82rem;"),
+              actionLink("clear_inputs", "Clear",
+                         style = "font-size:0.82rem; color:#6c757d;")
             )
           )
         ),
@@ -237,26 +276,57 @@ ui <- page_navbar(
           plotlyOutput("interval_plot", height = "500px")
         ),
 
-        # ── Structure viewer ──────────────────────────────────────────────────
+        # ── Structure viewer (3D) ─────────────────────────────────────────────
         nav_panel(
-          title = tagList(bsicons::bs_icon("eye"), " Structures"),
-
-          uiOutput("structure_warning_ui"),
+          title = tagList(bsicons::bs_icon("badge-3d"), " Structures"),
 
           fluidRow(
+            # Left: compound selector + metadata
             column(
-              3,
-              numericInput(
-                "struct_page",
-                "Page",
-                value = 1, min = 1, step = 1,
-                width = "100%"
+              4,
+              div(
+                class = "mb-3",
+                tags$label("Select compound", class = "form-label fw-semibold"),
+                uiOutput("struct_compound_select_ui")
+              ),
+              uiOutput("struct_metadata_ui"),
+              div(
+                class = "mt-3 d-grid gap-2",
+                tags$label("Display style", class = "form-label fw-semibold"),
+                radioButtons(
+                  "viewer_style",
+                  label   = NULL,
+                  choices = c("Stick"      = "stick",
+                              "Sphere"     = "sphere",
+                              "Line"       = "line",
+                              "Cartoon"    = "cartoon"),
+                  selected = "stick",
+                  inline   = TRUE
+                ),
+                tags$label("Colour scheme", class = "form-label fw-semibold mt-1"),
+                radioButtons(
+                  "viewer_colour",
+                  label    = NULL,
+                  choices  = c("Element"   = "element",
+                               "Chain"     = "chain",
+                               "Residue"   = "residue"),
+                  selected = "element",
+                  inline   = TRUE
+                )
               )
             ),
-            column(9)
-          ),
-
-          uiOutput("structure_grid_ui")
+            # Right: 3D viewer
+            column(
+              8,
+              uiOutput("struct_rdkit_warning_ui"),
+              r3dmolOutput("viewer_3d", height = "480px"),
+              tags$small(
+                class = "text-muted mt-1 d-block",
+                "3D conformer generated with RDKit ETKDGv3 + MMFF94 optimisation. ",
+                "Drag to rotate · Scroll to zoom · Right-click to pan."
+              )
+            )
+          )
         )
       )   # end navset_card_tab
     )   # end layout_sidebar

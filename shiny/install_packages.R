@@ -12,7 +12,11 @@ pkgs <- c(
   "jsonlite",
   "dplyr",
   "tibble",
-  "htmltools"
+  "htmltools",
+  "r3dmol",
+  "reticulate",
+  "readxl",
+  "digest"
 )
 
 install.packages(pkgs, repos = "https://cloud.r-project.org")
