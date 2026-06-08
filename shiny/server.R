@@ -388,7 +388,7 @@ server <- function(input, output, session) {
     )
 
     r3dmol(backgroundColor = "white") |>
-      m_add_model(data = mb, format = "mol") |>
+      m_add_model(data = mb, format = "sdf") |>
       m_set_style(style = style_spec) |>
       m_add_surface(style = m_style_surface(opacity = 0.07, color = "#0072B2")) |>
       m_zoom_to() |>
