@@ -100,7 +100,7 @@ server <- function(input, output, session) {
         class = "mb-2 p-2 border rounded",
         style = "background:#fff;",
         fluidRow(
-          column(4,
+          column(5,
             selectizeInput(
               paste0("cmp_name_", i),
               label   = NULL,
@@ -109,12 +109,13 @@ server <- function(input, output, session) {
                 placeholder  = paste0("Name ", i, "…"),
                 create       = TRUE,   # allow novel names not in dataset
                 maxOptions   = 20,
-                openOnFocus  = FALSE
+                openOnFocus  = FALSE,
+                dropdownParent = "body"   # prevent clipping inside sidebar
               ),
               width = "100%"
             )
           ),
-          column(8,
+          column(7,
             textInput(paste0("cmp_smiles_", i), label = NULL,
                       placeholder = "SMILES (auto-filled or enter manually)",
                       width = "100%")
@@ -126,7 +127,7 @@ server <- function(input, output, session) {
       tags$div(
         class = "d-flex mb-1",
         style = "font-size:0.78rem; color:#6c757d;",
-        tags$span(style = "width:33%;", "Name"),
+        tags$span(style = "width:42%;", "Name"),
         tags$span("SMILES")
       ),
       rows

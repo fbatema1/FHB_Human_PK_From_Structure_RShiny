@@ -234,31 +234,41 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
     }
   }
 
-  # ── 5. Median reference line + label ─────────────────────────────────────
-  med_x   <- median(y_pred, na.rm = TRUE)
-  # Median label matches axis scale
-  med_lab <- if (scale == "log10") {
-    sprintf("median = %.3f (log₁₀)", med_x)
-  } else {
-    sprintf("median = %.3g %s", med_x, m$xlab)
+  # ── 5. Per-compound point-estimate reference lines ───────────────────────
+  # One dotted vertical line per compound at its own predicted value,
+  # spanning only that compound's row (no cross-plot median).
+  for (i in seq_len(n)) {
+    px <- y_pred[i]
+    if (is.na(px)) next
+
+    shapes <- c(shapes, list(list(
+      type = "line",
+      x0   = px, x1 = px,
+      y0   = y_pos[i] - 0.42,
+      y1   = y_pos[i] + 0.42,
+      line = list(color = model_col[i], width = 1.5, dash = "dot")
+    )))
+
+    # Value label above the row  (original-scale when log10 active)
+    orig_val <- if (scale == "log10") 10^px else px
+    val_lab  <- if (scale == "log10") {
+      sprintf("<i>%.3f</i>", px)          # show the log₁₀ value
+    } else {
+      sprintf("<i>%.3g</i>", orig_val)
+    }
+
+    annotations <- c(annotations, list(list(
+      x         = px,
+      y         = y_pos[i] + 0.55,
+      xref      = "x",
+      yref      = "y",
+      text      = val_lab,
+      showarrow = FALSE,
+      font      = list(size = 9, color = model_col[i]),
+      xanchor   = "center",
+      yanchor   = "bottom"
+    )))
   }
-
-  shapes <- c(shapes, list(list(
-    type = "line",
-    x0 = med_x, x1 = med_x,
-    y0 = 0,     y1 = 1,
-    yref = "paper",
-    line = list(color = "#AAAAAA", width = 1.2, dash = "dot")
-  )))
-
-  annotations <- c(annotations, list(list(
-    x = med_x, y = 1.02,
-    xref = "x", yref = "paper",
-    text = med_lab,
-    showarrow = FALSE,
-    font = list(size = 10, color = "#666666"),
-    xanchor = "center"
-  )))
 
   # ── Layout ────────────────────────────────────────────────────────────────
   plot_h <- max(380, n * 44 + 100)
