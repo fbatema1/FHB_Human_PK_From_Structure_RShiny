@@ -14,15 +14,19 @@ venv/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Data — large intermediate files excluded; cleaned outputs are committed
-data/processed/*.csv        # large featurized outputs
-data/processed/*.npy        # numpy arrays
+# Raw data — withheld until manuscript is published
+data/raw/
+
+# Processed data — withheld until manuscript is published
+# (training_reference.csv is the one exception — it's the public-facing repo)
+data/processed/*.npy
 data/processed/*.npz
+data/processed/*.xlsx
+data/processed/*.pt
+data/processed/featurizer*.pkl
 *.db                        # ChEMBL SQLite (~7GB)
 
-# Allow cleaned dataset and log
-!data/processed/master_dataset_cleaned.xlsx
-!data/processed/cleaning_log.xlsx
+# training_reference.csv is intentionally tracked (public compound library)
 
 # Models — serialized model weights (too large for GitHub)
 *.pkl
