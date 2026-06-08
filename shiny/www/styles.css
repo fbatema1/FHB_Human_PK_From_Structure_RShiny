@@ -1,0 +1,113 @@
+/* ============================================================
+   PK Predictor — custom stylesheet
+   Supplements bslib / Bootstrap 5 flatly theme
+   ============================================================ */
+
+/* ── Typography ──────────────────────────────────────────────*/
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+}
+
+.font-monospace {
+  font-family: 'Fira Code', 'Courier New', monospace;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────*/
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ── Cards ───────────────────────────────────────────────────*/
+.bslib-card {
+  border: 1px solid #DEE2E6;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.card-header {
+  font-weight: 600;
+  font-size: 0.88rem;
+  background-color: #F1F3F5;
+  border-bottom: 1px solid #DEE2E6;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────*/
+.bslib-sidebar-layout > .sidebar {
+  border-right: 1px solid #DEE2E6;
+}
+
+/* ── Predict button ──────────────────────────────────────────*/
+#predict_btn {
+  transition: transform 0.1s ease;
+}
+#predict_btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Results table ───────────────────────────────────────────*/
+table.dataTable thead th {
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: #F8F9FA;
+  border-bottom: 2px solid #0072B2 !important;
+}
+
+table.dataTable tbody td {
+  font-size: 0.82rem;
+  vertical-align: middle;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #EBF4FF !important;
+}
+
+/* ── CI strings ──────────────────────────────────────────────*/
+td.ci-cell {
+  font-size: 0.75rem;
+  color: #6C757D;
+  font-family: 'Fira Code', monospace;
+}
+
+/* ── Status badges ───────────────────────────────────────────*/
+.badge.bg-success { background-color: #009E73 !important; }
+.badge.bg-danger  { background-color: #D55E00 !important; }
+
+/* ── Structure grid ──────────────────────────────────────────*/
+.smiles-display {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+  color: #868E96;
+  word-break: break-all;
+  max-height: 3.5rem;
+  overflow: hidden;
+}
+
+/* ── Plotly container ────────────────────────────────────────*/
+.plotly .js-plotly-plot {
+  border-radius: 0.4rem;
+}
+
+/* ── Footer note ─────────────────────────────────────────────*/
+.footnote-text {
+  font-size: 0.75rem;
+  color: #868E96;
+  margin-top: 0.5rem;
+}
+
+/* ── About tab ───────────────────────────────────────────────*/
+.about-citation pre {
+  font-size: 0.78rem;
+  background-color: #F8F9FA;
+  border: 1px solid #DEE2E6;
+  border-radius: 0.4rem;
+  padding: 0.75rem 1rem;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────*/
+#predict_spinner .spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 0.15em;
+}
