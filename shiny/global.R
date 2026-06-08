@@ -34,7 +34,13 @@ DEV_MOCK <- nchar(Sys.getenv("PK_DEV_MOCK")) > 0
 if (DEV_MOCK) message("[global.R] Dev mock mode ON")
 
 # ── Load training reference dataset ──────────────────────────────────────────
-REFERENCE_PATH <- file.path("..", "data", "processed", "training_reference.csv")
+# Check local shiny/data/ first (used on shinyapps.io), then fall back to
+# the project-level processed folder (used in local development).
+REFERENCE_PATH <- if (file.exists("data/training_reference.csv")) {
+  "data/training_reference.csv"
+} else {
+  file.path("..", "data", "processed", "training_reference.csv")
+}
 
 TRAINING_REF <- tryCatch({
   df <- read.csv(REFERENCE_PATH, stringsAsFactors = FALSE)

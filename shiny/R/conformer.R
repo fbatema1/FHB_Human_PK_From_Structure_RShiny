@@ -16,6 +16,12 @@ init_rdkit <- function() {
   if (isTRUE(.rdkit_env$ready)) return(invisible(TRUE))
 
   tryCatch({
+    # On shinyapps.io there is no conda — fail silently so the rest of the
+    # app still works; the 3D viewer shows a friendly warning instead.
+    if (!reticulate::condaenv_exists("pkip-env")) {
+      .rdkit_env$ready <- FALSE
+      return(invisible(FALSE))
+    }
     use_condaenv("pkip-env", required = TRUE)
     .rdkit_env$Chem    <- import("rdkit.Chem",          convert = FALSE)
     .rdkit_env$AllChem <- import("rdkit.Chem.AllChem",  convert = FALSE)
