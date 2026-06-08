@@ -1,0 +1,23 @@
+TRAIN/TEST SPLIT SUMMARY
+==================================================
+Random seed:  42
+Test size:    20%
+Total:        1434
+Train:        1147
+Test:         287
+
+TRAIN (n=1147)
+  CL: median=4.20  mean=12.42  min=0.000  max=1070.0  log10_std=0.701
+  Vd: median=0.91  mean=4.13  min=0.029  max=700.0  log10_std=0.655
+
+TEST (n=287)
+  CL: median=4.21  mean=9.92  min=0.020  max=212.3  log10_std=0.654
+  Vd: median=0.91  mean=3.36  min=0.035  max=156.0  log10_std=0.626
+
+Data source breakdown (train):
+  master_original: 632
+  lombardo_2018: 515
+
+Data source breakdown (test):
+  master_original: 184
+  lombardo_2018: 103
