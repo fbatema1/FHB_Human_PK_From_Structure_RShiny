@@ -8,7 +8,7 @@
 
 library(plotly)
 
-# Wong 2011 colour palette
+# Wong 2011 colour palette (model badges / legend)
 CLR_MAP <- c(
   rf     = "#0072B2",
   xgb    = "#E69F00",
@@ -22,6 +22,30 @@ FILL_MAP <- c(
   xgb    = "rgba(230,159,0,0.15)",
   gnn    = "rgba(0,158,115,0.15)",
   hybrid = "rgba(204,121,167,0.15)"
+)
+
+# Per-compound colour cycle (up to 8 compounds, colour-blind safe)
+# Slot 1 = blue (single-compound default); slot 2+ alternate warm/cool
+COMPOUND_COLORS <- c(
+  "#0072B2",   # 1  blue
+  "#D55E00",   # 2  vermilion
+  "#009E73",   # 3  green
+  "#E69F00",   # 4  orange
+  "#CC79A7",   # 5  pink
+  "#56B4E9",   # 6  sky blue
+  "#F0E442",   # 7  yellow (dark border)
+  "#000000"    # 8  black
+)
+
+COMPOUND_FILLS <- c(
+  "rgba(0,114,178,0.15)",
+  "rgba(213,94,0,0.15)",
+  "rgba(0,158,115,0.15)",
+  "rgba(230,159,0,0.15)",
+  "rgba(204,121,167,0.15)",
+  "rgba(86,180,233,0.15)",
+  "rgba(240,228,66,0.15)",
+  "rgba(0,0,0,0.10)"
 )
 
 # ── Forest-style CI plot ──────────────────────────────────────────────────────
@@ -84,11 +108,11 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
   # Y positions: top-to-bottom
   y_pos <- seq(n, 1)
 
-  # Per-compound colours
-  model_col  <- unname(CLR_MAP[match(df$model_used,  names(CLR_MAP))])
-  model_fill <- unname(FILL_MAP[match(df$model_used, names(FILL_MAP))])
-  model_col[is.na(model_col)]   <- "#888888"
-  model_fill[is.na(model_fill)] <- "rgba(136,136,136,0.12)"
+  # Per-compound colours — cycle through COMPOUND_COLORS regardless of model
+  # (model is shown via badge in UI; colour here distinguishes compounds)
+  idx_cycle  <- ((seq_len(n) - 1) %% length(COMPOUND_COLORS)) + 1
+  model_col  <- COMPOUND_COLORS[idx_cycle]
+  model_fill <- COMPOUND_FILLS[idx_cycle]
 
   fig <- plot_ly()
 

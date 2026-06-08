@@ -145,6 +145,7 @@ server <- function(input, output, session) {
           session,
           paste0("cmp_name_", idx),
           choices  = REFERENCE_CHOICES,   # named vector: name -> smiles
+          selected = character(0),        # start blank — no auto-selection
           server   = TRUE
         )
       })
