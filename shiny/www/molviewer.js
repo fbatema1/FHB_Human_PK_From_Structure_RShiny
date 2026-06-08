@@ -185,7 +185,6 @@
     v.addModel(sdf, "sdf");
     applyStyle(v, style, colour, monoColour);
     v.zoomTo();
-    v.spin("y", 0.5);
     v.render();
 
     hideSpinner();
