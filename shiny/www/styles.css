@@ -17,6 +17,19 @@ body {
 .navbar-brand {
   font-weight: 700;
   letter-spacing: 0.02em;
+  margin-right: 2.5rem !important;   /* space between title and nav links */
+}
+
+.navbar-nav .nav-link {
+  padding-left:  0.85rem !important;
+  padding-right: 0.85rem !important;
+}
+
+/* Extra breathing room on wider screens */
+@media (min-width: 992px) {
+  .navbar-brand {
+    margin-right: 3rem !important;
+  }
 }
 
 /* ── Cards ───────────────────────────────────────────────────*/

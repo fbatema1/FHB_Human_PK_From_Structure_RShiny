@@ -179,16 +179,86 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
       showlegend = FALSE
     )
 
-  # ── 4. Vertical median reference line ────────────────────────────────────
-  med_x   <- median(y_pred, na.rm = TRUE)
-  med_lab <- if (scale == "log10") {
-    sprintf("median = %.3f (%.3g %s)", med_x, 10^med_x, m$xlab)
-  } else {
-    sprintf("median = %.3f %s", med_x, m$xlab)
+  # ── 4. Dotted vertical lines + value labels at CI bounds ─────────────────
+  # One dotted line per compound at each bound, with the numeric value labelled
+  # above the top compound and below the bottom compound (avoid per-row clutter).
+  # For small n (≤ 8) we label every bound; for larger n, label only extremes.
+  shapes      <- list()
+  annotations <- list()
+
+  if (has_ci) {
+    label_all <- (n <= 8)
+
+    for (i in seq_len(n)) {
+      if (is.na(y_lo[i]) || is.na(y_hi[i])) next
+
+      # Dotted vertical lines at lower and upper bounds
+      for (bx in c(y_lo[i], y_hi[i])) {
+        shapes <- c(shapes, list(list(
+          type = "line",
+          x0   = bx, x1 = bx,
+          y0   = y_pos[i] - 0.42,
+          y1   = y_pos[i] + 0.42,
+          line = list(color = model_col[i], width = 1, dash = "dot")
+        )))
+      }
+
+      # Numeric labels — always show for single compound; for multiples
+      # show when label_all = TRUE or at the topmost row (y_pos == n)
+      if (label_all || y_pos[i] == n) {
+        orig_lo_i <- if (scale == "log10") 10^y_lo[i] else y_lo[i]
+        orig_hi_i <- if (scale == "log10") 10^y_hi[i] else y_hi[i]
+        label_y   <- y_pos[i] + 0.52   # just above the band
+
+        annotations <- c(annotations,
+          list(list(
+            x = y_lo[i], y = label_y,
+            xref = "x", yref = "y",
+            text = sprintf("<i>%.3g</i>", orig_lo_i),
+            showarrow = FALSE,
+            font = list(size = 9, color = model_col[i]),
+            xanchor = "center", yanchor = "bottom"
+          )),
+          list(list(
+            x = y_hi[i], y = label_y,
+            xref = "x", yref = "y",
+            text = sprintf("<i>%.3g</i>", orig_hi_i),
+            showarrow = FALSE,
+            font = list(size = 9, color = model_col[i]),
+            xanchor = "center", yanchor = "bottom"
+          ))
+        )
+      }
+    }
   }
 
+  # ── 5. Median reference line + label ─────────────────────────────────────
+  med_x   <- median(y_pred, na.rm = TRUE)
+  med_lab <- if (scale == "log10") {
+    sprintf("median = %.3g %s", 10^med_x, m$xlab)
+  } else {
+    sprintf("median = %.3g %s", med_x, m$xlab)
+  }
+
+  shapes <- c(shapes, list(list(
+    type = "line",
+    x0 = med_x, x1 = med_x,
+    y0 = 0,     y1 = 1,
+    yref = "paper",
+    line = list(color = "#AAAAAA", width = 1.2, dash = "dot")
+  )))
+
+  annotations <- c(annotations, list(list(
+    x = med_x, y = 1.02,
+    xref = "x", yref = "paper",
+    text = med_lab,
+    showarrow = FALSE,
+    font = list(size = 10, color = "#666666"),
+    xanchor = "center"
+  )))
+
   # ── Layout ────────────────────────────────────────────────────────────────
-  plot_h <- max(350, n * 38 + 80)
+  plot_h <- max(380, n * 44 + 100)
 
   fig |>
     layout(
@@ -205,35 +275,19 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
         ticktext  = labels,
         showgrid  = FALSE,
         zeroline  = FALSE,
-        tickfont  = list(size = 11)
+        tickfont  = list(size = 11),
+        range     = c(0.2, n + 0.8)
       ),
-      shapes = list(
-        list(
-          type = "line",
-          x0 = med_x, x1 = med_x,
-          y0 = 0,     y1 = 1,
-          yref = "paper",
-          line = list(color = "#AAAAAA", width = 1.2, dash = "dot")
-        )
-      ),
-      annotations = list(
-        list(
-          x = med_x, y = 1.015,
-          xref = "x", yref = "paper",
-          text = med_lab,
-          showarrow = FALSE,
-          font = list(size = 10, color = "#666666"),
-          xanchor = "center"
-        )
-      ),
-      margin         = list(l = 200, r = 30, t = 40, b = 55),
+      shapes      = shapes,
+      annotations = annotations,
+      margin         = list(l = 200, r = 30, t = 50, b = 55),
       showlegend     = FALSE,
       plot_bgcolor   = "white",
       paper_bgcolor  = "white",
       hoverlabel     = list(
-        bgcolor   = "white",
+        bgcolor     = "white",
         bordercolor = "#CCCCCC",
-        font = list(size = 12)
+        font        = list(size = 12)
       )
     ) |>
     config(
