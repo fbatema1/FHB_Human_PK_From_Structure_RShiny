@@ -56,15 +56,18 @@
   }
 
   // ── Style helpers ───────────────────────────────────────────────────────────
-  var COLOUR_SCHEMES = {
-    element: { colorscheme: "Jmol"         },
-    chain:   { colorscheme: "chainHetatm"  },
-    residue: { colorscheme: "amino"        }
-  };
+  // Build a style spec object for a given colour scheme
+  function colourSpec(colour) {
+    switch (colour) {
+      case "spectrum":  return { color: "spectrum" };
+      case "mono":      return { color: "#0072B2"  };
+      default:          return { colorscheme: "Jmol" };   // element
+    }
+  }
 
   function applyStyle(v, style, colour) {
-    var cs = COLOUR_SCHEMES[colour] || COLOUR_SCHEMES.element;
-    v.setStyle({}, {});   // clear
+    var cs = colourSpec(colour);
+    v.setStyle({}, {});   // clear existing
 
     switch (style) {
       case "sphere":
@@ -73,17 +76,14 @@
       case "line":
         v.setStyle({}, { line: cs });
         break;
-      case "cartoon":
-        v.setStyle({}, { cartoon: { color: "spectrum" } });
-        break;
-      default:   // stick
+      default:   // stick (default and most readable for small molecules)
         v.setStyle({}, { stick: Object.assign({ radius: 0.15 }, cs) });
     }
 
-    // Translucent surface overlay
+    // Translucent SAS surface overlay
     v.addSurface($3Dmol.SurfaceType.SAS, {
-      opacity:      0.07,
-      color:        "#0072B2"
+      opacity: 0.07,
+      color:   "#0072B2"
     });
   }
 
@@ -106,10 +106,20 @@
     if (!el) return;
     el.innerHTML = "";
 
-    if (colourScheme !== "element") {
-      el.innerHTML = '<span style="font-size:0.75rem;color:#6c757d;">' +
-        (colourScheme === "chain"   ? "Colour by chain" : "Colour by residue") +
-        "</span>";
+    if (colourScheme === "spectrum") {
+      // Gradient bar for spectrum mode
+      el.innerHTML =
+        '<span style="font-size:0.75rem;color:#6c757d;margin-right:6px;">Spectrum:</span>' +
+        '<span style="display:inline-block;width:120px;height:12px;border-radius:6px;' +
+        'background:linear-gradient(to right,#0000ff,#00ffff,#00ff00,#ffff00,#ff0000);' +
+        'vertical-align:middle;border:1px solid #ccc;"></span>';
+      return;
+    }
+    if (colourScheme === "mono") {
+      el.innerHTML =
+        '<span style="font-size:0.75rem;color:#6c757d;margin-right:6px;">Monochrome:</span>' +
+        '<span style="display:inline-block;width:16px;height:16px;border-radius:3px;' +
+        'background:#0072B2;vertical-align:middle;border:1px solid #888;"></span>';
       return;
     }
 

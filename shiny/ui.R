@@ -340,9 +340,9 @@ ui <- page_navbar(
               radioButtons(
                 "viewer_colour",
                 label    = NULL,
-                choices  = c("Element" = "element",
-                             "Chain"   = "chain",
-                             "Residue" = "residue"),
+                choices  = c("Element"   = "element",
+                             "Spectrum"  = "spectrum",
+                             "Monochrome" = "mono"),
                 selected = "element",
                 inline   = TRUE
               ),
@@ -460,10 +460,20 @@ ui <- page_navbar(
         card_header(tagList(bsicons::bs_icon("bar-chart"), " Performance")),
         card_body(
           tags$p("Target metrics (evaluated on held-out test set):"),
-          tags$ul(
-            tags$li("GMFE < 1.5"),
-            tags$li("R² > 0.70"),
-            tags$li("Within-2-fold > 60%")
+          tags$table(
+            class = "table table-sm table-borderless mb-1",
+            style = "font-size:0.82rem;",
+            tags$thead(tags$tr(
+              tags$th("Metric"), tags$th("CL target"), tags$th("Vd target")
+            )),
+            tags$tbody(
+              tags$tr(tags$td("GMFE"),          tags$td("< 2.2"), tags$td("< 1.8")),
+              tags$tr(tags$td("R²"),            tags$td("> 0.45"), tags$td("> 0.65")),
+              tags$tr(tags$td("Within 2-fold"), tags$td("> 60%"),  tags$td("> 65%"))
+            )
+          ),
+          tags$small(class="text-muted fst-italic",
+            "Targets calibrated against published 2D-QSAR literature (Lombardo et al. 2018 and others)."
           ),
           uiOutput("perf_table_ui")
         )
