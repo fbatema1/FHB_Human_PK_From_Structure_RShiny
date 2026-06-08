@@ -47,6 +47,7 @@ server <- function(input, output, session) {
   # ── Load example ─────────────────────────────────────────────────────────────
   observeEvent(input$load_example, {
     updateTextAreaInput(session, "smiles_input", value = EXAMPLE_SMILES)
+    updateTextInput(session, "compound_name",   value = EXAMPLE_NAME)
   })
 
   # ── CSV upload preview ────────────────────────────────────────────────────────
@@ -106,8 +107,12 @@ server <- function(input, output, session) {
     # Build request payload ─────────────────────────────────────────────────────
     if (input$input_mode == "single") {
       smiles_vec <- trimws(input$smiles_input)
-      names_vec  <- "Query compound"
-      validate(need(nchar(smiles_vec) > 0, "Please enter a SMILES string."))
+      cname      <- trimws(input$compound_name)
+      names_vec  <- if (nchar(cname) > 0) cname else "Unnamed compound"
+      if (nchar(smiles_vec) == 0) {
+        showNotification("Please enter a SMILES string.", type = "warning")
+        return()
+      }
     } else {
       df <- csv_data()
       smiles_vec <- df$smiles

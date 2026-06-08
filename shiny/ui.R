@@ -37,7 +37,7 @@ ui <- page_navbar(
     tags$img(src = "logo.png", height = "30px",
              style = "margin-right:8px; vertical-align:middle;",
              onerror = "this.style.display='none'"),   # hide if no logo yet
-    "PK Predictor"
+    "Wadhams — A PK Prediction Platform"
   ),
   theme = bs_theme(
     bootswatch  = "flatly",
@@ -77,6 +77,17 @@ ui <- page_navbar(
         # ── Single SMILES panel ───────────────────────────────────────────────
         conditionalPanel(
           condition = "input.input_mode == 'single'",
+
+          div(
+            class = "mb-3",
+            tags$label("Compound name", class = "form-label fw-semibold"),
+            textInput(
+              "compound_name",
+              label       = NULL,
+              placeholder = "e.g. Ibuprofen",
+              width       = "100%"
+            )
+          ),
 
           div(
             class = "mb-3",
@@ -356,8 +367,10 @@ ui <- page_navbar(
   nav_item(
     tags$span(
       class = "text-white-50",
-      style = "font-size:0.78rem; line-height:3;",
-      "For research use only — not a clinical tool"
+      style = "font-size:0.78rem; line-height:1.6; text-align:right;",
+      "For research use only — not a clinical tool",
+      tags$br(),
+      "Created and maintained by Francis Henry Bateman"
     )
   )
 )

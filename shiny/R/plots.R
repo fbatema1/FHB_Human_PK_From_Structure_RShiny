@@ -3,7 +3,7 @@
 # ===============
 # Interactive Plotly visualisations for the Shiny UI.
 #
-# make_interval_plot() — horizontal CI strip plot for one PK parameter
+# make_interval_plot() — forest-style CI plot with shaded uncertainty bands
 ##############################################################################
 
 library(plotly)
@@ -16,7 +16,20 @@ CLR_MAP <- c(
   hybrid = "#CC79A7"
 )
 
-# ── Interval strip plot ───────────────────────────────────────────────────────
+# Shaded band colours (semi-transparent fills) per model
+FILL_MAP <- c(
+  rf     = "rgba(0,114,178,0.15)",
+  xgb    = "rgba(230,159,0,0.15)",
+  gnn    = "rgba(0,158,115,0.15)",
+  hybrid = "rgba(204,121,167,0.15)"
+)
+
+# ── Forest-style CI plot ──────────────────────────────────────────────────────
+#
+# Each compound gets:
+#   - A filled rectangle (shaded band) spanning the 95% PI
+#   - A centre line through the prediction
+#   - A filled diamond/circle at the point estimate
 #
 # df    : data.frame from parse_predictions()
 # param : one of "CL" | "Vd" | "thalf" | "lambdaz"
@@ -41,7 +54,8 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
 
   if (nrow(df) == 0) {
     return(plotly_empty(type = "scatter") |>
-             layout(title = "No valid predictions to display"))
+             layout(title = list(text = "No valid predictions to display",
+                                 font = list(color = "#868E96"))))
   }
 
   # Extract values
@@ -54,37 +68,46 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
     y_pred <- log10(pmax(y_pred, 1e-9))
     y_lo   <- log10(pmax(y_lo,   1e-9))
     y_hi   <- log10(pmax(y_hi,   1e-9))
-    xlab   <- paste0("log₁₀(", m$xlab, ")")
+    xlab   <- paste0("log₁₀ ", m$xlab)
   } else {
     xlab <- m$xlab
   }
 
-  # Colour by model
-  model_col <- unname(CLR_MAP[match(df$model_used, names(CLR_MAP))])
-  model_col[is.na(model_col)] <- "#888888"
+  has_ci <- !all(is.na(y_lo))
+  n      <- nrow(df)
 
-  # Compound labels (truncate if too long)
-  labels <- ifelse(nchar(df$name) > 30,
-                   paste0(substr(df$name, 1, 28), "…"),
+  # Compound labels (truncate long names)
+  labels <- ifelse(nchar(df$name) > 32,
+                   paste0(substr(df$name, 1, 30), "…"),
                    df$name)
 
-  n     <- nrow(df)
-  y_pos <- seq(n, 1)   # top-to-bottom ordering
+  # Y positions: top-to-bottom
+  y_pos <- seq(n, 1)
+
+  # Per-compound colours
+  model_col  <- unname(CLR_MAP[match(df$model_used,  names(CLR_MAP))])
+  model_fill <- unname(FILL_MAP[match(df$model_used, names(FILL_MAP))])
+  model_col[is.na(model_col)]   <- "#888888"
+  model_fill[is.na(model_fill)] <- "rgba(136,136,136,0.12)"
 
   fig <- plot_ly()
 
-  # Error bars (CI) — only if available
-  has_ci <- !all(is.na(y_lo))
+  # ── 1. Shaded CI rectangles ───────────────────────────────────────────────
   if (has_ci) {
     for (i in seq_len(n)) {
       if (!is.na(y_lo[i]) && !is.na(y_hi[i])) {
+        # Rectangle height = 0.45 on each side of centre
         fig <- fig |>
-          add_segments(
-            x    = y_lo[i],
-            xend = y_hi[i],
-            y    = y_pos[i],
-            yend = y_pos[i],
-            line = list(color = model_col[i], width = 2),
+          add_trace(
+            type   = "scatter",
+            mode   = "none",
+            x      = c(y_lo[i], y_hi[i], y_hi[i], y_lo[i], y_lo[i]),
+            y      = c(y_pos[i] - 0.38, y_pos[i] - 0.38,
+                       y_pos[i] + 0.38, y_pos[i] + 0.38,
+                       y_pos[i] - 0.38),
+            fill   = "toself",
+            fillcolor = model_fill[i],
+            line      = list(color = "transparent"),
             showlegend = FALSE,
             hoverinfo  = "skip"
           )
@@ -92,19 +115,50 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
     }
   }
 
-  # Point estimates
+  # ── 2. Horizontal CI lines ────────────────────────────────────────────────
+  if (has_ci) {
+    for (i in seq_len(n)) {
+      if (!is.na(y_lo[i]) && !is.na(y_hi[i])) {
+        fig <- fig |>
+          add_segments(
+            x    = y_lo[i],  xend = y_hi[i],
+            y    = y_pos[i], yend = y_pos[i],
+            line = list(color = model_col[i], width = 1.8),
+            showlegend = FALSE,
+            hoverinfo  = "skip"
+          )
+        # Whisker caps
+        cap_h <- 0.18
+        for (cap_x in c(y_lo[i], y_hi[i])) {
+          fig <- fig |>
+            add_segments(
+              x    = cap_x, xend = cap_x,
+              y    = y_pos[i] - cap_h, yend = y_pos[i] + cap_h,
+              line = list(color = model_col[i], width = 1.8),
+              showlegend = FALSE,
+              hoverinfo  = "skip"
+            )
+        }
+      }
+    }
+  }
+
+  # ── 3. Point estimates (filled diamonds) ─────────────────────────────────
   hover_text <- sprintf(
     "<b>%s</b><br>%s = %.3f%s<br>Model: %s",
     labels,
     m$xlab,
-    y_pred,
-    if (scale == "log10") " (log₁₀)" else "",
+    if (scale == "log10") 10^y_pred else y_pred,
+    if (scale == "log10") sprintf(" (log₁₀ = %.3f)", y_pred) else "",
     df$model_used
   )
   if (has_ci) {
+    orig_lo <- if (scale == "log10") 10^y_lo else y_lo
+    orig_hi <- if (scale == "log10") 10^y_hi else y_hi
     hover_text <- paste0(
       hover_text,
-      sprintf("<br>95%% PI: [%.3f, %.3f]", y_lo, y_hi)
+      sprintf("<br>95%% PI: [%.3f, %.3f]", orig_lo, orig_hi),
+      sprintf("<br>Fold range: %.2f×", orig_hi / pmax(orig_lo, 1e-9))
     )
   }
 
@@ -115,66 +169,82 @@ make_interval_plot <- function(df, param = "CL", scale = "original") {
       x      = y_pred,
       y      = y_pos,
       marker = list(
-        color  = model_col,
-        size   = 9,
-        symbol = "circle",
-        line   = list(color = "white", width = 1.5)
+        color   = model_col,
+        size    = 11,
+        symbol  = "diamond",
+        line    = list(color = "white", width = 1.5)
       ),
       text      = hover_text,
-      hoverinfo = "text"
+      hoverinfo = "text",
+      showlegend = FALSE
     )
 
-  # Add vertical reference line at median
-  med_x <- median(y_pred, na.rm = TRUE)
+  # ── 4. Vertical median reference line ────────────────────────────────────
+  med_x   <- median(y_pred, na.rm = TRUE)
+  med_lab <- if (scale == "log10") {
+    sprintf("median = %.3f (%.3g %s)", med_x, 10^med_x, m$xlab)
+  } else {
+    sprintf("median = %.3f %s", med_x, m$xlab)
+  }
+
+  # ── Layout ────────────────────────────────────────────────────────────────
+  plot_h <- max(350, n * 38 + 80)
 
   fig |>
     layout(
-      xaxis = list(
-        title      = xlab,
-        zeroline   = FALSE,
-        showgrid   = TRUE,
-        gridcolor  = "#EEEEEE"
+      height = plot_h,
+      xaxis  = list(
+        title     = list(text = xlab, font = list(size = 13)),
+        zeroline  = FALSE,
+        showgrid  = TRUE,
+        gridcolor = "#EEEEEE",
+        gridwidth = 1
       ),
       yaxis = list(
-        tickvals   = y_pos,
-        ticktext   = labels,
-        showgrid   = FALSE,
-        zeroline   = FALSE,
-        autorange  = "reversed"
+        tickvals  = y_pos,
+        ticktext  = labels,
+        showgrid  = FALSE,
+        zeroline  = FALSE,
+        tickfont  = list(size = 11)
       ),
       shapes = list(
         list(
-          type    = "line",
+          type = "line",
           x0 = med_x, x1 = med_x,
           y0 = 0,     y1 = 1,
           yref = "paper",
-          line = list(color = "#999999", width = 1, dash = "dot")
+          line = list(color = "#AAAAAA", width = 1.2, dash = "dot")
         )
       ),
       annotations = list(
         list(
-          x = med_x, y = 1.01,
+          x = med_x, y = 1.015,
           xref = "x", yref = "paper",
-          text = sprintf("median = %.3f", if (scale == "log10") 10^med_x else med_x),
+          text = med_lab,
           showarrow = FALSE,
           font = list(size = 10, color = "#666666"),
           xanchor = "center"
         )
       ),
-      margin    = list(l = 180, r = 20, t = 20, b = 50),
-      showlegend = FALSE,
-      plot_bgcolor  = "white",
-      paper_bgcolor = "white"
+      margin         = list(l = 200, r = 30, t = 40, b = 55),
+      showlegend     = FALSE,
+      plot_bgcolor   = "white",
+      paper_bgcolor  = "white",
+      hoverlabel     = list(
+        bgcolor   = "white",
+        bordercolor = "#CCCCCC",
+        font = list(size = 12)
+      )
     ) |>
     config(
       displayModeBar = TRUE,
       modeBarButtonsToRemove = c("select2d", "lasso2d", "toggleSpikelines"),
       toImageButtonOptions = list(
-        format = "png",
-        filename = paste0("pk_predictor_", param),
-        width  = 900,
-        height = max(300, n * 30),
-        scale  = 2
+        format   = "png",
+        filename = paste0("wadhams_pk_", param),
+        width    = 1000,
+        height   = plot_h,
+        scale    = 2
       )
     )
 }
