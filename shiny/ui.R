@@ -355,11 +355,12 @@ ui <- page_navbar(
                              class = "form-label mb-0",
                              style = "font-size:0.82rem; white-space:nowrap;"),
                   tags$input(
-                    id    = "mono_colour",
-                    type  = "color",
-                    value = "#0072B2",
-                    class = "form-control form-control-color",
-                    style = "width:42px; height:32px; padding:2px; cursor:pointer;"
+                    id      = "mono_colour",
+                    type    = "color",
+                    value   = "#0072B2",
+                    class   = "form-control form-control-color",
+                    style   = "width:42px; height:32px; padding:2px; cursor:pointer;",
+                    oninput = "Shiny.setInputValue('mono_colour', this.value)"
                   )
                 )
               ),
