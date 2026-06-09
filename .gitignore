@@ -35,6 +35,11 @@ data/processed/featurizer*.pkl
 *.joblib
 models/saved/
 
+# Exception: conformal quantiles are tiny (4KB each) — track them
+!models/saved/conformal/
+!models/saved/conformal/*.pkl
+!models/saved/conformal/*.json
+
 # Optuna
 *.db
 optuna_studies/

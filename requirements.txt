@@ -1,0 +1,21 @@
+# Wadhams PK Predictor — Python dependencies
+# Install: pip install -r requirements.txt
+
+# API
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.6.0
+
+# ML
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+torch>=2.2.0
+torch-geometric>=2.5.0
+
+# Chemistry
+rdkit>=2023.9.0
+
+# Utilities
+numpy>=1.26.0
+pandas>=2.2.0
+optuna>=3.6.0

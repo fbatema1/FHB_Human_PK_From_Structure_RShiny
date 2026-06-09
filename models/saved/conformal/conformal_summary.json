@@ -1,0 +1,38 @@
+{
+  "RF_CL": {
+    "quantile": 0.42062600330417743,
+    "fold_mult": 2.634,
+    "n_cal": 172,
+    "coverage": 0.95
+  },
+  "RF_Vd": {
+    "quantile": 0.3364113320845396,
+    "fold_mult": 2.17,
+    "n_cal": 172,
+    "coverage": 0.95
+  },
+  "XGB_CL": {
+    "quantile": 0.20636175139698906,
+    "fold_mult": 1.608,
+    "n_cal": 172,
+    "coverage": 0.95
+  },
+  "XGB_Vd": {
+    "quantile": 0.18739020928394018,
+    "fold_mult": 1.54,
+    "n_cal": 172,
+    "coverage": 0.95
+  },
+  "GNN_CL": {
+    "quantile": 0.9333657573821939,
+    "fold_mult": 8.578,
+    "n_cal": 172,
+    "coverage": 0.95
+  },
+  "GNN_Vd": {
+    "quantile": 0.7351944079232778,
+    "fold_mult": 5.435,
+    "n_cal": 172,
+    "coverage": 0.95
+  }
+}
