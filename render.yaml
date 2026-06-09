@@ -3,8 +3,12 @@ services:
     name: wadhams-pk-api
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    startCommand: python api/download_models.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: "3.11"
+      - key: HF_REPO
+        value: "REPLACE_WITH_YOUR_HF_USERNAME/wadhams-pk-models"
+      - key: HF_TOKEN
+        sync: false   # set manually in Render dashboard — never commit tokens
     healthCheckPath: /health
