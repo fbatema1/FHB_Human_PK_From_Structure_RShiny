@@ -401,23 +401,45 @@ server <- function(input, output, session) {
     rv$busy <- TRUE
     shinyjs::show("predict_spinner")
 
-    chunk_size <- 100
+    chunk_size  <- 100
     n_compounds <- length(smiles_vec)
-    chunks <- split(seq_len(n_compounds),
-                    ceiling(seq_len(n_compounds) / chunk_size))
+    chunks      <- split(seq_len(n_compounds),
+                         ceiling(seq_len(n_compounds) / chunk_size))
+    n_chunks    <- length(chunks)
+
+    # Show compound count so the user knows something is happening
+    if (n_compounds > chunk_size) {
+      showNotification(
+        sprintf("Running %d compounds in %d batches — please wait…",
+                n_compounds, n_chunks),
+        type     = "message",
+        duration = NA,   # stays until dismissed
+        id       = "batch_progress"
+      )
+    }
 
     result <- tryCatch({
-      all_results <- lapply(chunks, function(idx) {
+      all_results <- lapply(seq_along(chunks), function(ci) {
+        if (n_compounds > chunk_size) {
+          showNotification(
+            sprintf("Batch %d of %d…", ci, n_chunks),
+            type     = "message",
+            duration = 3,
+            id       = "batch_progress"
+          )
+        }
         payload <- list(
-          smiles = as.list(smiles_vec[idx]),
+          smiles = as.list(smiles_vec[chunks[[ci]]]),
           model  = input$model_choice,
           ci     = isTRUE(input$show_ci)
         )
         pk_predict(payload)
       })
+      removeNotification("batch_progress")
       # Flatten list-of-lists into a single list of per-compound results
       do.call(c, all_results)
     }, error = function(e) {
+      removeNotification("batch_progress")
       list(error = conditionMessage(e))
     })
 
