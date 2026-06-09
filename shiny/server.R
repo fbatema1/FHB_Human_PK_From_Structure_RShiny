@@ -88,53 +88,75 @@ server <- function(input, output, session) {
     updateSelectizeInput(session, "repo_search",  selected = "")
   })
 
-  # ── Compare mode: dynamic rows ────────────────────────────────────────────────
-  observeEvent(input$add_compound_btn, {
-    rv$n_compare <- min(rv$n_compare + 1, 8)
-  })
-  observeEvent(input$remove_compound_btn, {
-    rv$n_compare <- max(rv$n_compare - 1, 1)
-  })
-
-  output$compare_rows_ui <- renderUI({
-    n <- rv$n_compare
-    rows <- lapply(seq_len(n), function(i) {
-      div(
-        class = "mb-2 p-2 border rounded",
-        style = "background:#fff;",
-        fluidRow(
-          column(5,
-            selectizeInput(
-              paste0("cmp_name_", i),
-              label   = NULL,
-              choices = NULL,          # populated server-side
-              options = list(
-                placeholder  = paste0("Name ", i, "…"),
-                create       = TRUE,   # allow novel names not in dataset
-                maxOptions   = 20,
-                openOnFocus  = FALSE,
-                dropdownParent = "body"   # prevent clipping inside sidebar
-              ),
-              width = "100%"
-            )
-          ),
-          column(7,
-            textInput(paste0("cmp_smiles_", i), label = NULL,
-                      placeholder = "SMILES (auto-filled or enter manually)",
-                      width = "100%")
+  # ── Compare mode: dynamic rows (insertUI/removeUI preserves existing values) ──
+  compare_row_ui <- function(i) {
+    div(
+      id    = paste0("cmp_row_", i),
+      class = "mb-2 p-2 border rounded",
+      style = "background:#fff;",
+      fluidRow(
+        column(5,
+          selectizeInput(
+            paste0("cmp_name_", i),
+            label   = NULL,
+            choices = NULL,
+            options = list(
+              placeholder    = paste0("Name ", i, "…"),
+              create         = TRUE,
+              maxOptions     = 20,
+              openOnFocus    = FALSE,
+              dropdownParent = "body"
+            ),
+            width = "100%"
           )
+        ),
+        column(7,
+          textInput(paste0("cmp_smiles_", i), label = NULL,
+                    placeholder = "SMILES (auto-filled or enter manually)",
+                    width = "100%")
         )
       )
-    })
+    )
+  }
+
+  # Render initial rows once
+  output$compare_rows_ui <- renderUI({
     tagList(
       tags$div(
+        id    = "compare_rows_container",
         class = "d-flex mb-1",
         style = "font-size:0.78rem; color:#6c757d;",
         tags$span(style = "width:42%;", "Name"),
         tags$span("SMILES")
       ),
-      rows
+      tags$div(
+        id = "compare_rows_container",
+        lapply(seq_len(rv$n_compare), compare_row_ui)
+      )
     )
+  })
+
+  observeEvent(input$add_compound_btn, {
+    if (rv$n_compare >= 8) return()
+    rv$n_compare <- rv$n_compare + 1
+    i <- rv$n_compare
+    insertUI(
+      selector = "#compare_rows_container",
+      where    = "beforeEnd",
+      ui       = compare_row_ui(i),
+      immediate = TRUE
+    )
+    # Populate the new selectize with reference choices
+    updateSelectizeInput(session, paste0("cmp_name_", i),
+                         choices  = REFERENCE_CHOICES,
+                         selected = character(0),
+                         server   = TRUE)
+  })
+
+  observeEvent(input$remove_compound_btn, {
+    if (rv$n_compare <= 1) return()
+    removeUI(selector = paste0("#cmp_row_", rv$n_compare), immediate = TRUE)
+    rv$n_compare <- rv$n_compare - 1
   })
 
   # Populate each name selectize server-side and watch for autofill
@@ -526,7 +548,10 @@ server <- function(input, output, session) {
       selection = "single",
       options   = list(
         dom        = "Bfrtip",
-        buttons    = c("csv", "excel"),
+        buttons    = list(
+          list(extend = "csv",   exportOptions = list(modifier = list(page = "all"))),
+          list(extend = "excel", exportOptions = list(modifier = list(page = "all")))
+        ),
         scrollX    = TRUE,
         pageLength = 20,
         columnDefs = list(
