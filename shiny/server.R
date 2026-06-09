@@ -51,7 +51,9 @@ server <- function(input, output, session) {
     results      = NULL,
     api_error    = NULL,
     busy         = FALSE,
-    n_compare    = 2       # number of rows in compare mode
+    n_compare    = 2,      # number of rows in compare mode
+    plot_page    = 1L,     # current page for paginated interval plot
+    plot_search  = ""      # search filter for interval plot
   )
 
   # ── Populate repo search (server-side for 1,000+ compounds) ──────────────────
@@ -399,7 +401,19 @@ server <- function(input, output, session) {
 
     # Call API — chunked to stay within 100-compound limit ─────────────────────
     rv$busy <- TRUE
+    rv$plot_page   <- 1L
+    rv$plot_search <- ""
     shinyjs::show("predict_spinner")
+
+    # "Results may take a few minutes" banner — shown for batch or multi-compound
+    if (input$input_mode != "single") {
+      showNotification(
+        tagList(bsicons::bs_icon("hourglass-split"), " Running predictions — results may take a few minutes…"),
+        type     = "message",
+        duration = NA,
+        id       = "wait_banner"
+      )
+    }
 
     chunk_size  <- 100
     n_compounds <- length(smiles_vec)
@@ -436,14 +450,17 @@ server <- function(input, output, session) {
         pk_predict(payload)
       })
       removeNotification("batch_progress")
+      removeNotification("wait_banner")
       # Flatten list-of-lists into a single list of per-compound results
       do.call(c, all_results)
     }, error = function(e) {
       removeNotification("batch_progress")
+      removeNotification("wait_banner")
       list(error = conditionMessage(e))
     })
 
     rv$busy <- FALSE
+    removeNotification("wait_banner")
     shinyjs::hide("predict_spinner")
 
     if (!is.null(result$error)) {
@@ -528,10 +545,95 @@ server <- function(input, output, session) {
       )
   })
 
-  # ── Interval plot ─────────────────────────────────────────────────────────────
+  # ── Interval plot — paginated (5 compounds/page) + searchable ────────────────
+  PAGE_SIZE <- 5L
+
+  # Search/filter input observer
+  observeEvent(input$plot_search_input, {
+    rv$plot_search <- trimws(input$plot_search_input %||% "")
+    rv$plot_page   <- 1L   # reset to page 1 on new search
+  }, ignoreNULL = FALSE)
+
+  # Page navigation
+  observeEvent(input$plot_prev_page, { rv$plot_page <- max(1L, rv$plot_page - 1L) })
+  observeEvent(input$plot_next_page, {
+    req(rv$results)
+    df_ok  <- rv$results[rv$results$status == "ok", ]
+    srch   <- rv$plot_search
+    if (nchar(srch) > 0)
+      df_ok <- df_ok[grepl(srch, df_ok$name, ignore.case = TRUE) |
+                     grepl(srch, df_ok$smiles, ignore.case = TRUE), ]
+    n_pages <- max(1L, ceiling(nrow(df_ok) / PAGE_SIZE))
+    rv$plot_page <- min(rv$plot_page + 1L, n_pages)
+  })
+
+  # Pagination controls UI
+  output$plot_page_ui <- renderUI({
+    req(rv$results)
+    df_ok <- rv$results[rv$results$status == "ok", ]
+    n     <- nrow(df_ok)
+    if (n <= PAGE_SIZE) return(NULL)   # no controls needed for small result sets
+
+    srch <- rv$plot_search
+    if (nchar(srch) > 0)
+      df_ok <- df_ok[grepl(srch, df_ok$name, ignore.case = TRUE) |
+                     grepl(srch, df_ok$smiles, ignore.case = TRUE), ]
+    n_filtered <- nrow(df_ok)
+    n_pages    <- max(1L, ceiling(n_filtered / PAGE_SIZE))
+    cur_page   <- rv$plot_page
+
+    div(
+      class = "d-flex align-items-center gap-2 mb-2 flex-wrap",
+      # Search box
+      div(
+        style = "flex:1; min-width:180px; max-width:320px;",
+        textInput("plot_search_input", label = NULL,
+                  placeholder = "Search compound name or SMILES…",
+                  value = rv$plot_search)
+      ),
+      # Page info + arrows
+      div(
+        class = "d-flex align-items-center gap-1 ms-auto",
+        tags$small(class = "text-muted me-1",
+                   sprintf("%d compound%s  ·  page %d of %d",
+                           n_filtered, if (n_filtered == 1) "" else "s",
+                           cur_page, n_pages)),
+        actionButton("plot_prev_page", label = NULL,
+                     icon  = bsicons::bs_icon("chevron-left"),
+                     class = "btn btn-sm btn-outline-secondary",
+                     disabled = if (cur_page <= 1L) NA else NULL),
+        actionButton("plot_next_page", label = NULL,
+                     icon  = bsicons::bs_icon("chevron-right"),
+                     class = "btn btn-sm btn-outline-secondary",
+                     disabled = if (cur_page >= n_pages) NA else NULL)
+      )
+    )
+  })
+
+  # Filtered + paged results for the plot
+  paged_results <- reactive({
+    req(rv$results)
+    df_ok <- rv$results[rv$results$status == "ok", ]
+    srch  <- rv$plot_search
+    if (nchar(srch) > 0)
+      df_ok <- df_ok[grepl(srch, df_ok$name, ignore.case = TRUE) |
+                     grepl(srch, df_ok$smiles, ignore.case = TRUE), ]
+    page  <- rv$plot_page
+    start <- (page - 1L) * PAGE_SIZE + 1L
+    end   <- min(page * PAGE_SIZE, nrow(df_ok))
+    if (nrow(df_ok) == 0 || start > nrow(df_ok)) return(df_ok[0, ])
+    df_ok[start:end, ]
+  })
+
   output$interval_plot <- renderPlotly({
     req(rv$results)
-    make_interval_plot(rv$results, input$plot_param, input$plot_scale)
+    df <- paged_results()
+    if (nrow(df) == 0) {
+      return(plotly_empty() |>
+               layout(title = list(text = "No compounds match your search",
+                                   font = list(color = "#6c757d", size = 14))))
+    }
+    make_interval_plot(df, input$plot_param, input$plot_scale)
   })
 
   # ── Derived parameters table (t½ and λz) ──────────────────────────────────────

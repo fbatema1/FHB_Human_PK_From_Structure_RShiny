@@ -230,6 +230,9 @@
           })
           .catch(function (err2) {
             console.error("[molviewer] Both sources failed:", err2.message);
+            // Reset viewer reference — the div is about to be replaced,
+            // so the old 3Dmol instance is dead. Next load must reinitialise.
+            viewer = null;
             var el = document.getElementById(VIEWER_ID);
             if (el) {
               el.innerHTML =

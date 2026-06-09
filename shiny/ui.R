@@ -298,6 +298,7 @@ ui <- page_navbar(
             column(6)
           ),
 
+          uiOutput("plot_page_ui"),
           plotlyOutput("interval_plot", height = "500px"),
 
           hr(),
