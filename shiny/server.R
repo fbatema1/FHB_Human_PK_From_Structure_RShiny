@@ -384,22 +384,29 @@ server <- function(input, output, session) {
       names_vec  <- df$name   # always present — set to Compound_N if no name col
     }
 
-    payload <- list(
-      smiles = as.list(smiles_vec),
-      model  = input$model_choice,
-      ci     = isTRUE(input$show_ci)
-    )
-
-    # Call API ──────────────────────────────────────────────────────────────────
+    # Call API — chunked to stay within 100-compound limit ─────────────────────
     rv$busy <- TRUE
     shinyjs::show("predict_spinner")
 
-    result <- tryCatch(
-      pk_predict(payload),
-      error = function(e) {
-        list(error = conditionMessage(e))
-      }
-    )
+    chunk_size <- 100
+    n_compounds <- length(smiles_vec)
+    chunks <- split(seq_len(n_compounds),
+                    ceiling(seq_len(n_compounds) / chunk_size))
+
+    result <- tryCatch({
+      all_results <- lapply(chunks, function(idx) {
+        payload <- list(
+          smiles = as.list(smiles_vec[idx]),
+          model  = input$model_choice,
+          ci     = isTRUE(input$show_ci)
+        )
+        pk_predict(payload)
+      })
+      # Flatten list-of-lists into a single list of per-compound results
+      do.call(c, all_results)
+    }, error = function(e) {
+      list(error = conditionMessage(e))
+    })
 
     rv$busy <- FALSE
     shinyjs::hide("predict_spinner")
