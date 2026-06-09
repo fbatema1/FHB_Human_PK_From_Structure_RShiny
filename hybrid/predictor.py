@@ -175,8 +175,11 @@ class HybridPredictor:
             vd_upper = float(10 ** vd_hi_log[0])
 
         # ── Derived parameters ────────────────────────────────────────────────
-        thalf   = round(0.693 * vd_pred / cl_pred, 4) if cl_pred > 0 else None
-        lambdaz = round(cl_pred / vd_pred, 6)         if vd_pred > 0 else None
+        # Unit conversion: CL is mL/min/kg → convert to L/h/kg (* 60/1000)
+        # before applying t½ = 0.693 × Vd(L/kg) / CL(L/h/kg)
+        cl_L_h_kg = cl_pred * 60 / 1000
+        thalf     = round(0.693 * vd_pred / cl_L_h_kg, 3) if cl_pred > 0 else None
+        lambdaz   = round(cl_L_h_kg / vd_pred, 6)         if vd_pred > 0 else None
 
         return {
             "smiles":       smiles,

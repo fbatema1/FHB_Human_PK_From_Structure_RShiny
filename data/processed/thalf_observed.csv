@@ -1,0 +1,288 @@
+compound_name,smiles,cid,thalf_h,thalf_source,thalf_notes
+Procaimide,CCN(CC)CCNC(=O)c1ccc(N)cc1,4913.0,3.5,PubChem,PubChem: HALF-LIFE IS 3-4 HR
+Verapamil,COc1ccc(CCN(C)CCCC(C#N)(c2ccc(OC)c(OC)c2)C(C)C)cc1OC,2520.0,9.2,PubChem,PubChem: half-life (9.8 vs 9.2 hr
+Didemnin B,CC[C@H](C)[C@H]1NC(=O)[C@@H](NC(=O)[C@@H](CC(C)C)N(C)C(=O)[C@@H]2CCCN2C(=O)[C@H](C)O)[C@@H](C)OC(=O)[C@H](Cc2ccc(OC)cc2)N(C)C(=O)[C@@H]2CCCN2C(=O)[C@H](CC(C)C)NC(=O)[C@@H](C)C(=O)[C@H](C(C)C)OC(=O)C[C@@H]1O,122651.0,,,
+Vinorelbine,CCC1=C[C@@H]2CN(C1)Cc1c([nH]c3ccccc13)[C@@](C(=O)OC)(c1cc3c(cc1OC)N(C)[C@H]1[C@@](O)(C(=O)OC)[C@H](OC(C)=O)[C@]4(CC)C=CCN5CC[C@]31[C@@H]54)C2,5311497.0,43.6,PubChem,PubChem: half-life averaged 27.7 to 43.6 hours
+Cefclidin,CO/N=C(\C(=O)N[C@@H]1C(=O)N2C(C(=O)O)=C(C[N+]34CCC(C(=N)[O-])(CC3)CC4)CS[C@H]12)c1nsc(N)n1,6537446.0,,,
+Astromicin,CO[C@H]1[C@@H](O)[C@H](N)[C@@H](O[C@H]2O[C@H]([C@H](C)N)CC[C@H]2N)[C@H](O)[C@H]1N(C)C(=O)CN,5284517.0,,,
+Micafungin,CCCCCOc1ccc(-c2cc(-c3ccc(C(=O)N[C@H]4C[C@@H](O)[C@@H](O)NC(=O)[C@@H]5[C@@H](O)[C@@H](C)CN5C(=O)[C@H]([C@H](O)CC(N)=O)NC(=O)[C@H]([C@H](O)[C@@H](O)c5ccc(O)c(OS(=O)(=O)O)c5)NC(=O)[C@@H]5C[C@@H](O)CN5C(=O)[C@H]([C@@H](C)O)NC4=O)cc3)no2)cc1,477468.0,,,
+Nefopam,CN1CCOC(c2ccccc2)c2ccccc2C1,4450.0,72.0,PubChem,"PubChem: t 12, 24, 48, and 72 hours"
+Ketamine,CNC1(c2ccccc2Cl)CCCCC1=O,3821.0,2.5,PubChem,PubChem: half-life of ketamine (beta phase) is 2.5 hours
+Tiludronic Acid,O=P(O)(O)C(Sc1ccc(Cl)cc1)P(=O)(O)O,60937.0,150.0,PubChem,PubChem: half-life is 150 hours
+Sotalol,CC(C)NCC(O)c1ccc(NS(C)(=O)=O)cc1,5253.0,15.0,PubChem,PubChem: half life is 10-20 hours
+MDAM,C=C(C[C@H](NC(=O)c1ccc(CCc2cnc3nc(N)nc(N)c3n2)cc1)C(=O)O)C(=O)O,9803852.0,,,
+5-Fluorouracil,O=c1[nH]cc(F)c(=O)[nH]1,3385.0,,,
+Amezinium,COc1cc(N)cn[n+]1-c1ccccc1,71927.0,,,
+Ibutilide,CCCCCCCN(CC)CCCC(O)c1ccc(NS(C)(=O)=O)cc1,60753.0,8.6,PubChem,PubChem: half-life (12.5 +/- 10.7 vs 12.4 +/- 8.6 hrs
+Ridogrel,O=C(O)CCCCO/N=C(/c1cccnc1)c1cccc(C(F)(F)F)c1,5362391.0,,,
+Xylose_D,O[C@@H]1[C@@H](O)[C@@H](O)OC[C@H]1O,6027.0,,,
+Bisoprolol,CC(C)NCC(O)COc1ccc(COCCOC(C)C)cc1,2405.0,5.0,PubChem,PubChem: half-life of 4 to 5 hr
+Perphenazine,OCCN1CCN(CCCN2c3ccccc3Sc3ccc(Cl)cc32)CC1,4748.0,10.0,PubChem,PubChem: Half Life: 8-12 hours
+Cefotaxime,CO/N=C(\C(=O)N[C@@H]1C(=O)N2C(C(=O)O)=C(COC(C)=O)CS[C@H]12)c1csc(N)n1,5742673.0,1.0,FDA,FDA label: half-life of approximately 1 hour
+Darifecin,NC(=O)C(c1ccccc1)(c1ccccc1)[C@@H]1CCN(CCc2ccc3c(c2)CCO3)C1,444031.0,16.0,PubChem,PubChem: Half Life: The elimination half-life of darifenacin following chronic dosing is approximately 13-19 hours
+Zolpidem,Cc1ccc(-c2nc3ccc(C)cn3c2CC(=O)N(C)C)cc1,5732.0,2.6,PubChem,PubChem: Half Life: 2.6 hours
+GSK2239633,COc1cccc2c1c(NS(=O)(=O)c1ccc(Cl)s1)nn2Cc1cccc(CNC(=O)C(C)(C)O)c1,46861584.0,,,
+Tofogliflozin,CCc1ccc(Cc2ccc3c(c2)[C@]2(OC3)O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)cc1,46908929.0,,,
+Guanfacine,N=C(N)NC(=O)Cc1c(Cl)cccc1Cl,3519.0,17.0,PubChem,PubChem: half life of 17 hours
+Nebivolol,OC(CNCC(O)C1CCc2cc(F)ccc2O1)C1CCc2cc(F)ccc2O1,71301.0,12.0,PubChem,PubChem: half life of 12 hours
+Chloroquine,CCN(CC)CCCC(C)Nc1ccnc2cc(Cl)ccc12,2719.0,96.0,PubChem,PubChem: half-life of chloroquine in healthy individuals is generally reported to be 72-120 hr
+Ropivacaine,CCCN1CCCC[C@H]1C(=O)Nc1c(C)cccc1C,175805.0,4.2,PubChem,PubChem: Half Life: Approximately 4.2 hours
+Dabigatran,Cn1c(CNc2ccc(C(=N)N)cc2)nc2cc(C(=O)N(CCC(=O)O)c3ccccn3)ccc21,216210.0,1.0,PubChem,PubChem: t 1 hour
+Nizatidine,CN/C(=C\[N+](=O)[O-])NCCSCc1csc(CN(C)C)n1,4513.0,10.0,PubChem,PubChem: Half life is 10 hours
+Dicloxacillin,Cc1onc(-c2c(Cl)cccc2Cl)c1C(=O)N[C@@H]1C(=O)N2[C@@H]1SC(C)(C)[C@@H]2C(=O)O,18381.0,1.54,PubChem,PubChem: half-life (t1/2) was in the range of 1.38-1.71 hours
+Tegafur,O=c1[nH]c(=O)n(C2CCCO2)cc1F,5386.0,1.0,PubChem,PubChem: t 1 hour
+Iloprost,CC#CCC(C)[C@H](O)/C=C/[C@@H]1[C@H]2C/C(=C/CCCC(=O)O)C[C@H]2C[C@H]1O,5311181.0,,,
+Metrizoic Acid,CC(=O)Nc1c(I)c(C(=O)O)c(I)c(N(C)C(C)=O)c1I,2528.0,,,
+Diltiazem Hydrochloride,COc1ccc([C@@H]2Sc3ccccc3N(CCN(C)C)C(=O)[C@@H]2OC(C)=O)cc1,62920.0,3.75,PubChem,PubChem: Half Life: 3.0 - 4.5 hours
+Tesaglitazar,CCO[C@@H](Cc1ccc(OCCc2ccc(OS(C)(=O)=O)cc2)cc1)C(=O)O,208901.0,,,
+Atovaquone,O=C1C(O)=C(C2CCC(c3ccc(Cl)cc3)CC2)C(=O)c2ccccc21,74989.0,35.3,FDA,FDA label: half-life of atovaquone was 62.5 ± 35.3 hours
+Acyclovir,Nc1nc2c(ncn2COCCO)c(=O)[nH]1,135398513.0,5.0,PubChem,PubChem: half life of acyclovir during hemodialysis is approximately 5 hours
+Melperone,CC1CCN(CCCC(=O)c2ccc(F)cc2)CC1,15387.0,6.0,PubChem,PubChem: half-life has been found to be approximately 6 hours
+Ipratropium,CC(C)[N+]1(C)[C@@H]2CC[C@H]1CC(OC(=O)[C@H](CO)c1ccccc1)C2,657309.0,1.6,FDA,FDA label: half-life of elimination is about 1.6 hours
+Methadone,CCC(=O)C(CC(C)N(C)C)(c1ccccc1)c1ccccc1,4095.0,10.0,PubChem,PubChem: t 10 hours
+Faropenem,C[C@@H](O)[C@H]1C(=O)N2C(C(=O)O)=C([C@H]3CCCO3)S[C@H]12,65894.0,,,
+Levofloxacin,C[C@H]1COc2c(N3CCN(C)CC3)c(F)cc3c(=O)c(C(=O)O)cn1c23,149096.0,8.0,PubChem,PubChem: half-life of levofloxacin ranges from approximately 6 to 8 hours
+Piroximone,CCc1[nH]c(=O)[nH]c1C(=O)c1ccncc1,55263.0,,,
+OR-1896,CC(=O)Nc1ccc(C2=NNC(=O)C[C@H]2C)cc1,9816296.0,,,
+Tropatepine,CN1C2CCC1CC(=C1c3ccccc3CSc3ccccc31)C2,3034047.0,,,
+Menogaril,CO[C@@H]1C[C@@](C)(O)Cc2cc3c(c(O)c21)C(=O)c1c(O)cc2c(c1C3=O)O[C@@H]1O[C@]2(C)[C@@H](O)[C@@H](N(C)C)[C@@H]1O,5288818.0,,,
+Tazarotene,CCOC(=O)c1ccc(C#Cc2ccc3c(c2)C(C)(C)CCS3)nc1,5381.0,18.0,PubChem,"PubChem: half-life of the active form of the drug, tazarotenic acid, is approximately 18 hours"
+Ciclesonide,CC(C)C(=O)OCC(=O)[C@]12O[C@@H](C3CCCCC3)O[C@@H]1C[C@@H]1[C@@H]3CCC4=CC(=O)C=C[C@]4(C)[C@H]3[C@@H](O)C[C@@]12C,6918155.0,0.71,FDA,FDA label: half-life of ciclesonide and des-ciclesonide was 0.71 hours
+Chlordiazepoxide,C/N=C1/CN(O)C(c2ccccc2)=c2cc(Cl)ccc2=N1,2712.0,,,
+Temozolomide,Cn1nnc2c(C(N)=O)ncn2c1=O,5394.0,1.8,PubChem,PubChem: half-life than in buffer (1 versus 1.8 hours
+Zanamivir,CC(=O)N[C@H]1[C@H]([C@H](O)[C@H](O)CO)OC(C(=O)O)=C[C@@H]1N=C(N)N,60855.0,5.1,PubChem,PubChem: half-life of zanamivir following administration by oral inhalation ranges from 2.5 to 5.1 hours
+Melatonin,COc1ccc2[nH]cc(CCNC(C)=O)c2c1,896.0,0.1,PubChem,PubChem: half-life (0.67 +/- 0.12 vs. 0.79 +/- 0.10 hr
+Diazoxide,CC1=Nc2ccc(Cl)cc2S(=O)(=O)N1,3019.0,24.0,PubChem,PubChem: half-life of diazoxide varies from 9.5 to 24 hours
+Carvedilol,COc1ccccc1OCCNCC(O)COc1cccc2[nH]c3ccccc3c12,2585.0,8.5,PubChem,PubChem: half life of carvedilol is between 7-10 hours
+Diatrizoate,CC(=O)Nc1c(I)c(NC(C)=O)c(I)c(C(=O)O)c1I,2140.0,80.0,PubChem,PubChem: halflife is reported to be 20-140 hours
+Codeine,COc1ccc2c3c1O[C@H]1[C@@H](O)C=C[C@H]4[C@@H](C2)N(C)CC[C@@]341,5284371.0,3.0,PubChem,PubChem: Half Life: Plasma half-lives of codeine and its metabolites have been reported to be approximately 3 hours
+Metformin,CN(C)C(=N)N=C(N)N,4091.0,6.2,PubChem,PubChem: half-life of metformin averages approximately 6.2 hours
+Zoledronic Acid,O=P(O)(O)C(O)(Cn1ccnc1)P(=O)(O)O,68740.0,146.0,PubChem,PubChem: Half Life: 146 hours
+Patupilone,C/C(=C\c1csc(C)n1)[C@@H]1C[C@@H]2O[C@]2(C)CCC[C@H](C)[C@H](O)[C@H](C)C(=O)C(C)(C)[C@@H](O)CC(=O)O1,448013.0,,,
+Moxalactam,CO[C@@]1(NC(=O)C(C(=O)O)c2ccc(O)cc2)C(=O)N2C(C(=O)O)=C(CSc3nnnn3C)CO[C@@H]21,47499.0,,,
+F992,CC[C@]1(C)NC(=O)[C@H](Cc2cccs2)NC(=O)[C@@H](Cc2ccccc2)NC(=O)CCCSC[C@@H](C(=O)N2C[C@H](O)C[C@H]2C(=O)N[C@H](CCCNC(=N)N)C(=O)NCC(N)=O)NC(=O)[C@H](CC(N)=O)NC1=O,9876525.0,,,
+LY2140023,CSCC[C@H](N)C(=O)N[C@@]1(C(=O)O)CS(=O)(=O)[C@H]2[C@H](C(=O)O)[C@H]21,25195354.0,,,
+Methotrexate,CN(Cc1cnc2nc(N)nc(N)c2n1)c1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1,126941.0,10.0,PubChem,PubChem: Half Life: Low doses (less than 30 mg/m^2): 3 to 10 hours
+Astragaloside IV,CC(C)(O)[C@@H]1CC[C@](C)([C@H]2[C@@H](O)C[C@@]3(C)[C@@H]4C[C@H](O[C@@H]5O[C@H](CO)[C@@H](O)[C@H](O)[C@H]5O)[C@H]5C(C)(C)[C@@H](O[C@@H]6OC[C@@H](O)[C@H](O)[C@H]6O)CC[C@@]56C[C@@]46CC[C@]23C)O1,13943297.0,,,
+Chenodeoxycholic Acid,C[C@H](CCC(=O)O)[C@H]1CC[C@H]2[C@@H]3[C@H](O)C[C@@H]4C[C@H](O)CC[C@]4(C)[C@H]3CC[C@]12C,10133.0,,,
+Dihydrocodeine,COc1ccc2c3c1O[C@H]1[C@@H](O)CC[C@H]4[C@@H](C2)N(C)CC[C@@]341,5284543.0,,,
+"3,5-DCQA",O=C(/C=C/c1ccc(O)c(O)c1)O[C@@H]1C[C@](O)(C(=O)O)C[C@@H](OC(=O)/C=C/c2ccc(O)c(O)c2)[C@H]1O,6474310.0,,,
+Azlocillin,CC1(C)SC2[C@H](NC(=O)C(NC(=O)N3CCNC3=O)c3ccccc3)C(=O)N2[C@H]1C(=O)O,6479523.0,1.5,PubChem,PubChem: half-life is 1.3 to 1.5 hours
+Ziracin,COC[C@@H]1O[C@H](O[C@H]2OC[C@H]3O[C@@]4(OC[C@H](OC(=O)c5c(C)cc(O)cc5O)[C@@H]5OCOC54)O[C@@H]3[C@H]2O)[C@@H](OC)[C@H](O)[C@H]1O[C@@H]1O[C@H](C)[C@H](OC)[C@H](O[C@H]2O[C@H](C)[C@@H]3O[C@]4(C[C@@H](O)[C@H](O[C@@H]5C[C@H](O[C@H]6C[C@@](C)([N+](=O)[O-])[C@@H](OC)[C@@H](C)O6)[C@@H](OC(=O)c6c(C)c(Cl)c(O)c(Cl)c6OC)[C@H](C)O5)[C@@H](C)O4)O[C@]3(C)[C@H]2O)[C@H]1O,6917933.0,,,
+Sinitrodil,O=C1c2ccccc2OCN1CCO[N+](=O)[O-],121985.0,,,
+Carebastine,CC(C)(C(=O)O)c1ccc(C(=O)CCCN2CCC(OC(c3ccccc3)c3ccccc3)CC2)cc1,65820.0,,,
+Chlordiazepoxide,CNC1=Nc2ccc(Cl)cc2C(c2ccccc2)=[N+]([O-])C1,2712.0,,,
+CP-65207,C[C@@H](O)[C@H]1C(=O)N2C(C(=O)[O-])=C(S[C@H]3CC[S@@+]([O-])C3)S[C@@H]12,23669324.0,,,
+Perampanel,N#Cc1ccccc1-c1cc(-c2ccccn2)cn(-c2ccccc2)c1=O,9924495.0,105.0,PubChem,PubChem: half-life of about 105 hours
+Amsalog,CNC(=O)c1cccc2c(Nc3ccc(NS(C)(=O)=O)cc3OC)c3cccc(C)c3nc12,107924.0,,,
+Dinaciclib,CCc1cnn2c(NCc3ccc[n+]([O-])c3)cc(N3CCCC[C@H]3CCO)nc12,46926350.0,,,
+Lomitapide,O=C(NC1CCN(CCCCC2(C(=O)NCC(F)(F)F)c3ccccc3-c3ccccc32)CC1)c1ccccc1-c1ccc(C(F)(F)F)cc1,9853053.0,39.7,PubChem,PubChem: half-life is 39.7 hours
+KNI-272,CSC[C@H](NC(=O)COc1cccc2cnccc12)C(=O)N[C@@H](Cc1ccccc1)[C@H](O)C(=O)N1CSC[C@H]1C(=O)NC(C)(C)C,60927.0,,,
+Doxacurium,COc1cc(CC2c3c(cc(OC)c(OC)c3OC)CC[N+]2(C)CCCOC(=O)CCC(=O)OCCC[N+]2(C)CCc3cc(OC)c(OC)c(OC)c3C2Cc2cc(OC)c(OC)c(OC)c2)cc(OC)c1OC,60169.0,,,
+Octreotide,CC(O)C(CO)NC(=O)C1CSSCC(NC(=O)C(N)Cc2ccccc2)C(=O)NC(Cc2ccccc2)C(=O)NC(Cc2c[nH]c3ccccc23)C(=O)NC(CCCCN)C(=O)NC(C(C)O)C(=O)N1,448601.0,2.08,PubChem,PubChem: t 1.67–2.5 hours
+Cefonicid,O=C(O)C1=C(CSc2nnnn2CS(=O)(=O)O)CS[C@@H]2[C@@H](NC(=O)[C@H](O)c3ccccc3)C(=O)N12,43594.0,,,
+Ro25-6833,Nc1nc(/C(=N/O)C(=O)N[C@@H]2C(=O)N3C(C(=O)O)=C(/C=C4\CCN(CC(F)(F)F)C4=O)CS[C@H]23)cs1,9578062.0,,,
+Morphine,CN1CC[C@]23c4c5ccc(O)c4O[C@H]2[C@@H](O)C=C[C@H]3[C@H]1C5,5288826.0,3.0,PubChem,PubChem: Half Life: 2-4 hours
+Pixantrone,NCCNc1ccc(NCCN)c2c1C(=O)c1ccncc1C2=O,134019.0,31.9,PubChem,PubChem: Half life ranges from 14.7 to 31.9 hours
+Benperidol,O=C(CCCN1CCC(n2c(O)nc3ccccc32)CC1)c1ccc(F)cc1,16363.0,,,
+Ginkgolide B,C[C@@H]1C(=O)O[C@H]2[C@H](O)C34[C@H]5C[C@@H](C(C)(C)C)C36[C@@H](OC(=O)[C@@H]6O)OC4(C(=O)O5)[C@@]12O,11973122.0,,,
+Daptomycin,CCCCCCCCCC(=O)N[C@@H](Cc1c[nH]c2ccccc12)C(=O)N[C@H](CC(N)=O)C(=O)N[C@@H](CC(=O)O)C(=O)N[C@@H]1C(=O)NCC(=O)N[C@@H](CCCN)C(=O)NC(CC(=O)O)C(=O)N[C@H](C)C(=O)N[C@@H](CC(=O)O)C(=O)NCC(=O)N[C@H](CO)C(=O)N[C@@H]([C@H](C)CC(=O)O)C(=O)N[C@@H](CC(=O)c2ccccc2N)C(=O)O[C@@H]1C,21585658.0,8.25,PubChem,"PubChem: half-life, with ranges of 7.5-9 hours"
+Trandolapril,CCOC(=O)[C@H](CCc1ccccc1)N[C@@H](C)C(=O)N1[C@@H]2CCCC[C@@H]2C[C@H]1C(=O)O,5484727.0,6.0,PubChem,PubChem: half-life of trandolapril is about 6 hours
+Lorcainide,CC(C)N1CCC(N(C(=O)Cc2ccccc2)c2ccc(Cl)cc2)CC1,42884.0,,,
+Methylergometrine,CC[C@@H](CO)NC(=O)[C@@H]1C=C2c3cccc4[nH]cc(c34)C[C@H]2N(C)C1,8226.0,0.82,PubChem,PubChem: t 1.12 +/- 0.82 hours
+Talinolol,CC(C)(C)NCC(O)COc1ccc(NC(=O)NC2CCCCC2)cc1,68770.0,,,
+Midazolam,Cc1ncc2n1-c1ccc(Cl)cc1C(c1ccccc1F)=NC2,4192.0,6.4,PubChem,"PubChem: Half Life: Intravenous, healthy adults = 1.8 to 6.4 hours"
+Phenobarbital,CCC1(c2ccccc2)C(=O)NC(=O)NC1=O,4763.0,118.0,PubChem,PubChem: Half Life: 53 to 118 hours
+Trimethoprim,COc1cc(Cc2cnc(N)nc2N)cc(OC)c1OC,5578.0,13.0,PubChem,PubChem: half-life of 13 hr
+Ramelteon,CCC(=O)NCC[C@@H]1CCc2ccc3c(c21)CCO3,208902.0,1.8,PubChem,"PubChem: half-life of ramelteon (on average, approximately 1- 2.6 hours"
+Edoxaban,CN1CCc2nc(C(=O)N[C@@H]3C[C@@H](C(=O)N(C)C)CC[C@@H]3NC(=O)C(=O)Nc3ccc(Cl)cn3)sc2C1,10280735.0,10.0,PubChem,PubChem: half-life of 9-11 hours
+Topiramate,CC1(C)O[C@@H]2[C@@H](CO[C@@]3(COS(N)(=O)=O)OC(C)(C)O[C@@H]23)O1,5284627.0,23.0,PubChem,PubChem: Half Life: 19 to 23 hours
+Plitidepsin,CC[C@H](C)[C@H]1NC(=O)[C@@H](NC(=O)[C@@H](CC(C)C)N(C)C(=O)[C@@H]2CCCN2C(=O)C(C)=O)[C@@H](C)OC(=O)[C@H](Cc2ccc(OC)cc2)N(C)C(=O)[C@@H]2CCCN2C(=O)[C@H](CC(C)C)NC(=O)[C@@H](C)C(=O)[C@H](C(C)C)OC(=O)C[C@@H]1O,9812534.0,,,
+Pimobendan,COc1ccc(-c2nc3ccc(C4=NNC(=O)CC4C)cc3[nH]2)cc1,4823.0,,,
+Heroin,CC(=O)Oc1ccc2c3c1O[C@H]1[C@@H](OC(C)=O)C=C[C@H]4[C@@H](C2)N(C)CC[C@@]341,5462328.0,0.6,PubChem,PubChem: half life is 3 minutes for heroin and 0.6 hours
+Eltoprazine,c1cc2c(c(N3CCNCC3)c1)OCCO2,65853.0,,,
+Tezosentan,COc1ccccc1Oc1c(NS(=O)(=O)c2ccc(C(C)C)cn2)nc(-c2ccnc(-c3nn[nH]n3)c2)nc1OCCO,151174.0,3.0,PubChem,"PubChem: half-life 6 min), accounting for the major part of the elimination, was followed by a slower phase (half-life 3 h"
+Ketanserin,O=C(c1ccc(F)cc1)C1CCN(CCn2c(=O)[nH]c3ccccc3c2=O)CC1,3822.0,,,
+Aminocyclopropanecarboxylic Acid,NC1(C(=O)O)CC1,535.0,,,
+Eletriptan,CN1CCC[C@@H]1Cc1c[nH]c2ccc(CCS(=O)(=O)c3ccccc3)cc12,77993.0,4.0,PubChem,PubChem: half-life of eletriptan is approximately 4 hours
+Degarelix,CC(=O)N[C@H](Cc1ccc2ccccc2c1)C(=O)N[C@H](Cc1ccc(Cl)cc1)C(=O)N[C@H](Cc1cccnc1)C(=O)N[C@@H](CO)C(=O)N[C@@H](Cc1ccc(NC(=O)[C@H]2CC(=O)NC(=O)N2)cc1)C(=O)N[C@H](Cc1ccc(NC(N)=O)cc1)C(=O)N[C@@H](CC(C)C)C(=O)N[C@@H](CCCCNC(C)C)C(=O)N1CCC[C@@H]1C(=O)N[C@H](C)C(N)=O,16136245.0,32.9,PubChem,PubChem: half-life: 41.5 - 70.2 days;  Absorption half-life: 32.9 hours
+Pentobarbital,CCCC(C)C1(CC)C(=O)NC(=O)NC1=O,4737.0,50.0,PubChem,PubChem: Half Life: 5 to 50 hours
+Isradipine,COC(=O)C1=C(C)NC(C)=C(C(=O)OC(C)C)C1c1cccc2nonc12,3784.0,1.5,FDA,FDA label: t 1.5 hours
+Spisulosine,CCCCCCCCCCCCCCC[C@@H](O)[C@H](C)N,9925886.0,,,
+Tiagabine,Cc1ccsc1C(=CCCN1CCC[C@@H](C(=O)O)C1)c1sccc1C,60648.0,8.0,PubChem,PubChem: Half Life: 7-9 hours
+Cephaloridine,O=C(Cc1cccs1)N[C@@H]1C(=O)N2C(C(=O)[O-])=C(C[n+]3ccccc3)CS[C@H]12,5773.0,,,
+Canagliflozin,Cc1ccc([C@@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2O)cc1Cc1ccc(-c2ccc(F)cc2)s1,24812758.0,10.6,PubChem,PubChem: half-life of canagliflozin was 10.6 hours
+Batanopride,CCN(CC)CCNC(=O)c1cc(Cl)c(N)cc1O[C@H](C)C(C)=O,59692.0,,,
+Biricodar,COc1cc(C(=O)C(=O)N2CCCC[C@H]2C(=O)OC(CCCc2cccnc2)CCCc2cccnc2)cc(OC)c1OC,3037617.0,,,
+Pancuronium,CC(=O)O[C@H]1C[C@@H]2CC[C@@H]3[C@H](CC[C@@]4(C)[C@H]3C[C@H]([N+]3(C)CCCCC3)[C@@H]4OC(C)=O)[C@@]2(C)C[C@@H]1[N+]1(C)CCCCC1,441289.0,,,
+Libenzapril,NCCCC[C@H](N[C@H]1CCc2ccccc2N(CC(=O)O)C1=O)C(=O)O,71320.0,,,
+Diprophylline,Cn1c(=O)c2c(ncn2CC(O)CO)n(C)c1=O,3182.0,,,
+Diflomotecan,CC[C@@]1(O)CC(=O)OCc2c1cc1n(c2=O)Cc2cc3cc(F)c(F)cc3nc2-1,219023.0,,,
+Linezolid,CC(=O)NC[C@H]1CN(c2ccc(N3CCOCC3)c(F)c2)C(=O)O1,441401.0,5.0,PubChem,PubChem: Half Life: 4.5-5.5 hours
+Pefloxacin,CCn1cc(C(=O)O)c(=O)c2cc(F)c(N3CCN(C)CC3)cc21,51081.0,,,
+Sulbenicillin,CC1(C)S[C@@H]2[C@H](NC(=O)C(c3ccccc3)S(=O)(=O)O)C(=O)N2[C@H]1C(=O)O,20055036.0,,,
+Prexasertib,COc1cccc(OCCCN)c1-c1cc(Nc2cnc(C#N)cn2)n[nH]1,46700756.0,,,
+Treprostinil,CCCCC[C@H](O)CC[C@@H]1[C@H]2Cc3cccc(OCC(=O)O)c3C[C@H]2C[C@H]1O,6918140.0,10.0,PubChem,"PubChem: t 100%, and it reaches steady-state concentrations in approximately 10 hours"
+Ceftaroline Fosamil,CCO/N=C(\C(=O)N[C@@H]1C(=O)N2C(C(=O)[O-])=C(Sc3nc(-c4cc[n+](C)cc4)cs3)CS[C@H]12)c1nsc(NP(=O)(O)O)n1,9852981.0,,,
+Carumom,NC(=O)OC[C@@H]1[C@H](NC(=O)/C(=N\OCC(=O)O)c2csc(N)n2)C(=O)N1S(=O)(=O)O,,,,
+Gestodene,C#C[C@]1(O)C=C[C@H]2[C@@H]3CCC4=CC(=O)CC[C@@H]4[C@H]3CC[C@@]21CC,3033968.0,18.0,PubChem,PubChem: t 18 hours
+Endralazine,N/N=c1/cc2c(n[nH]1)CCN(C(=O)c1ccccc1)C2,47608.0,,,
+"Uk-396,082",CCCn1cnc(C[C@H](CCCN)C(=O)O)c1,11241908.0,,,
+Prednisolone,C[C@]12C=CC(=O)C=C1CC[C@@H]1[C@@H]2[C@@H](O)C[C@@]2(C)[C@H]1CC[C@]2(O)C(=O)CO,5755.0,2.8,PubChem,PubChem: half life is 2.1-3.5 hours
+Idarubicin,CC(=O)[C@]1(O)Cc2c(O)c3c(c(O)c2[C@@H](O[C@H]2C[C@H](N)[C@H](O)[C@H](C)O2)C1)C(=O)c1ccccc1C3=O,42890.0,45.0,FDA,FDA label: half-life exceeds 45 hours
+Methylphenidate,COC(=O)C(c1ccccc1)C1CCCCN1,4158.0,1.0,PubChem,PubChem: t 1 hour
+Miglitol,OCCN1C[C@H](O)[C@@H](O)[C@H](O)[C@H]1CO,441314.0,2.0,PubChem,PubChem: half-life of miglitol from plasma is approximately 2 hours
+Bilobalide,CC(C)(C)C1(O)CC2OC(=O)CC23C(=O)OC2OC(=O)C(O)C231,73581.0,,,
+Mibefradil,COCC(=O)O[C@]1(CCN(C)CCCc2nc3ccccc3[nH]2)CCc2cc(F)ccc2[C@@H]1C(C)C,60663.0,,,
+Tenofovir,C[C@H](Cn1cnc2c(N)ncnc21)OCP(=O)(O)O,464205.0,32.0,PubChem,PubChem: half-life of tenofovir is of 32 hours
+Cefadroxil,CC1=C(C(=O)O)N2C(=O)[C@@H](NC(=O)[C@H](N)c3ccc(O)cc3)[C@H]2SC1,47965.0,12.0,FDA,FDA label: t 12 hours
+Vilanterol,OCc1cc([C@@H](O)CNCCCCCCOCCOCc2c(Cl)cccc2Cl)ccc1O,10184665.0,11.0,PubChem,"PubChem: half-life for vilanterol, as determined from inhalation administration of multiple doses, is 11 hours"
+Eptifibatide,N=C(N)NCCCC[C@@H]1NC(=O)CCSSC[C@@H](C(N)=O)NC(=O)[C@@H]2CCCN2C(=O)C(Cc2c[nH]c3ccccc23)NC(=O)[C@H](CC(=O)O)NC(=O)CNC1=O,448812.0,0.17,PubChem,PubChem: half-life of 5 +/- 2.5 minutes and a mean terminal elimination half-life of 1.13 +/- 0.17 hours
+Terlipressin,NCCCC[C@H](NC(=O)[C@@H]1CCCN1C(=O)[C@@H]1CSSC[C@H](NC(=O)CNC(=O)CNC(=O)CN)C(=O)N[C@@H](Cc2ccc(O)cc2)C(=O)N[C@@H](Cc2ccccc2)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(N)=O)C(=O)N1)C(=O)NCC(N)=O,72081.0,0.9,PubChem,PubChem: half-life of terlipressin was 0.9 hours
+Ixazomib,CC(C)C[C@H](NC(=O)CNC(=O)c1cc(Cl)ccc1Cl)B(O)O,25183872.0,,,
+Tolbutamide,CCCCNC(=O)NS(=O)(=O)c1ccc(C)cc1,5505.0,5.0,PubChem,PubChem: HALF-LIFE OF TOLBUTAMIDE IS ABOUT 5 HR
+Teicoplanin A2-5,CC(=O)N[C@H]1[C@H](O[C@@H]2c3ccc(c(Cl)c3)Oc3cc4cc(c3O[C@@H]3O[C@H](CO)[C@H](O)[C@H](O)[C@H]3NC(=O)CCCCCCCC(C)C)Oc3ccc(cc3Cl)C[C@H]3NC(=O)[C@@H](N)c5ccc(O)c(c5)Oc5cc(O)cc(c5)[C@H](NC3=O)C(=O)N[C@H]4C(=O)N[C@H]3C(=O)N[C@@H]2C(=O)N[C@@H](C(=O)O)c2cc(O)cc(O[C@H]4O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]4O)c2-c2cc3ccc2O)O[C@H](CO)[C@@H](O)[C@@H]1O,17748673.0,,,
+Caderofloxacin,C[C@H]1CN(c2c(F)cc3c(=O)c(C(=O)O)cn(C4CC4)c3c2OC(F)F)CCN1,189912.0,,,
+Flecainide,O=C(NCC1CCCCN1)c1cc(OCC(F)(F)F)ccc1OCC(F)(F)F,3356.0,20.0,PubChem,PubChem: Half Life: 20 hours
+Phenytoin,O=C1NC(=O)C(c2ccccc2)(c2ccccc2)N1,1775.0,22.0,PubChem,PubChem: Half Life: 22 hours
+Moxalactam,CO[C@@]1(NC(=O)[C@H](C(=O)O)c2ccc(O)cc2)C(=O)N2C(C(=O)O)=C(CSc3nnnn3C)CO[C@@H]21,47499.0,,,
+Hexobarbital,CN1C(=O)NC(=O)C(C)(C2=CCCCC2)C1=O,3608.0,,,
+Pralatrexate (S),C#CC[C@@H](Cc1cnc2nc(N)nc(N)c2n1)c1ccc(C(=O)N[C@@H](CCC(=O)O)C(=O)O)cc1,23230419.0,,,
+Ergotamine,CN1C[C@H](C(=O)N[C@]2(C)O[C@@]3(O)[C@@H]4CCCN4C(=O)[C@H](Cc4ccccc4)N3C2=O)C=C2c3cccc4[nH]cc(c34)C[C@H]21,8223.0,2.0,PubChem,PubChem: Half Life: 2 hours
+Cefmenoxime,CO/N=C(\C(=O)N[C@H]1C(=O)N2C(C(=O)O)=C(CSc3nnnn3C)CS[C@H]12)c1csc(N)n1,9570757.0,,,
+Alosetron,Cc1[nH]cnc1CN1CCc2c(c3ccccc3n2C)C1=O,2099.0,1.0,FDA,FDA label: t 1 hour
+Indoramin,O=C(NC1CCN(CCc2c[nH]c3ccccc23)CC1)c1ccccc1,33625.0,,,
+Tetracycline,CN(C)[C@@H]1C(=O)C(C(N)=O)=C(O)[C@@]2(O)C(=O)C3=C(O)c4c(O)cccc4[C@@](C)(O)[C@H]3C[C@@H]12,54675776.0,,,
+Etoricoxib,Cc1ccc(-c2ncc(Cl)cc2-c2ccc(S(C)(=O)=O)cc2)cn1,123619.0,,,
+KRN-5500,CCCCCCCCC/C=C/C=C/C(=O)NCC(=O)N[C@@H]1[C@@H](O)[C@@H](O)[C@@H](Nc2[nH]cnc3ncnc2-3)O[C@H]1[C@@H](O)CO,6440176.0,,,
+Moxonidine,COc1nc(C)nc(Cl)c1NC1=NCCN1,4810.0,2.25,PubChem,PubChem: half life is 2.2 - 2.3 hours
+Tomopenem,C[C@@H](O)[C@H]1C(=O)N2C(C(=O)O)=C(S[C@H]3C[C@@H](C(=O)N4CC[C@H](NC(=O)CN=C(N)N)C4)N(C)C3)[C@H](C)[C@H]12,9809656.0,,,
+Olsalazine,O=C(O)c1cc(N=Nc2ccc(O)c(C(=O)O)c2)ccc1O,22419.0,0.9,FDA,"FDA label: half-life, approximately 0.9 hour"
+Drotaverine,CCOc1ccc(/C=C2\NCCc3cc(OCC)c(OCC)cc32)cc1OCC,1712095.0,1.29,PubChem,PubChem: half-life was 9.11 ± 1.29 hours
+Dexloxiglumide,CCCCCN(CCCOC)C(=O)[C@@H](CCC(=O)O)NC(=O)c1ccc(Cl)c(Cl)c1,65937.0,,,
+Deferasirox,O=C1C=CC=CC1=C1NC(=C2C=CC=CC2=O)N(c2ccc(C(=O)O)cc2)N1,214348.0,2.75,PubChem,PubChem: t 1.5-4 hours
+Fenoterol,CC(Cc1ccc(O)cc1)NCC(O)c1cc(O)cc(O)c1,3343.0,,,
+Clozepam,O=C1CN=C(c2ccccc2Cl)c2cc([N+](=O)[O-])ccc2N1,2802.0,35.0,PubChem,PubChem: Half Life: 30-40 hours
+Aripiprazole,O=C1CCc2ccc(OCCCCN3CCN(c4cccc(Cl)c4Cl)CC3)cc2N1,60795.0,110.5,PubChem,PubChem: Half Life: 75-146 hours
+Trazodone,O=c1n(CCCN2CCN(c3cccc(Cl)c3)CC2)nc2ccccn12,5533.0,8.0,PubChem,PubChem: t 1.88 +/- 0.42 micrograms/mL. The average Tmax after a single dose of 300 mg was 8 hours
+SAR 125844,O=C(NCCN1CCOCC1)Nc1nc2ccc(Sc3nnc4ccc(-c5ccc(F)cc5)nn34)cc2s1,25182860.0,,,
+Hydromorphone,CN1CC[C@]23c4c5ccc(O)c4O[C@H]2C(=O)CC[C@H]3[C@H]1C5,5284570.0,2.5,PubChem,PubChem: half-life of about 2.5 hours
+Tazobactam,C[C@@]1(Cn2ccnn2)[C@H](C(=O)O)N2C(=O)C[C@H]2S1(=O)=O,123630.0,1.2,PubChem,PubChem: half-life of piperacillin and tazobactam was in the range of 0.7 to 1.2 hours
+lbuphine,Oc1ccc2c3c1O[C@H]1[C@@H](O)CC[C@@]4(O)[C@@H](C2)N(CC2CCC2)CC[C@]314,5311304.0,5.0,PubChem,PubChem: Half Life: The plasma half-life of nalbuphine is 5 hours
+Tocainide,Cc1cccc(C)c1NC(=O)C(C)N,38945.0,15.0,PubChem,PubChem: half-life in patients is approximately 15 hours
+Triamterene,Nc1nc(N)c2nc(-c3ccccc3)c(N)nc2n1,5546.0,1.1,PubChem,PubChem: t 148.7 ng*hr/mL and the mean peak plasma concentrations (Cmax) were 46.4 ng/mL reached at 1.1 hour
+Arbekacin,NCC[C@H](O)C(=O)N[C@@H]1C[C@H](N)[C@@H](O[C@H]2O[C@H](CN)CC[C@H]2N)[C@H](O)[C@H]1O[C@H]1O[C@H](CO)[C@@H](O)[C@H](N)[C@H]1O,68682.0,,,
+Dimetindene,C[C@@H](C1=C(CCN(C)C)Cc2ccccc21)c1ccccn1,21855.0,,,
+Pravastatin,CC[C@H](C)C(=O)O[C@H]1C[C@H](O)C=C2C=C[C@H](C)[C@H](CC[C@@H](O)C[C@@H](O)CC(=O)O)[C@H]21,54687.0,1.8,PubChem,PubChem: half-life of pravastatin is reported to be of 1.8 hours
+LY2090314,O=C1NC(=O)C(c2cn3ccccc3n2)=C1C1=CN2CCN(C(=O)N3CCCCC3)C[C@@H]3C=C(F)C=C1[C@H]32,10029385.0,,,
+Carmustine,O=NN(CCCl)C(=O)NCCCl,2578.0,,,
+Nisoldipine,COC(=O)C1=C(C)NC(C)=C(C(=O)OCC(C)C)C1c1ccccc1[N+](=O)[O-],4499.0,4.3,FDA,FDA label: half-life (reflecting post absorption clearance of nisoldipine) ranges from 13.7 ± 4.3 hours
+GSK269984A,O=C(O)c1cccc(Cc2cc(Cl)ccc2OCc2ccc(Cl)cc2F)n1,23696973.0,,,
+Timolol,CC(C)(C)NC[C@H](O)COc1nsnc1N1CCOCC1,33624.0,3.5,PubChem,PubChem: half-life of 3-4 hr
+Iopromide,COCC(=O)Nc1c(I)c(C(=O)NCC(O)CO)c(I)c(C(=O)N(C)CC(O)CO)c1I,3736.0,0.24,PubChem,PubChem: half-life of 0.24 hours
+Pramlintide,CC[C@H](C)[C@H](NC(=O)[C@@H]1CCCN1C(=O)CNC(=O)[C@H](Cc1ccccc1)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](CO)NC(=O)[C@H](CO)NC(=O)[C@H](Cc1cnc[nH]1)NC(=O)[C@@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc1ccccc1)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@@H](NC(=O)[C@H](C)NC(=O)[C@H](CS)NC(=O)[C@@H](NC(=O)[C@H](C)NC(=O)[C@@H](NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](CS)NC(=O)[C@@H](N)CCCCN)[C@@H](C)O)[C@@H](C)O)[C@@H](C)O)C(C)C)C(=O)N[C@@H](CC(C)C)C(=O)N1CCC[C@H]1C(=O)N1CCC[C@H]1C(=O)N[C@H](C(=O)N[C@@H](CC(N)=O)C(=O)N[C@H](C(=O)NCC(=O)N[C@@H](CO)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@H](C(=O)N[C@@H](Cc1ccc(O)cc1)C(N)=O)[C@@H](C)O)C(C)C)[C@@H](C)O,70691388.0,,,
+Piperacillin,CCN1CCN(C(=O)N[C@@H](C(=O)N[C@@H]2C(=O)N3[C@@H]2SC(C)(C)[C@@H]3C(=O)O)c2ccccc2)C(=O)C1=O,43672.0,2.0,FDA,FDA label: T 1/2 h
+Prifinium bromide,CC[N+]1(CC)CCC(=C(c2ccccc2)c2ccccc2)[C@@H]1C,20749.0,,,
+Tenifatecan,CCc1c2c(nc3ccc(OC(=O)CCC(=O)Oc4c(C)c(C)c5c(c4C)CC[C@@](C)(CCC[C@H](C)CCC[C@H](C)CCCC(C)C)O5)cc13)-c1cc3c(c(=O)n1C2)COC(=O)[C@]3(O)CC,11251571.0,,,
+Vildagliptin,N#C[C@H]1CCCN1C(=O)CNC12C[C@@H]3C[C@@H](CC(O)(C3)C1)C2,6918537.0,1.7,PubChem,PubChem: t 1.7 hours
+Triazolam,Cc1nnc2n1-c1ccc(Cl)cc1C(c1ccccc1Cl)=NC2,5556.0,3.4,PubChem,PubChem: half-life with a reported mean apparent half-life of 3.4 hr
+Sulbenicillin,CC1(C)S[C@@H]2[C@H](NC(=O)[C@@H](c3ccccc3)S(=O)(=O)O)C(=O)N2[C@H]1C(=O)O,20055036.0,,,
+Methimazole,Cn1cc[nH]c1=S,1349907.0,4.0,PubChem,PubChem: half-life is 3-5 hr
+Pyridostigmine,CN(C)C(=O)Oc1ccc[n+](C)c1,4991.0,3.0,PubChem,PubChem: Half Life: 3 hours
+Antofloxacin,C[C@H]1COc2c(N3CCN(C)CC3)c(F)c(N)c3c(=O)c(C(=O)O)cn1c23,24806573.0,,,
+Ombrabulin,COc1ccc(/C=C\c2cc(OC)c(OC)c(OC)c2)cc1NC(=O)[C@@H](N)CO,6918405.0,,,
+Diprafenone,CCC(C)(C)NCC(O)COc1ccccc1C(=O)CCc1ccccc1,71249.0,,,
+psagatran,N=C(N)N1CCC[C@@H](CNC(=O)C[C@H](NS(=O)(=O)c2ccc3ccccc3c2)C(=O)N(CC(=O)O)C2CC2)C1,6918278.0,,,
+Verlukast,CN(C)C(=O)CCS[C@H](SCCC(=O)O)c1cccc(/C=C/c2ccc3ccc(Cl)cc3n2)c1,6509849.0,,,
+Roflumilast,O=C(Nc1c(Cl)cncc1Cl)c1ccc(OC(F)F)c(OCC2CC2)c1,449193.0,30.0,FDA,FDA label: half-life of roflumilast and its N-oxide metabolite are approximately 17 and 30 hours
+Ofloxacin,CC1COc2c(N3CCN(C)CC3)c(F)cc3c(=O)c(C(=O)O)cn1c23,4583.0,38.5,PubChem,"PubChem: half-life, determined in the dialysis-free interval (t1/2 beta) and during the haemodialysis session (t1/2 HD), was 38.5"
+Pentazocine,CC(C)=CCN1CC[C@]2(C)c3cc(O)ccc3C[C@H]1C2C,441278.0,3.0,PubChem,PubChem: Half Life: 2 to 3 hours
+Nk-611,COc1cc([C@@H]2c3cc4c(cc3C(OC3OC5COC(C)OC5C(O)C3N)C3COC(=O)[C@@H]32)OCO4)cc(OC)c1O,9852558.0,,,
+Paclitaxel,CC(=O)O[C@H]1C(=O)[C@@]2(C)[C@H]([C@H](OC(=O)c3ccccc3)[C@]3(O)C[C@H](OC(=O)[C@H](O)[C@@H](NC(=O)c4ccccc4)c4ccccc4)C(C)=C1C3(C)C)[C@]1(OC(C)=O)CO[C@@H]1C[C@@H]2O,36314.0,24.0,PubChem,PubChem: Half Life: When a 24 hour
+Ganirelix,CCNC(=NCCCC[C@H](NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](CCCCN=C(NCC)NCC)NC(=O)[C@@H](Cc1ccc(O)cc1)NC(=O)[C@@H](CO)NC(=O)[C@H](Cc1cccnc1)NC(=O)[C@H](Cc1ccc(Cl)cc1)NC(=O)[C@@H](Cc1ccc2ccccc2c1)NC(C)=O)C(=O)N1CCC[C@H]1C(=O)N[C@H](C)C(N)=O)NCC,16130957.0,13.0,PubChem,PubChem: half-life (t½) following subcutaneous administration of a single 250-mcg dose is approximately 13 hours
+Meloxicam,Cc1cnc(NC(=O)C2=C(O)c3ccccc3S(=O)(=O)N2C)s1,54677470.0,17.5,PubChem,PubChem: Half Life: 15-20 hours
+Rocuronium,C=CC[N+]1([C@H]2C[C@H]3[C@@H]4CC[C@H]5C[C@H](O)[C@@H](N6CCOCC6)C[C@]5(C)[C@H]4CC[C@]3(C)[C@H]2OC(C)=O)CCCC1,441290.0,1.1,FDA,FDA label: half-life of rocuronium bromide decreases with increasing age from 1.1 hour
+Remikiren,CC(C)(C)S(=O)(=O)C[C@@H](Cc1ccccc1)C(=O)N[C@@H](Cc1cnc[nH]1)C(=O)N[C@@H](CC1CCCCC1)[C@@H](O)[C@@H](O)C1CC1,6324659.0,,,
+Etoposide,COc1cc([C@@H]2c3cc4c(cc3[C@@H](O[C@@H]3O[C@@H]5CO[C@@H](C)O[C@H]5[C@H](O)[C@H]3O)[C@H]3COC(=O)[C@H]23)OCO4)cc(OC)c1O,36462.0,1.5,PubChem,PubChem: half-life of 1.5 hours
+Actisomide,CC1=NC(=O)[C@](CCN(C(C)C)C(C)C)(c2ccccc2)[C@H]2CCCCN12,6917898.0,,,
+Ginkgolide B,C[C@@H]1C(=O)O[C@H]2[C@H](O)[C@@]34[C@H]5C[C@@H](C(C)(C)C)[C@]36[C@@H](OC(=O)[C@@H]6O)O[C@@]4(C(=O)O5)[C@@]12O,11973122.0,,,
+Papaverine,COc1ccc(Cc2nccc3cc(OC)c(OC)cc23)cc1OC,4680.0,6.0,PubChem,"PubChem: half-life vary widely, reasonably constant plasma levels can be maintained with oral administration at 6 hour"
+7-Methylthiomethylpaclitaxel,CSCO[C@H]1C[C@H]2OC[C@@]2(OC(C)=O)C2[C@H](OCc3ccccc3)[C@]3(O)CC(OC(=O)[C@H](O)[C@@H](NC(=O)c4ccccc4)c4ccccc4)C(C)=C([C@@H](OC(C)=O)C(=O)[C@@]21C)C3(C)C,44361121.0,,,
+Darapladib,CCN(CC)CCN(Cc1ccc(-c2ccc(C(F)(F)F)cc2)cc1)C(=O)Cn1c(SCc2ccc(F)cc2)nc(=O)c2c1CCC2,9939609.0,,,
+Imipramine,CN(C)CCCN1c2ccccc2CCc2ccccc21,3696.0,16.0,PubChem,"PubChem: HALF-LIFE, 16 HOURS"
+Norfloxacin,CCn1cc(C(=O)O)c(=O)c2cc(F)c(N3CCNCC3)cc21,4539.0,7.6,PubChem,"PubChem: half-life is prolonged. In adults with renal impairment, the half-life of norfloxacin averaged 4.4, 6.6, or 7.6 hours"
+CEP-18770,CC(C)C[C@H](NC(=O)[C@@H](NC(=O)c1cccc(-c2ccccc2)n1)[C@@H](C)O)B(O)O,24800541.0,,,
+Escin Ia,C/C=C(\C)C(=O)O[C@H]1[C@H](OC(C)=O)[C@]2(CO)[C@H](O)C[C@]3(C)C(=CC[C@@H]4[C@@]5(C)CC[C@H](O[C@@H]6O[C@H](C(=O)O)[C@@H](O[C@@H]7O[C@H](CO)[C@@H](O)[C@H](O)[C@H]7O)[C@H](O)[C@H]6O[C@@H]6O[C@H](CO)[C@@H](O)[C@H](O)[C@H]6O)[C@](C)(CO)[C@@H]5CC[C@]43C)[C@@H]2CC1(C)C,6476030.0,,,
+Mibenratide,CC(C)[C@@H]1NC(=O)[C@H](Cc2ccccc2)NC(=O)[C@H](CC(=O)O)NC(=O)[C@H](CO)NC(=O)[C@@H]2CSSC[C@H](NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](C)NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CC(=O)O)NC(=O)[C@H](C)NC(=O)[C@H](CCC(N)=O)NC1=O)C(=O)N[C@@H](Cc1ccc(O)cc1)C(=O)N[C@@H](CC(N)=O)C(=O)N[C@@H](CC(=O)O)C(=O)N1CCC[C@H]1C(=O)N[C@@H](CCCCN)C(=O)N2,86278343.0,,,
+Amphetamine (-d),CC(N)Cc1ccccc1,3007.0,12.0,PubChem,PubChem: t 12 hours
+IDX989,COP(=O)(c1cc(C)cc(/C=C/C#N)c1)c1c(C(N)=O)[nH]c2ccc(Cl)c(F)c12,24984908.0,,,
+Teicoplanin A2-2,CC(=O)N[C@H]1[C@H](O[C@@H]2c3ccc(c(Cl)c3)Oc3cc4cc(c3O[C@@H]3O[C@H](CO)[C@H](O)[C@H](O)[C@H]3NC(=O)CCCCCCC(C)C)Oc3ccc(cc3Cl)C[C@H]3NC(=O)[C@@H](N)c5ccc(O)c(c5)Oc5cc(O)cc(c5)[C@H](NC3=O)C(=O)N[C@H]4C(=O)N[C@H]3C(=O)N[C@@H]2C(=O)N[C@@H](C(=O)O)c2cc(O)cc(O[C@H]4O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]4O)c2-c2cc3ccc2O)O[C@H](CO)[C@@H](O)[C@@H]1O,16198036.0,,,
+Teicoplanin A2-3,CCCCCCCCCC(=O)N[C@H]1[C@H](Oc2c3cc4cc2Oc2ccc(cc2Cl)[C@@H](O[C@@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@H]2NC(C)=O)[C@@H]2NC(=O)[C@H](NC(=O)[C@@H]4NC(=O)[C@H]4NC(=O)[C@@H](Cc5ccc(c(Cl)c5)O3)NC(=O)[C@@H](N)c3ccc(O)c(c3)Oc3cc(O)cc4c3)c3ccc(O)c(c3)-c3c(O[C@H]4O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]4O)cc(O)cc3[C@H](C(=O)O)NC2=O)O[C@H](CO)[C@H](O)[C@@H]1O,17748671.0,,,
+Nitrofurantoin,O=C1CN(/N=C/c2ccc([N+](=O)[O-])o2)C(=O)N1,6604200.0,1.0,PubChem,PubChem: HALF-LIFE IS 0.3 TO 1 HR
+Metoprolol,COCCc1ccc(OCC(O)CNC(C)C)cc1,4171.0,3.5,PubChem,PubChem: half-life of both unchanged drug and metabolites is about 3-4 hours
+Nifekalant,Cn1c(NCCN(CCO)CCCc2ccc([N+](=O)[O-])cc2)cc(=O)n(C)c1=O,4486.0,,,
+Hydralazine,NNc1nncc2ccccc12,3637.0,5.0,PubChem,PubChem: half life of 2.2-7.8h
+Spectinomycin,CN[C@@H]1[C@H](O)[C@H](NC)[C@H]2O[C@@]3(O)C(=O)C[C@@H](C)O[C@H]3O[C@@H]2[C@H]1O,15541.0,,,
+Irinotecan,CCc1c2c(nc3ccc(OC(=O)N4CCC(N5CCCCC5)CC4)cc13)-c1cc3c(c(=O)n1C2)COC(=O)[C@]3(O)CC,60838.0,12.0,PubChem,"PubChem: T11) can be described by a 2 or 3 compartment model, a mean terminal half-life of 12 hours"
+Ceftolozane,Cn1c(=N)c(NC(=O)NCCN)cn1CC1=C(C(=O)O)N2C(=O)[C@@H](NC(=O)/C(=N\OC(C)(C)C(=O)O)c3nsc(N)n3)[C@H]2SC1,53234134.0,4.0,FDA,FDA label: half-life of approximately 3 to 4 hours
+Metronidazole,Cc1ncc([N+](=O)[O-])n1CCO,4173.0,12.0,PubChem,PubChem: half-life (about 12 hr
+Desmopressin,N=C(N)NCCC[C@@H](NC(=O)[C@@H]1CCCN1C(=O)[C@@H]1CSSCCC(=O)N[C@@H](Cc2ccc(O)cc2)C(=O)N[C@@H](Cc2ccccc2)C(=O)N[C@@H](CCC(N)=O)C(=O)N[C@@H](CC(N)=O)C(=O)N1)C(=O)NCC(N)=O,5311065.0,1.0,PubChem,PubChem: t 1 hour
+Ganglioside GM1,CCCCCCCCCCCCC/C=C/[C@@H](O)[C@H](CO[C@@H]1O[C@H](CO)[C@@H](O[C@@H]2O[C@H](CO)[C@H](O[C@@H]3O[C@H](CO)[C@H](O)[C@H](O[C@@H]4O[C@H](CO)[C@H](O)[C@H](O)[C@H]4O)[C@H]3NC(C)=O)[C@H](OC[C@H](O)[C@H](O)[C@@H]3O[C@](O)(C(=O)O)C[C@H](O)[C@H]3NC(C)=O)[C@H]2O)[C@H](O)[C@H]1O)NC(=O)CCCCCCCCCCCCCCCCC,9963963.0,,,
+Iopamidol,C[C@H](O)C(=O)Nc1c(I)c(C(=O)NC(CO)CO)c(I)c(C(=O)NC(CO)CO)c1I,65492.0,1.67,PubChem,PubChem: Half-life beta was equal to 1.67 h
+Oxybutynin,CCN(CC)CC#CCOC(=O)C(O)(c1ccccc1)C1CCCCC1,4634.0,1.0,PubChem,PubChem: t 1 hour
+Bleomycin,Cc1c(N)nc([C@H](CC(N)=O)NC[C@H](N)C(N)=O)nc1C(=O)N[C@H](C(=O)N[C@H](C)[C@@H](O)[C@H](C)C(=O)N[C@H](C(=O)NCCc1nc(-c2nc(C(=O)NCCC[S+](C)C)cs2)cs1)[C@@H](C)O)[C@@H](O[C@H]1O[C@@H](CO)[C@H](O)[C@@H](O)[C@@H]1O[C@H]1O[C@@H](CO)[C@H](O)[C@@H](OC(N)=O)[C@H]1O)c1c[nH]cn1,5360373.0,2.0,PubChem,PubChem: half-life of bleomycin is about 2 hours
+Ezogabine,CCOC(=O)Nc1ccc(NCc2ccc(F)cc2)cc1N,121892.0,7.5,PubChem,PubChem: half-life = 7.5 hours
+Levomepromazine,COc1ccc2c(c1)N(C[C@H](C)CN(C)C)c1ccccc1S2,72287.0,20.0,PubChem,PubChem: Half Life: Approximately 20 hours
+Deoxycytidine-5F-2',Nc1nc(=O)n([C@H]2C[C@H](O)[C@@H](CO)O2)cc1F,515328.0,,,
+Amoxicillin,CC1(C)S[C@@H]2[C@H](NC(=O)[C@H](N)c3ccc(O)cc3)C(=O)N2[C@H]1C(=O)O,33613.0,,,
+Dacarbazine,CN(C)N=Nc1[nH]cnc1C(N)=O,135398738.0,5.0,PubChem,PubChem: half-life of 19 minutes and a terminal half-life of 5 hours
+Alprazolam,Cc1nnc2n1-c1ccc(Cl)cc1C(c1ccccc1)=NC2,2118.0,16.6,PubChem,PubChem: Half Life: 6.3-26.9 hours
+Danazol,C#C[C@]1(O)CC[C@H]2[C@@H]3CCC4=Cc5oncc5C[C@]4(C)[C@H]3CC[C@@]21C,28417.0,11.0,PubChem,PubChem: half-life increasing from 11 hours
+Y 20811,Cc1ccc(-n2ccnc2)cc1C(O)c1c(C)cc(C(=O)O)cc1C,23687236.0,,,
+Azathioprine,Cn1cnc([N+](=O)[O-])c1Sc1ncnc2nc[nH]c12,2265.0,5.0,PubChem,PubChem: half life of azathioprine is approximately 5 hours
+Conivaptan,Cc1nc2c([nH]1)CCN(C(=O)c1ccc(NC(=O)c3ccccc3-c3ccccc3)cc1)c1ccccc1-2,151171.0,,,
+Nelarabine,COc1nc(N)nc2c1ncn2[C@@H]1O[C@H](CO)[C@@H](O)[C@@H]1O,3011155.0,3.2,PubChem,PubChem: half-life of 18 minutes and 3.2 hours
+Ilaprazole,COc1ccnc(C[S+]([O-])c2nc3cc(-n4cccc4)ccc3[nH]2)c1C,214351.0,,,
+Indocyanine Green,CC1(C)C(/C=C/C=C/C=C/C=C2\N(CCCCS(=O)(=O)[O-])c3ccc4ccccc4c3C2(C)C)=[N+](CCCCS(=O)(=O)[O-])c2ccc3ccccc3c21,5282412.0,,,
+Mirtazapine,CN1CCN2c3ncccc3Cc3ccccc3C2C1,4205.0,30.0,PubChem,PubChem: Half Life: 20-40 hours
+Clorazepic Acid,O=C(O)C1N=C(c2ccccc2)c2cc(Cl)ccc2NC1=O,2809.0,24.0,PubChem,PubChem: HALF-LIFE IS ABOUT 24 HR
+Scutellarin,O=C(O)[C@H]1O[C@@H](Oc2cc3oc(-c4ccc(O)cc4)cc(=O)c3c(O)c2O)[C@H](O)[C@@H](O)[C@@H]1O,185617.0,,,
+Apixaban,COc1ccc(-n2nc(C(N)=O)c3c2C(=O)N(c2ccc(N4CCCCC4=O)cc2)CC3)cc1,10182969.0,12.0,PubChem,PubChem: half-life of approximately 12 hours
+Amonafide,CN(C)CCN1C(=O)c2cccc3cc(N)cc(c23)C1=O,50515.0,,,
+Bazedoxifene,Cc1c(-c2ccc(O)cc2)n(Cc2ccc(OCCN3CCCCCC3)cc2)c2ccc(O)cc12,154257.0,17.0,FDA,FDA label: half-life of approximately 17 hours
+Anidulafungin,CCCCCOc1ccc(-c2ccc(-c3ccc(C(=O)N[C@H]4C[C@@H](O)[C@@H](O)NC(=O)[C@@H]5[C@@H](O)[C@@H](C)CN5C(=O)[C@H]([C@@H](C)O)NC(=O)[C@H]([C@H](O)[C@@H](O)c5ccc(O)cc5)NC(=O)[C@@H]5C[C@@H](O)CN5C(=O)[C@H]([C@@H](C)O)NC4=O)cc3)cc2)cc1,166548.0,45.0,PubChem,PubChem: Half Life: 40-50 hours
+Doripenem,C[C@@H](O)[C@H]1C(=O)N2C(C(=O)O)=C(S[C@@H]3CN[C@H](CNS(N)(=O)=O)C3)[C@H](C)[C@H]12,73303.0,,,
+Levoprotiline,CNC[C@H](O)CC12CCC(c3ccccc31)c1ccccc12,53511.0,,,
+PF-4776548,COc1cc(F)ccc1Cn1ccc2c3c(ncc21)C(=O)N(O)CC3,90666167.0,,,
+Flomoxef,CO[C@]1(NC(=O)CSC(F)F)C(=O)N2C(C(=O)O)=C(CSc3nnnn3CCO)CO[C@@H]21,65864.0,,,
+Linagliptin,CC#CCn1c(N2CCC[C@@H](N)C2)nc2c1c(=O)n(Cc1nc(C)c3ccccc3n1)c(=O)n2C,10096344.0,155.0,PubChem,PubChem: half life of linagliptin is 155 hours
+Secretin (human),CC(C)C[C@H](NC(=O)CNC(=O)[C@H](CCC(N)=O)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](C)NC(=O)CNC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CCC(=O)O)NC(=O)[C@H](CO)NC(=O)[C@@H](NC(=O)[C@H](Cc1ccccc1)NC(=O)[C@@H](NC(=O)CNC(=O)[C@H](CC(=O)O)NC(=O)[C@H](CO)NC(=O)[C@@H](N)Cc1cnc[nH]1)[C@@H](C)O)[C@@H](C)O)C(=O)N[C@H](C(N)=O)C(C)C,16158474.0,,,
+Ifetroban,CCCCCNC(=O)c1coc([C@@H]2C3CCC(O3)[C@@H]2Cc2ccccc2CCC(=O)O)n1,3037233.0,,,
+Etomidate,CCOC(=O)c1cncn1C(C)c1ccccc1,667484.0,12.0,PubChem,PubChem: t 12 hours
+Palonosetron,O=C1c2cccc3c2[C@H](CCC3)CN1[C@@H]1CN2CCC1CC2,6337614.0,40.0,FDA,FDA label: half-life is approximately 40 hours
+Cephradine,CC1=C(C(=O)O)N2C(=O)[C@@H](NC(=O)[C@H](N)C3=CCC=CC3)[C@H]2SC1,38103.0,,,
+Imidafenacin,Cc1nccn1CCC(C(N)=O)(c1ccccc1)c1ccccc1,6433090.0,3.0,PubChem,PubChem: half life of elimination is 3 h
+Nefazodone,CCc1nn(CCCN2CCN(c3cccc(Cl)c3)CC2)c(=O)n1CCOc1ccccc1,4449.0,8.3,PubChem,PubChem: half-life for nefazodone was 8.3 hours
+Ibuprofen,CC(C)Cc1ccc(C(C)C(=O)O)cc1,3672.0,2.0,PubChem,PubChem: half-life in plasma is about 2 hr
+Dobesilic acid,O=S(=O)(O)c1cc(O)ccc1O,17507.0,,,
+Miconazole,Clc1ccc(COC(Cn2ccnc2)c2ccc(Cl)cc2Cl)c(Cl)c1,4189.0,24.0,PubChem,PubChem: half-life of 24 hours
+Enoxacin,CCn1cc(C(=O)O)c(=O)c2cc(F)c(N3CCNCC3)nc21,3229.0,6.0,PubChem,PubChem: half-life is 3 to 6 hours
+Proquazone,Cc1ccc2c(-c3ccccc3)nc(=O)n(C(C)C)c2c1,31508.0,,,
+Promazine,CN(C)CCCN1c2ccccc2Sc2ccccc21,4926.0,1.5,PubChem,PubChem: T 1-2 HR
+Stresscopin,CC[C@H](C)[C@H](NC(=O)[C@H](CCC(N)=O)NC(=O)[C@H](C)NC(=O)[C@H](CCSC)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](Cc1c[nH]cn1)NC(=O)[C@H](C)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](C)NC(=O)[C@H](C)NC(=O)[C@H](C)NC(=O)[C@H](CCC(N)=O)NC(=O)[C@H](C)NC(=O)[C@H](CCCNC(=N)N)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](CCCCN)NC(=O)[C@H](C)NC(=O)[C@H](CCCCN)NC(=O)[C@H](C)NC(=O)[C@@H](NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](Cc1ccccc1)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(N)=O)NC(=O)[C@H](CCSC)NC(=O)[C@@H](NC(=O)[C@H](CC(N)=O)NC(=O)[C@@H](NC(=O)[C@@H]1CCCN1C(=O)[C@@H](NC(=O)[C@H](CC(=O)O)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CO)NC(=O)[C@H](CC(C)C)NC(=O)[C@@H](NC(=O)[C@H](Cc1ccccc1)NC(=O)[C@H](CCCCN)NC(=O)[C@@H](N)[C@@H](C)O)[C@@H](C)O)C(C)C)[C@@H](C)O)[C@@H](C)CC)[C@@H](C)CC)C(N)=O,56843277.0,,,
+Urapidil,COc1ccccc1N1CCN(CCCNc2cc(=O)n(C)c(=O)n2C)CC1,5639.0,,,
+Gilteritinib,CCc1nc(C(N)=O)c(Nc2ccc(N3CCC(N4CCN(C)CC4)CC3)c(OC)c2)nc1NC1CCOCC1,49803313.0,102.0,PubChem,PubChem: half-life of gilteritinib was of approximate 45-159 hours
+Bunazosin,CCCC(=O)N1CCCN(c2nc(N)c3cc(OC)c(OC)cc3n2)CC1,2472.0,,,
+Mitonafide,CN(C)CCN1C(=O)c2cccc3cc([N+](=O)[O-])cc(c23)C1=O,327044.0,,,
+Gemcitabine,Nc1ccn([C@@H]2O[C@H](CO)[C@@H](O)C2(F)F)c(=O)n1,60750.0,1.6,PubChem,PubChem: half-life ranged from 0.7 to 1.6 hours
+Captopril,C[C@H](CS)C(=O)N1CCC[C@H]1C(=O)O,44093.0,4.4,PubChem,PubChem: half-life of captopril was 4.4 hr
+Fuzlocillin,CC1(C)S[C@@H]2[C@H](NC(=O)[C@H](NC(=O)N3CCN(/N=C/c4ccco4)C3=O)c3ccc(O)cc3)C(=O)N2[C@H]1C(=O)O,9571079.0,,,
+Albuterol,CC(C)(C)NCC(O)c1ccc(O)c(CO)c1,2083.0,1.6,PubChem,PubChem: Half Life: 1.6 hours
+Vortioxetine,Cc1ccc(Sc2ccccc2N2CCNCC2)c(C)c1,9966051.0,65.8,PubChem,PubChem: half-life was 65.8 hr
+Quinine,C=CC1CN2CC[C@H]1CC2C(O)c1ccnc2ccc(OC)cc12,3034034.0,11.1,PubChem,PubChem: half-life was 9.7-12.5 hours
+Lamifiban,N=C(N)c1ccc(C(=O)N[C@@H](Cc2ccc(O)cc2)C(=O)N2CCC(OCC(=O)O)CC2)cc1,3038484.0,,,
+Indisulam,NS(=O)(=O)c1ccc(S(=O)(=O)Nc2cccc3c(Cl)c[nH]c23)cc1,216468.0,,,
+Ladirubicin,CC(=O)[C@]1(O)Cc2c(O)c3c(c(O)c2[C@@H](O[C@H]2C[C@H](N4CC4)[C@H](OS(C)(=O)=O)[C@H](C)O2)C1)C(=O)c1ccccc1C3=O,216232.0,,,
+Pelrinone,Cc1nc(=O)c(C#N)c(NCc2cccnc2)[nH]1,135413516.0,,,
+Mexiletine,Cc1cccc(C)c1OCC(C)N,4178.0,12.0,PubChem,PubChem: half-life of 10 to 12 hours
+Bepridil,CC(C)COC[C@@H](CN(Cc1ccccc1)c1ccccc1)N1CCCC1,2351.0,,,

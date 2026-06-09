@@ -89,8 +89,8 @@ mock_response <- function(payload) {
       Vd_lower      = round(10^(vd_log - q_vd), 4),
       Vd_upper      = round(10^(vd_log + q_vd), 4),
       Vd_log_pred   = round(vd_log, 4),
-      thalf_pred    = round(0.693 * 10^vd_log / 10^cl_log, 3),
-      lambdaz_pred  = round(10^cl_log / 10^vd_log, 5),
+      thalf_pred    = round(0.693 * 10^vd_log / (10^cl_log * 60 / 1000), 3),
+      lambdaz_pred  = round((10^cl_log * 60 / 1000) / 10^vd_log, 5),
       status        = "ok",
       error         = NULL
     )
