@@ -1,0 +1,20 @@
+V2 PHYSICOCHEMICAL ENRICHMENT SUMMARY
+==================================================
+Total compounds:         1434
+
+fup coverage:
+  Original:              982 (68.5%)
+  Merged from CL_VD:     1 (0.1%)
+  Imputed (median):      451 (31.5%)
+  Total non-imputed:     983 (68.5%)
+
+pKa coverage:
+  Experimental:          383
+  Computed (RDKit):      1051
+
+logP:                    1434 (100.0%)
+logD@pH7.4:              1434 (100.0%)
+
+New columns added: fup_final, fup_source, pka_acid_final, pka_base_final,
+                   pka_acid_computed, pka_base_computed, pka_source,
+                   logP, logD_74
