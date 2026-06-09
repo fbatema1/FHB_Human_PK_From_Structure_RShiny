@@ -231,8 +231,21 @@
           })
           .catch(function (err2) {
             console.error("[molviewer] Both sources failed:", err2.message);
-            showError("Could not retrieve 3D structure. " +
-                      "The compound may not be in PubChem or CACTUS.");
+            // Show red "No Structure Available" banner
+            var el = document.getElementById(VIEWER_ID);
+            if (el) {
+              el.innerHTML =
+                '<div style="display:flex;align-items:center;justify-content:center;' +
+                'height:100%;width:100%;">' +
+                '<div style="background:#FDEDED;border:1.5px solid #D55E00;' +
+                'border-radius:0.5rem;padding:1.2rem 2rem;text-align:center;">' +
+                '<span style="font-size:1.5rem;">⚠️</span><br>' +
+                '<strong style="color:#D55E00;font-size:1rem;">No Structure Available</strong><br>' +
+                '<span style="color:#6c757d;font-size:0.8rem;">This compound could not be found in PubChem or NIH CACTUS.<br>' +
+                'The SMILES may be novel, proprietary, or contain unsupported syntax.</span>' +
+                '</div></div>';
+            }
+            hideSpinner();
           });
       });
   }

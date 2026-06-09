@@ -435,44 +435,162 @@ ui <- page_navbar(
     title = tagList(bsicons::bs_icon("info-circle"), " About"),
     value = "about_tab",
 
+    # ── Intended use disclaimer ───────────────────────────────────────────────
+    div(
+      class = "alert alert-warning mx-3 mt-3",
+      style = "font-size:0.85rem;",
+      tags$strong(bsicons::bs_icon("exclamation-triangle-fill"), " Intended Use — Wadhams v1.0"),
+      tags$p(
+        class = "mb-0 mt-1",
+        "Wadhams is designed as a ", tags$strong("decision-support tool for early-stage drug discovery"),
+        " only. It provides rapid, structure-based estimation of human PK parameters to guide ",
+        "SAR decisions ", tags$em("before"), " any in vitro or in vivo data are available. ",
+        "Predictions should not be used for clinical dose selection, regulatory submissions, ",
+        "or any purpose requiring precise PK characterisation. Always confirm with experimental data."
+      )
+    ),
+
     layout_column_wrap(
       width = 1/2,
       fill  = FALSE,
 
+      # ── Hybrid model structure ────────────────────────────────────────────
       card(
-        card_header(tagList(bsicons::bs_icon("cpu"), " Models")),
+        card_header(tagList(bsicons::bs_icon("diagram-3"), " Hybrid Model Architecture")),
         card_body(
           tags$p(
-            "Three machine-learning models were independently trained and validated ",
-            "on a curated dataset of human intravenous PK measurements:"
+            "Three models were independently trained on a curated dataset of ",
+            tags$strong("1,147 human intravenous PK measurements"),
+            " and evaluated on a held-out test set of ", tags$strong("287 compounds."),
+            " The Hybrid predictor routes each parameter to the best-performing model:"
           ),
-          tags$ul(
-            tags$li(tags$strong("Random Forest"), " — 300-trial Optuna tuning, SHAP-selected features, scikit-learn."),
-            tags$li(tags$strong("XGBoost"), " — 300-trial Optuna tuning, same SHAP feature set."),
-            tags$li(tags$strong("GNN (AttentiveFP)"), " — 175-trial Optuna tuning, PyTorch Geometric.")
+          tags$table(
+            class = "table table-sm table-bordered mb-2",
+            style = "font-size:0.82rem;",
+            tags$thead(class = "table-light",
+              tags$tr(tags$th("Parameter"), tags$th("Model"), tags$th("Rationale"))
+            ),
+            tags$tbody(
+              tags$tr(
+                tags$td(tags$strong("CL")),
+                tags$td(tags$span(class="badge rounded-pill", style="background:#0072B2;", "Random Forest")),
+                tags$td("Best GMFE and within-2-fold on test set")
+              ),
+              tags$tr(
+                tags$td(tags$strong("Vd")),
+                tags$td(tags$span(class="badge rounded-pill", style="background:#E69F00;color:#000;", "XGBoost")),
+                tags$td("Best GMFE, R², and within-2-fold on test set")
+              )
+            )
           ),
           tags$p(
-            "The ", tags$strong("Hybrid"), " predictor routes each PK parameter ",
-            "(CL, Vd) to the best-performing model as determined on the held-out test set."
+            style = "font-size:0.8rem;",
+            tags$strong("Features:"),
+            " Top SHAP-selected RDKit 2D descriptors (CL: 50, Vd: 150 for XGB / 29 for RF) ",
+            "+ full 2,048-bit Morgan fingerprint (radius 2). All targets modelled on log₁₀ scale."
           )
         )
       ),
 
+      # ── Performance metrics ───────────────────────────────────────────────
       card(
-        card_header(tagList(bsicons::bs_icon("rulers"), " Features")),
+        card_header(tagList(bsicons::bs_icon("bar-chart"), " Performance — Held-out Test Set (n=287)")),
         card_body(
-          tags$p("Molecular features computed from 2D structure (SMILES):"),
-          tags$ul(
-            tags$li("162 RDKit 2D physicochemical descriptors"),
-            tags$li("2048-bit Morgan fingerprint (radius 2)"),
-            tags$li("PyG molecular graphs: 66 atom + 11 bond features (GNN only)")
+          tags$p(class = "fw-semibold mb-1", style = "font-size:0.85rem;",
+                 "CL (mL/min/kg) — all models:"),
+          tags$table(
+            class = "table table-sm table-bordered mb-3",
+            style = "font-size:0.80rem;",
+            tags$thead(class = "table-light",
+              tags$tr(tags$th("Model"), tags$th("GMFE"), tags$th("R²"),
+                      tags$th("Within 2-fold"), tags$th("Within 3-fold"))
+            ),
+            tags$tbody(
+              tags$tr(
+                tags$td(tags$span(style="color:#0072B2;font-weight:600;", "RF ✦")),
+                tags$td("2.256"), tags$td("0.433"), tags$td("60.3%"), tags$td("77.4%")
+              ),
+              tags$tr(
+                tags$td(tags$span(style="color:#E69F00;font-weight:600;", "XGB")),
+                tags$td("2.272"), tags$td("0.417"), tags$td("56.8%"), tags$td("73.9%")
+              ),
+              tags$tr(
+                tags$td(tags$span(style="color:#009E73;font-weight:600;", "GNN")),
+                tags$td("2.550"), tags$td("0.312"), tags$td("48.4%"), tags$td("68.3%")
+              )
+            )
           ),
-          tags$p("All PK targets are modelled on the log₁₀ scale.")
+          tags$p(class = "fw-semibold mb-1", style = "font-size:0.85rem;",
+                 "Vd (L/kg) — all models:"),
+          tags$table(
+            class = "table table-sm table-bordered mb-3",
+            style = "font-size:0.80rem;",
+            tags$thead(class = "table-light",
+              tags$tr(tags$th("Model"), tags$th("GMFE"), tags$th("R²"),
+                      tags$th("Within 2-fold"), tags$th("Within 3-fold"))
+            ),
+            tags$tbody(
+              tags$tr(
+                tags$td(tags$span(style="color:#0072B2;font-weight:600;", "RF")),
+                tags$td("1.913"), tags$td("0.653"), tags$td("66.2%"), tags$td("82.2%")
+              ),
+              tags$tr(
+                tags$td(tags$span(style="color:#E69F00;font-weight:600;", "XGB ✦")),
+                tags$td("1.815"), tags$td("0.694"), tags$td("71.1%"), tags$td("85.0%")
+              ),
+              tags$tr(
+                tags$td(tags$span(style="color:#009E73;font-weight:600;", "GNN")),
+                tags$td("2.048"), tags$td("0.588"), tags$td("56.4%"), tags$td("78.7%")
+              )
+            )
+          ),
+          tags$small(class = "text-muted fst-italic",
+                     "✦ = model used by Hybrid predictor for that parameter.")
         )
       ),
 
+      # ── Derived parameters ────────────────────────────────────────────────
       card(
-        card_header(tagList(bsicons::bs_icon("shield-check"), " Uncertainty")),
+        card_header(tagList(bsicons::bs_icon("calculator"), " Derived Parameters (t½ and λz)")),
+        card_body(
+          tags$p(
+            "t½ and λz are ", tags$strong("derived"), " from CL and Vd predictions — they are not ",
+            "independently modelled:"
+          ),
+          tags$ul(
+            style = "font-size:0.82rem;",
+            tags$li("t½ (h) = 0.693 × Vd (L/kg) / CL (L/h/kg)"),
+            tags$li("λz (1/h) = CL (L/h/kg) / Vd (L/kg)")
+          ),
+          tags$p(
+            "Validation against published human t½ values (n=140, PubChem/FDA sources, ",
+            "multi-compartment outliers excluded):"
+          ),
+          tags$table(
+            class = "table table-sm table-bordered mb-2",
+            style = "font-size:0.82rem;",
+            tags$tbody(
+              tags$tr(tags$th("GMFE"),            tags$td("2.44")),
+              tags$tr(tags$th("Within 2-fold"),   tags$td("49.3%")),
+              tags$tr(tags$th("Within 3-fold"),   tags$td("66.4%")),
+              tags$tr(tags$th("Mean % error"),    tags$td("23.8%"))
+            )
+          ),
+          div(
+            class = "p-2 rounded",
+            style = "background:#FFF8E1;border:1px solid #FFE082;font-size:0.78rem;color:#795548;",
+            bsicons::bs_icon("exclamation-triangle"),
+            " Approximately ", tags$strong("50% of t½ predictions fall within 2-fold"),
+            " of published values. Derived parameters inherit combined uncertainty from both ",
+            "CL and Vd estimates. t½ reflects one-compartment kinetics and may underestimate ",
+            "the terminal half-life for multi-compartment or deep-tissue-distributed drugs."
+          )
+        )
+      ),
+
+      # ── Uncertainty ───────────────────────────────────────────────────────
+      card(
+        card_header(tagList(bsicons::bs_icon("shield-check"), " Uncertainty Quantification")),
         card_body(
           tags$p(
             "95% prediction intervals use ", tags$strong("split conformal prediction"),
@@ -481,31 +599,38 @@ ui <- page_navbar(
           tags$ul(
             tags$li("Distribution-free — no parametric assumptions on residuals."),
             tags$li("Finite-sample marginal coverage guarantee: P(y ∈ PI) ≥ 0.95."),
-            tags$li("Calibrated on a 15% holdout of the training set (~170 compounds).")
+            tags$li("Calibrated on a 15% holdout of the training set (~172 compounds).")
+          ),
+          tags$p("95% PI fold widths (hybrid routing):"),
+          tags$table(
+            class = "table table-sm table-bordered mb-0",
+            style = "font-size:0.82rem;",
+            tags$thead(class="table-light",
+              tags$tr(tags$th("Parameter"), tags$th("Model"), tags$th("PI fold width"))
+            ),
+            tags$tbody(
+              tags$tr(tags$td("CL"), tags$td("RF"),  tags$td("±2.63×")),
+              tags$tr(tags$td("Vd"), tags$td("XGB"), tags$td("±1.54×"))
+            )
           )
         )
       ),
 
+      # ── Features ──────────────────────────────────────────────────────────
       card(
-        card_header(tagList(bsicons::bs_icon("bar-chart"), " Performance")),
+        card_header(tagList(bsicons::bs_icon("rulers"), " Molecular Features")),
         card_body(
-          tags$p("Target metrics (evaluated on held-out test set):"),
-          tags$table(
-            class = "table table-sm table-borderless mb-1",
-            style = "font-size:0.82rem;",
-            tags$thead(tags$tr(
-              tags$th("Metric"), tags$th("CL target"), tags$th("Vd target")
-            )),
-            tags$tbody(
-              tags$tr(tags$td("GMFE"),          tags$td("< 2.2"), tags$td("< 1.8")),
-              tags$tr(tags$td("R²"),            tags$td("> 0.45"), tags$td("> 0.65")),
-              tags$tr(tags$td("Within 2-fold"), tags$td("> 60%"),  tags$td("> 65%"))
-            )
+          tags$p("Features computed from 2D structure (SMILES) only — no 3D geometry required:"),
+          tags$ul(
+            tags$li("162 RDKit 2D physicochemical descriptors (MW, logP, TPSA, HBD/HBA, rotatable bonds, etc.)"),
+            tags$li("SHAP-based feature selection via Optuna tuning — top descriptors retained per model/parameter"),
+            tags$li("2,048-bit Morgan circular fingerprint (radius 2)"),
+            tags$li("PyG molecular graphs: 66 atom + 11 bond features (GNN only)")
           ),
-          tags$small(class="text-muted fst-italic",
-            "Targets calibrated against published 2D-QSAR literature (Lombardo et al. 2018 and others)."
-          ),
-          uiOutput("perf_table_ui")
+          tags$p(style="font-size:0.8rem;color:#6c757d;",
+            "Hyperparameters tuned via 300-trial Optuna Bayesian optimisation with 5-fold ",
+            "cross-validation (RF and XGB) or 175 trials (GNN)."
+          )
         )
       )
     ),
