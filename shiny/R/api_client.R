@@ -8,7 +8,8 @@
 # UI development before the Python backend is running.
 ##############################################################################
 
-PK_API_BASE <- Sys.getenv("PK_API_URL", unset = "http://localhost:8000")
+PK_API_BASE <- Sys.getenv("PK_API_URL",
+  unset = "https://wadhams-pk-api-production-2545.up.railway.app")
 
 # ── Main predict call ─────────────────────────────────────────────────────────
 #
