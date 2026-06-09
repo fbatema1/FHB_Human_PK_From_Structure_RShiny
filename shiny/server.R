@@ -379,7 +379,20 @@ server <- function(input, output, session) {
       }
 
     } else {
-      df         <- csv_data()
+      # Batch mode — guard against column-map UI not yet rendered
+      if (is.null(input$csv_upload)) {
+        showNotification("Please upload a CSV file first.", type = "warning")
+        return()
+      }
+      if (is.null(input$csv_smiles_col) || nchar(input$csv_smiles_col) == 0) {
+        showNotification("Please select a SMILES column.", type = "warning")
+        return()
+      }
+      df <- tryCatch(csv_data(), error = function(e) NULL)
+      if (is.null(df) || nrow(df) == 0) {
+        showNotification("No valid SMILES found in the selected column.", type = "warning")
+        return()
+      }
       smiles_vec <- df$smiles
       names_vec  <- df$name   # always present — set to Compound_N if no name col
     }
