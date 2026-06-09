@@ -8,7 +8,7 @@ services:
       - key: PYTHON_VERSION
         value: "3.11"
       - key: HF_REPO
-        value: "REPLACE_WITH_YOUR_HF_USERNAME/wadhams-pk-models"
+        value: "francishenrybateman/wadhams-pk-models"
       - key: HF_TOKEN
         sync: false   # set manually in Render dashboard — never commit tokens
     healthCheckPath: /health
