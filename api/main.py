@@ -26,8 +26,12 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException
+import urllib.request
+import urllib.parse
+
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel, field_validator
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -150,6 +154,46 @@ def model_info():
         "model_results":  results,
         "conformal":      conformal,
     }
+
+
+@app.get("/structure", response_class=PlainTextResponse)
+def get_structure(smiles: str = Query(..., description="SMILES string")):
+    """
+    Proxy 3D SDF from PubChem, falling back to NIH CACTUS.
+    Exists solely to work around CACTUS CORS restrictions — the browser
+    calls this endpoint instead of CACTUS directly.
+    """
+    encoded = urllib.parse.quote(smiles, safe="")
+
+    # Try PubChem first
+    pubchem_url = (
+        f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/smiles/"
+        f"{encoded}/SDF?record_type=3d"
+    )
+    try:
+        with urllib.request.urlopen(pubchem_url, timeout=15) as r:
+            if r.status == 200:
+                sdf = r.read().decode("utf-8", errors="replace")
+                if sdf.strip():
+                    return sdf
+    except Exception:
+        pass
+
+    # Fallback: NIH CACTUS
+    cactus_url = (
+        f"https://cactus.nci.nih.gov/chemical/structure/"
+        f"{encoded}/file?format=sdf&get3d=true"
+    )
+    try:
+        with urllib.request.urlopen(cactus_url, timeout=20) as r:
+            if r.status == 200:
+                sdf = r.read().decode("utf-8", errors="replace")
+                if sdf.strip() and "Page not found" not in sdf:
+                    return sdf
+    except Exception:
+        pass
+
+    raise HTTPException(status_code=404, detail="No 3D structure available")
 
 
 @app.post("/predict", response_model=List[CompoundResult])

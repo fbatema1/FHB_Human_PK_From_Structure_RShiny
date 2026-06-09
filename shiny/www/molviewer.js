@@ -34,11 +34,10 @@
       + "/SDF?record_type=3d";
   }
 
-  // NIH CACTUS fallback (generates 3D coords on-the-fly from SMILES)
-  function cactusUrl(smiles) {
-    return "https://cactus.nci.nih.gov/chemical/structure/"
-      + encodeURIComponent(smiles)
-      + "/file?format=sdf&get3d=true";
+  // Wadhams API proxy — fetches PubChem/CACTUS server-side, avoiding CORS block
+  var API_BASE = "https://wadhams-pk-api-production-2545.up.railway.app";
+  function structureProxyUrl(smiles) {
+    return API_BASE + "/structure?smiles=" + encodeURIComponent(smiles);
   }
 
   // ── Initialise viewer div ───────────────────────────────────────────────────
@@ -214,24 +213,23 @@
       })
       .catch(function (err) {
         console.warn("[molviewer] PubChem failed:", err.message,
-                     "— trying CACTUS…");
-        showSpinner("PubChem unavailable — trying CACTUS…");
+                     "— trying proxy (CACTUS)…");
+        showSpinner("Generating 3D structure…");
 
-        // ── Fallback: NIH CACTUS ────────────────────────────────────────
-        fetch(cactusUrl(smiles))
+        // ── Fallback: Wadhams API proxy (avoids CACTUS CORS block) ─────
+        fetch(structureProxyUrl(smiles))
           .then(function (res) {
-            if (!res.ok) throw new Error("CACTUS status " + res.status);
+            if (!res.ok) throw new Error("Proxy status " + res.status);
             return res.text();
           })
           .then(function (sdf) {
-            if (!sdf || sdf.includes("Page not found") || sdf.trim().length === 0) {
-              throw new Error("CACTUS returned no structure");
+            if (!sdf || sdf.trim().length === 0) {
+              throw new Error("Proxy returned no structure");
             }
             loadFromSdf(sdf, style, colour, monoColour, name);
           })
           .catch(function (err2) {
             console.error("[molviewer] Both sources failed:", err2.message);
-            // Show red "No Structure Available" banner
             var el = document.getElementById(VIEWER_ID);
             if (el) {
               el.innerHTML =
