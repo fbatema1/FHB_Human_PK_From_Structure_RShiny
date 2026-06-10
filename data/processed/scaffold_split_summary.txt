@@ -1,0 +1,26 @@
+SCAFFOLD SPLIT SUMMARY
+==================================================
+Method:           Bemis-Murcko generic scaffold split
+Random seed:      42
+Target test frac: 20%
+Total:            1434
+Train:            1140 (79.5%)
+Test:             294 (20.5%)
+Unique scaffolds: 742
+Scaffold overlap (must be 0): 0
+
+TRAIN (n=1140)
+  CL: median=4.11  mean=12.35  min=0.000  max=1070.0  log10_std=0.695
+  Vd: median=0.94  mean=3.79  min=0.029  max=145.0  log10_std=0.665
+
+TEST (n=294)
+  CL: median=4.56  mean=10.24  min=0.007  max=290.0  log10_std=0.678
+  Vd: median=0.85  mean=4.69  min=0.050  max=700.0  log10_std=0.581
+
+Data source breakdown (train):
+  master_original: 615
+  lombardo_2018: 525
+
+Data source breakdown (test):
+  master_original: 201
+  lombardo_2018: 93

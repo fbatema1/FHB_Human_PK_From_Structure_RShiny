@@ -1,0 +1,588 @@
+============================================================
+Fetching observed t½ for test set compounds
+============================================================
+Test set: 287 compounds
+
+[  1/287] Procaimide
+       → PubChem: 3.5 h
+[  2/287] Verapamil
+       → PubChem: 9.2 h
+[  3/287] Didemnin B
+       → not found
+[  4/287] Vinorelbine
+       → PubChem: 43.6 h
+[  5/287] Cefclidin
+       → not found
+[  6/287] Astromicin
+       → not found
+[  7/287] Micafungin
+       → not found
+[  8/287] Nefopam
+       → PubChem: 72.0 h
+[  9/287] Ketamine
+       → PubChem: 2.5 h
+[ 10/287] Tiludronic Acid
+       → PubChem: 150.0 h
+[ 11/287] Sotalol
+       → PubChem: 15.0 h
+[ 12/287] MDAM
+       → not found
+[ 13/287] 5-Fluorouracil
+       → not found
+[ 14/287] Amezinium
+       → not found
+[ 15/287] Ibutilide
+       → PubChem: 8.6 h
+[ 16/287] Ridogrel
+       → not found
+[ 17/287] Xylose_D
+       → not found
+[ 18/287] Bisoprolol
+       → PubChem: 5.0 h
+[ 19/287] Perphenazine
+       → PubChem: 10.0 h
+[ 20/287] Cefotaxime
+       → FDA: 1.0 h
+[ 21/287] Darifecin
+       → PubChem: 16.0 h
+[ 22/287] Zolpidem
+       → PubChem: 2.6 h
+[ 23/287] GSK2239633
+       → not found
+[ 24/287] Tofogliflozin
+       → not found
+[ 25/287] Guanfacine
+       → PubChem: 17.0 h
+[ 26/287] Nebivolol
+       → PubChem: 12.0 h
+[ 27/287] Chloroquine
+       → PubChem: 96.0 h
+[ 28/287] Ropivacaine
+       → PubChem: 4.2 h
+[ 29/287] Dabigatran
+       → PubChem: 1.0 h
+[ 30/287] Nizatidine
+       → PubChem: 10.0 h
+[ 31/287] Dicloxacillin
+       → PubChem: 1.54 h
+[ 32/287] Tegafur
+       → PubChem: 1.0 h
+[ 33/287] Iloprost
+       → not found
+[ 34/287] Metrizoic Acid
+       → not found
+[ 35/287] Diltiazem Hydrochloride
+       → PubChem: 3.75 h
+[ 36/287] Tesaglitazar
+       → not found
+[ 37/287] Atovaquone
+       → FDA: 35.3 h
+[ 38/287] Acyclovir
+       → PubChem: 5.0 h
+[ 39/287] Melperone
+       → PubChem: 6.0 h
+[ 40/287] Ipratropium
+       → FDA: 1.6 h
+[ 41/287] Methadone
+       → PubChem: 10.0 h
+[ 42/287] Faropenem
+       → not found
+[ 43/287] Levofloxacin
+       → PubChem: 8.0 h
+[ 44/287] Piroximone
+       → not found
+[ 45/287] OR-1896
+       → not found
+[ 46/287] Tropatepine
+       → not found
+[ 47/287] Menogaril
+       → not found
+[ 48/287] Tazarotene
+       → PubChem: 18.0 h
+[ 49/287] Ciclesonide
+       → FDA: 0.71 h
+[ 50/287] Chlordiazepoxide
+       → not found
+[ 51/287] Temozolomide
+       → PubChem: 1.8 h
+[ 52/287] Zanamivir
+       → PubChem: 5.1 h
+[ 53/287] Melatonin
+       → PubChem: 0.1 h
+[ 54/287] Diazoxide
+       → PubChem: 24.0 h
+[ 55/287] Carvedilol
+       → PubChem: 8.5 h
+[ 56/287] Diatrizoate
+       → PubChem: 80.0 h
+[ 57/287] Codeine
+       → PubChem: 3.0 h
+[ 58/287] Metformin
+       → PubChem: 6.2 h
+[ 59/287] Zoledronic Acid
+       → PubChem: 146.0 h
+[ 60/287] Patupilone
+       → not found
+[ 61/287] Moxalactam
+       → not found
+[ 62/287] F992
+       → not found
+[ 63/287] LY2140023
+       → not found
+[ 64/287] Methotrexate
+       → PubChem: 10.0 h
+[ 65/287] Astragaloside IV
+       → not found
+[ 66/287] Chenodeoxycholic Acid
+       → not found
+[ 67/287] Dihydrocodeine
+       → not found
+[ 68/287] 3,5-DCQA
+       → not found
+[ 69/287] Azlocillin
+       → PubChem: 1.5 h
+[ 70/287] Ziracin
+       → not found
+[ 71/287] Sinitrodil
+       → not found
+[ 72/287] Carebastine
+       → not found
+[ 73/287] Chlordiazepoxide
+       → not found
+[ 74/287] CP-65207
+       → not found
+[ 75/287] Perampanel
+       → PubChem: 105.0 h
+[ 76/287] Amsalog
+       → not found
+[ 77/287] Dinaciclib
+       → not found
+[ 78/287] Lomitapide
+       → PubChem: 39.7 h
+[ 79/287] KNI-272
+       → not found
+[ 80/287] Doxacurium
+       → not found
+[ 81/287] Octreotide
+       → PubChem: 2.08 h
+[ 82/287] Cefonicid
+       → not found
+[ 83/287] Ro25-6833
+       → not found
+[ 84/287] Morphine
+       → PubChem: 3.0 h
+[ 85/287] Pixantrone
+       → PubChem: 31.9 h
+[ 86/287] Benperidol
+       → not found
+[ 87/287] Ginkgolide B
+       → not found
+[ 88/287] Daptomycin
+       → PubChem: 8.25 h
+[ 89/287] Trandolapril
+       → PubChem: 6.0 h
+[ 90/287] Lorcainide
+       → not found
+[ 91/287] Methylergometrine
+       → PubChem: 0.82 h
+[ 92/287] Talinolol
+       → not found
+[ 93/287] Midazolam
+       → PubChem: 6.4 h
+[ 94/287] Phenobarbital
+       → PubChem: 118.0 h
+[ 95/287] Trimethoprim
+       → PubChem: 13.0 h
+[ 96/287] Ramelteon
+       → PubChem: 1.8 h
+[ 97/287] Edoxaban
+       → PubChem: 10.0 h
+[ 98/287] Topiramate
+       → PubChem: 23.0 h
+[ 99/287] Plitidepsin
+       → not found
+[100/287] Pimobendan
+       → not found
+[101/287] Heroin
+       → PubChem: 0.6 h
+[102/287] Eltoprazine
+       → not found
+[103/287] Tezosentan
+       → PubChem: 3.0 h
+[104/287] Ketanserin
+       → not found
+[105/287] Aminocyclopropanecarboxylic Acid
+       → not found
+[106/287] Eletriptan
+       → PubChem: 4.0 h
+[107/287] Degarelix
+       → PubChem: 32.9 h
+[108/287] Pentobarbital
+       → PubChem: 50.0 h
+[109/287] Isradipine
+       → FDA: 1.5 h
+[110/287] Spisulosine
+       → not found
+[111/287] Tiagabine
+       → PubChem: 8.0 h
+[112/287] Cephaloridine
+       → not found
+[113/287] Canagliflozin
+       → PubChem: 10.6 h
+[114/287] Batanopride
+       → not found
+[115/287] Biricodar
+       → not found
+[116/287] Pancuronium
+       → not found
+[117/287] Libenzapril
+       → not found
+[118/287] Diprophylline
+       → not found
+[119/287] Diflomotecan
+       → not found
+[120/287] Linezolid
+       → PubChem: 5.0 h
+[121/287] Pefloxacin
+       → not found
+[122/287] Sulbenicillin
+       → not found
+[123/287] Prexasertib
+       → not found
+[124/287] Treprostinil
+       → PubChem: 10.0 h
+[125/287] Ceftaroline Fosamil
+       → not found
+[126/287] Carumom
+       → not found
+[127/287] Gestodene
+       → PubChem: 18.0 h
+[128/287] Endralazine
+       → not found
+[129/287] Uk-396,082
+       → not found
+[130/287] Prednisolone
+       → PubChem: 2.8 h
+[131/287] Idarubicin
+       → FDA: 45.0 h
+[132/287] Methylphenidate
+       → PubChem: 1.0 h
+[133/287] Miglitol
+       → PubChem: 2.0 h
+[134/287] Bilobalide
+       → not found
+[135/287] Mibefradil
+       → not found
+[136/287] Tenofovir
+       → PubChem: 32.0 h
+[137/287] Cefadroxil
+       → FDA: 12.0 h
+[138/287] Vilanterol
+       → PubChem: 11.0 h
+[139/287] Eptifibatide
+       → PubChem: 0.17 h
+[140/287] Terlipressin
+       → PubChem: 0.9 h
+[141/287] Ixazomib
+       → not found
+[142/287] Tolbutamide
+       → PubChem: 5.0 h
+[143/287] Teicoplanin A2-5
+       → not found
+[144/287] Caderofloxacin
+       → not found
+[145/287] Flecainide
+       → PubChem: 20.0 h
+[146/287] Phenytoin
+       → PubChem: 22.0 h
+[147/287] Moxalactam
+       → not found
+[148/287] Hexobarbital
+       → not found
+[149/287] Pralatrexate (S)
+       → not found
+[150/287] Ergotamine
+       → PubChem: 2.0 h
+[151/287] Cefmenoxime
+       → not found
+[152/287] Alosetron
+       → FDA: 1.0 h
+[153/287] Indoramin
+       → not found
+[154/287] Tetracycline
+       → not found
+[155/287] Etoricoxib
+       → not found
+[156/287] KRN-5500
+       → not found
+[157/287] Moxonidine
+       → PubChem: 2.25 h
+[158/287] Tomopenem
+       → not found
+[159/287] Olsalazine
+       → FDA: 0.9 h
+[160/287] Drotaverine
+       → PubChem: 1.29 h
+[161/287] Dexloxiglumide
+       → not found
+[162/287] Deferasirox
+       → PubChem: 2.75 h
+[163/287] Fenoterol
+       → not found
+[164/287] Clozepam
+       → PubChem: 35.0 h
+[165/287] Aripiprazole
+       → PubChem: 110.5 h
+[166/287] Trazodone
+       → PubChem: 8.0 h
+[167/287] SAR 125844
+       → not found
+[168/287] Hydromorphone
+       → PubChem: 2.5 h
+[169/287] Tazobactam
+       → PubChem: 1.2 h
+[170/287] lbuphine
+       → PubChem: 5.0 h
+[171/287] Tocainide
+       → PubChem: 15.0 h
+[172/287] Triamterene
+       → PubChem: 1.1 h
+[173/287] Arbekacin
+       → not found
+[174/287] Dimetindene
+       → not found
+[175/287] Pravastatin
+       → PubChem: 1.8 h
+[176/287] LY2090314
+       → not found
+[177/287] Carmustine
+       → not found
+[178/287] Nisoldipine
+       → FDA: 4.3 h
+[179/287] GSK269984A
+       → not found
+[180/287] Timolol
+       → PubChem: 3.5 h
+[181/287] Iopromide
+       → PubChem: 0.24 h
+[182/287] Pramlintide
+       → not found
+[183/287] Piperacillin
+       → FDA: 2.0 h
+[184/287] Prifinium bromide
+       → not found
+[185/287] Tenifatecan
+       → not found
+[186/287] Vildagliptin
+       → PubChem: 1.7 h
+[187/287] Triazolam
+       → PubChem: 3.4 h
+[188/287] Sulbenicillin
+       → not found
+[189/287] Methimazole
+       → PubChem: 4.0 h
+[190/287] Pyridostigmine
+       → PubChem: 3.0 h
+[191/287] Antofloxacin
+       → not found
+[192/287] Ombrabulin
+       → not found
+[193/287] Diprafenone
+       → not found
+[194/287] psagatran
+       → not found
+[195/287] Verlukast
+       → not found
+[196/287] Roflumilast
+       → FDA: 30.0 h
+[197/287] Ofloxacin
+       → PubChem: 38.5 h
+[198/287] Pentazocine
+       → PubChem: 3.0 h
+[199/287] Nk-611
+       → not found
+[200/287] Paclitaxel
+       → PubChem: 24.0 h
+[201/287] Ganirelix
+       → PubChem: 13.0 h
+[202/287] Meloxicam
+       → PubChem: 17.5 h
+[203/287] Rocuronium
+       → FDA: 1.1 h
+[204/287] Remikiren
+       → not found
+[205/287] Etoposide
+       → PubChem: 1.5 h
+[206/287] Actisomide
+       → not found
+[207/287] Ginkgolide B
+       → not found
+[208/287] Papaverine
+       → PubChem: 6.0 h
+[209/287] 7-Methylthiomethylpaclitaxel
+       → not found
+[210/287] Darapladib
+       → not found
+[211/287] Imipramine
+       → PubChem: 16.0 h
+[212/287] Norfloxacin
+       → PubChem: 7.6 h
+[213/287] CEP-18770
+       → not found
+[214/287] Escin Ia
+       → not found
+[215/287] Mibenratide
+       → not found
+[216/287] Amphetamine (-d)
+       → PubChem: 12.0 h
+[217/287] IDX989
+       → not found
+[218/287] Teicoplanin A2-2
+       → not found
+[219/287] Teicoplanin A2-3
+       → not found
+[220/287] Nitrofurantoin
+       → PubChem: 1.0 h
+[221/287] Metoprolol
+       → PubChem: 3.5 h
+[222/287] Nifekalant
+       → not found
+[223/287] Hydralazine
+       → PubChem: 5.0 h
+[224/287] Spectinomycin
+       → not found
+[225/287] Irinotecan
+       → PubChem: 12.0 h
+[226/287] Ceftolozane
+       → FDA: 4.0 h
+[227/287] Metronidazole
+       → PubChem: 12.0 h
+[228/287] Desmopressin
+       → PubChem: 1.0 h
+[229/287] Ganglioside GM1
+       → not found
+[230/287] Iopamidol
+       → PubChem: 1.67 h
+[231/287] Oxybutynin
+       → PubChem: 1.0 h
+[232/287] Bleomycin
+       → PubChem: 2.0 h
+[233/287] Ezogabine
+       → PubChem: 7.5 h
+[234/287] Levomepromazine
+       → PubChem: 20.0 h
+[235/287] Deoxycytidine-5F-2'
+       → not found
+[236/287] Amoxicillin
+       → not found
+[237/287] Dacarbazine
+       → PubChem: 5.0 h
+[238/287] Alprazolam
+       → PubChem: 16.6 h
+[239/287] Danazol
+       → PubChem: 11.0 h
+[240/287] Y 20811
+       → not found
+[241/287] Azathioprine
+       → PubChem: 5.0 h
+[242/287] Conivaptan
+       → not found
+[243/287] Nelarabine
+       → PubChem: 3.2 h
+[244/287] Ilaprazole
+       → not found
+[245/287] Indocyanine Green
+       → not found
+[246/287] Mirtazapine
+       → PubChem: 30.0 h
+[247/287] Clorazepic Acid
+       → PubChem: 24.0 h
+[248/287] Scutellarin
+       → not found
+[249/287] Apixaban
+       → PubChem: 12.0 h
+[250/287] Amonafide
+       → not found
+[251/287] Bazedoxifene
+       → FDA: 17.0 h
+[252/287] Anidulafungin
+       → PubChem: 45.0 h
+[253/287] Doripenem
+       → not found
+[254/287] Levoprotiline
+       → not found
+[255/287] PF-4776548
+       → not found
+[256/287] Flomoxef
+       → not found
+[257/287] Linagliptin
+       → PubChem: 155.0 h
+[258/287] Secretin (human)
+       → not found
+[259/287] Ifetroban
+       → not found
+[260/287] Etomidate
+       → PubChem: 12.0 h
+[261/287] Palonosetron
+       → FDA: 40.0 h
+[262/287] Cephradine
+       → not found
+[263/287] Imidafenacin
+       → PubChem: 3.0 h
+[264/287] Nefazodone
+       → PubChem: 8.3 h
+[265/287] Ibuprofen
+       → PubChem: 2.0 h
+[266/287] Dobesilic acid
+       → not found
+[267/287] Miconazole
+       → PubChem: 24.0 h
+[268/287] Enoxacin
+       → PubChem: 6.0 h
+[269/287] Proquazone
+       → not found
+[270/287] Promazine
+       → PubChem: 1.5 h
+[271/287] Stresscopin
+       → not found
+[272/287] Urapidil
+       → not found
+[273/287] Gilteritinib
+       → PubChem: 102.0 h
+[274/287] Bunazosin
+       → not found
+[275/287] Mitonafide
+       → not found
+[276/287] Gemcitabine
+       → PubChem: 1.6 h
+[277/287] Captopril
+       → PubChem: 4.4 h
+[278/287] Fuzlocillin
+       → not found
+[279/287] Albuterol
+       → PubChem: 1.6 h
+[280/287] Vortioxetine
+       → PubChem: 65.8 h
+[281/287] Quinine
+       → PubChem: 11.1 h
+[282/287] Lamifiban
+       → not found
+[283/287] Indisulam
+       → not found
+[284/287] Ladirubicin
+       → not found
+[285/287] Pelrinone
+       → not found
+[286/287] Mexiletine
+       → PubChem: 12.0 h
+[287/287] Bepridil
+       → not found
+
+============================================================
+Found t½ for 151/287 compounds (52.6%)
+Source breakdown:
+thalf_source
+PubChem    135
+FDA         16
+
+Saved → /Users/francisbateman/Desktop/Wadhams Start Up/Code/pk-predictor/data/processed/thalf_observed.csv
