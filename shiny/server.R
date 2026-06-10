@@ -919,6 +919,9 @@ server <- function(input, output, session) {
                                  "Extravascular" = "ev"),
                     selected = "iv")
       ),
+      checkboxInput("nca_fill_id",
+                    "Forward-fill blank Subject IDs (carry down within block)",
+                    value = FALSE),
 
       tags$hr(),
       tags$h6(bsicons::bs_icon("3-circle-fill"), " Units",
@@ -989,7 +992,8 @@ server <- function(input, output, session) {
         lloq        = if (is.null(input$nca_lloq) || is.na(input$nca_lloq)) NA_real_ else input$nca_lloq,
         uloq        = if (is.null(input$nca_uloq) || is.na(input$nca_uloq)) NA_real_ else input$nca_uloq,
         blq_rule    = input$nca_blq_rule %||% "half_lloq",
-        const_route = input$nca_const_route %||% "iv"
+        const_route = input$nca_const_route %||% "iv",
+        fill_id     = isTRUE(input$nca_fill_id)
       ),
       error = function(e) {
         showNotification(paste("Formatting failed:", conditionMessage(e)),

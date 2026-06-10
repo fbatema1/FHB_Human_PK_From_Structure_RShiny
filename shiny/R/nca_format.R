@@ -53,7 +53,8 @@ format_nca_data <- function(raw, mapping, units,
                             mw = NA_real_, bw = NA_real_,
                             lloq = NA_real_, uloq = NA_real_,
                             blq_rule = "half_lloq",
-                            const_route = "iv") {
+                            const_route = "iv",
+                            fill_id = FALSE) {
 
   stopifnot(is.data.frame(raw))
   req_map <- c("id", "time", "conc")
@@ -65,6 +66,32 @@ format_nca_data <- function(raw, mapping, units,
 
   # Pull raw vectors
   id_raw   <- raw[[mapping$id]]
+
+  # ── Subject ID validation ───────────────────────────────────────────────────
+  # Blank / whitespace / literal "NA" cells become NA. Missing IDs are a common
+  # NONMEM-style gap (ID filled only on the first row of each subject block);
+  # rather than fail with an opaque downstream error, we either forward-fill
+  # (opt-in) or stop with an actionable message.
+  id_chr <- trimws(as.character(id_raw))
+  id_chr[id_chr %in% c("", "NA", "na", "NaN", ".")] <- NA_character_
+
+  if (isTRUE(fill_id)) {
+    last <- NA_character_
+    for (i in seq_along(id_chr)) {
+      if (!is.na(id_chr[i])) last <- id_chr[i] else id_chr[i] <- last
+    }
+  }
+
+  n_missing_id <- sum(is.na(id_chr))
+  if (n_missing_id > 0) {
+    stop(sprintf(
+      paste0("%d of %d rows have a blank Subject ID. Every row needs an ID. ",
+             "Fill the ID column in your file, or enable ",
+             "'Forward-fill blank Subject IDs' to carry each ID down its block."),
+      n_missing_id, length(id_chr)))
+  }
+  id_raw <- id_chr
+
   time_raw <- suppressWarnings(as.numeric(raw[[mapping$time]]))
   conc_raw <- suppressWarnings(as.numeric(raw[[mapping$conc]]))
   dose_raw <- if (!is.null(mapping$dose) && !is.na(mapping$dose) &&
