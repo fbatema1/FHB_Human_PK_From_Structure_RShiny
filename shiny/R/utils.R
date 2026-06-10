@@ -107,3 +107,11 @@ ci_string <- function(lower, upper, digits) {
 
 # ── Null coalescing (also defined in api_client.R — safe to duplicate) ────────
 `%||%` <- function(a, b) if (!is.null(a)) a else b
+
+# ── Blank/empty → NA (selectInput "— none —" yields ""); else the value ───────
+nz <- function(x) {
+  if (is.null(x)) return(NA_character_)
+  if (length(x) == 0) return(NA_character_)
+  if (is.character(x) && (!nzchar(x) || is.na(x))) return(NA_character_)
+  x
+}
