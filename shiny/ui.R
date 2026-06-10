@@ -710,10 +710,15 @@ ui <- page_navbar(
     br(),
 
     # ── NCA workflow ──────────────────────────────────────────────────────────
+    # fill = FALSE / fillable = FALSE so the card sizes to its content instead of
+    # collapsing to ~0px in the fillable navbar page (the nested layout_column_wrap
+    # would otherwise flex-collapse and hide the whole card).
     card(
+      fill = FALSE,
       card_header(tagList(bsicons::bs_icon("calculator"),
                           " Non-Compartmental Analysis (NCA) Workflow")),
       card_body(
+        fillable = FALSE,
         tags$p(
           "The ", tags$strong("NCA tab"), " turns raw bioanalytical output into ",
           "analysis-ready data and computes non-compartmental PK parameters entirely ",
