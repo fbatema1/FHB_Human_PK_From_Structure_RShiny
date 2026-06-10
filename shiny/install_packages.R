@@ -16,7 +16,8 @@ pkgs <- c(
   "r3dmol",
   "reticulate",
   "readxl",
-  "digest"
+  "digest",
+  "PKNCA"
 )
 
 install.packages(pkgs, repos = "https://cloud.r-project.org")

@@ -21,6 +21,11 @@ source("R/api_client.R")
 source("R/plots.R")
 source("R/utils.R")
 
+# NCA module (pure-R; PKNCA itself is an optional dependency checked at runtime)
+source("R/nca_units.R")
+source("R/nca_format.R")
+source("R/nca_compute.R")
+
 # conformer.R requires reticulate + r3dmol — only load when available
 if (exists("HAS_RETICULATE") && HAS_RETICULATE && exists("HAS_R3DMOL") && HAS_R3DMOL) {
   source("R/conformer.R")
@@ -847,6 +852,287 @@ server <- function(input, output, session) {
     content  = function(file) {
       req(rv$results)
       write(toJSON(rv$results, pretty = TRUE, auto_unbox = TRUE), file)
+    }
+  )
+
+  # ════════════════════════════════════════════════════════════════════════════
+  # NCA MODULE
+  # ════════════════════════════════════════════════════════════════════════════
+  nca_rv <- reactiveValues(
+    raw       = NULL,   # uploaded data.frame
+    formatted = NULL,   # standardised NONMEM-style table
+    results   = NULL    # tidy NCA results
+  )
+
+  # ── Read upload (CSV or Excel) ──────────────────────────────────────────────
+  observeEvent(input$nca_file, {
+    req(input$nca_file)
+    path <- input$nca_file$datapath
+    ext  <- tolower(tools::file_ext(input$nca_file$name))
+    df <- tryCatch({
+      if (ext %in% c("xlsx", "xls")) {
+        if (!requireNamespace("readxl", quietly = TRUE)) {
+          stop("Excel upload needs the 'readxl' package; or save your file as CSV.")
+        }
+        as.data.frame(readxl::read_excel(path))
+      } else {
+        read.csv(path, stringsAsFactors = FALSE, check.names = FALSE)
+      }
+    }, error = function(e) {
+      showNotification(paste("Could not read file:", conditionMessage(e)),
+                       type = "error", duration = 8)
+      NULL
+    })
+    req(df)
+    nca_rv$raw       <- df
+    nca_rv$formatted <- NULL
+    nca_rv$results   <- NULL
+    showNotification(sprintf("Loaded %d rows × %d columns.",
+                             nrow(df), ncol(df)), type = "message")
+  })
+
+  # ── Dynamic config UI (column mapping + units + limits) ─────────────────────
+  output$nca_config_ui <- renderUI({
+    req(nca_rv$raw)
+    cols  <- names(nca_rv$raw)
+    guess <- guess_nca_columns(cols)
+    col_choices <- c("— none —" = "", setNames(cols, cols))
+
+    sel <- function(id, label, default) {
+      selectInput(id, label, choices = col_choices,
+                  selected = if (!is.na(default)) default else "")
+    }
+
+    tagList(
+      tags$hr(),
+      tags$h6(bsicons::bs_icon("2-circle-fill"), " Map columns",
+              class = "fw-bold text-primary"),
+      sel("nca_map_id",    "Subject ID",     guess$id),
+      sel("nca_map_time",  "Time",           guess$time),
+      sel("nca_map_conc",  "Concentration",  guess$conc),
+      sel("nca_map_dose",  "Dose",           guess$dose),
+      sel("nca_map_route", "Route (optional)", guess$route),
+      conditionalPanel(
+        condition = "input.nca_map_route == ''",
+        selectInput("nca_const_route", "Route (applied to all doses)",
+                    choices  = c("IV bolus" = "iv", "Oral" = "po",
+                                 "Extravascular" = "ev"),
+                    selected = "iv")
+      ),
+
+      tags$hr(),
+      tags$h6(bsicons::bs_icon("3-circle-fill"), " Units",
+              class = "fw-bold text-primary"),
+      selectInput("nca_unit_time", "Time units", choices = NCA_TIME_UNITS),
+      selectInput("nca_unit_conc", "Concentration units", choices = NCA_CONC_UNITS),
+      selectInput("nca_unit_dose", "Dose units", choices = NCA_DOSE_UNITS),
+      # MW shown only for molar units
+      conditionalPanel(
+        condition = paste0(
+          "['umol/L','nmol/L'].includes(input.nca_unit_conc) || ",
+          "['umol','nmol'].includes(input.nca_unit_dose)"
+        ),
+        numericInput("nca_mw", "Molecular weight (g/mol)", value = NA, min = 0)
+      ),
+      # Body weight shown only for per-kg dose
+      conditionalPanel(
+        condition = "['mg/kg','ug/kg'].includes(input.nca_unit_dose)",
+        numericInput("nca_bw", "Body weight (kg)", value = NA, min = 0)
+      ),
+
+      tags$hr(),
+      tags$h6(bsicons::bs_icon("4-circle-fill"), " Limits & BLQ",
+              class = "fw-bold text-primary"),
+      tags$p(class = "text-muted", style = "font-size:0.75rem;",
+             "LLOQ / ULOQ in the same units as your concentration column."),
+      numericInput("nca_lloq", "LLOQ", value = NA, min = 0),
+      numericInput("nca_uloq", "ULOQ", value = NA, min = 0),
+      selectInput("nca_blq_rule", "BLQ handling",
+                  choices = c("Set to LLOQ/2" = "half_lloq",
+                              "Set to 0"      = "zero",
+                              "Exclude row"   = "exclude"))
+    )
+  })
+
+  # ── Generate button (only once a file is present) ───────────────────────────
+  output$nca_generate_ui <- renderUI({
+    req(nca_rv$raw)
+    tagList(
+      tags$hr(),
+      actionButton("nca_generate", tagList(bsicons::bs_icon("magic"),
+                   " Generate formatted table"),
+                   class = "btn-primary w-100")
+    )
+  })
+
+  # ── Phase 1: build the standardised table ───────────────────────────────────
+  observeEvent(input$nca_generate, {
+    req(nca_rv$raw)
+    mapping <- list(
+      id    = nz(input$nca_map_id),
+      time  = nz(input$nca_map_time),
+      conc  = nz(input$nca_map_conc),
+      dose  = nz(input$nca_map_dose),
+      route = nz(input$nca_map_route)
+    )
+    units <- list(time = input$nca_unit_time,
+                  conc = input$nca_unit_conc,
+                  dose = input$nca_unit_dose)
+
+    fmt <- tryCatch(
+      format_nca_data(
+        raw         = nca_rv$raw,
+        mapping     = mapping,
+        units       = units,
+        mw          = if (is.null(input$nca_mw) || is.na(input$nca_mw)) NA_real_ else input$nca_mw,
+        bw          = if (is.null(input$nca_bw) || is.na(input$nca_bw)) NA_real_ else input$nca_bw,
+        lloq        = if (is.null(input$nca_lloq) || is.na(input$nca_lloq)) NA_real_ else input$nca_lloq,
+        uloq        = if (is.null(input$nca_uloq) || is.na(input$nca_uloq)) NA_real_ else input$nca_uloq,
+        blq_rule    = input$nca_blq_rule %||% "half_lloq",
+        const_route = input$nca_const_route %||% "iv"
+      ),
+      error = function(e) {
+        showNotification(paste("Formatting failed:", conditionMessage(e)),
+                         type = "error", duration = 10)
+        NULL
+      }
+    )
+    req(fmt)
+    nca_rv$formatted <- fmt
+    nca_rv$results   <- NULL
+    nav_select("nca_phase", "nca_format_panel")
+    showNotification(sprintf(
+      "Formatted: %d subjects, %d doses, %d observations (%d BLQ, %d > ULOQ).",
+      attr(fmt, "n_subj"), attr(fmt, "n_dose"), attr(fmt, "n_obs"),
+      attr(fmt, "n_blq"), attr(fmt, "n_alq")), type = "message", duration = 8)
+  })
+
+  # ── Phase 1 status banner ───────────────────────────────────────────────────
+  output$nca_format_status <- renderUI({
+    if (is.null(nca_rv$formatted)) {
+      div(class = "alert alert-info",
+          bsicons::bs_icon("info-circle"),
+          " Upload a file, map columns and units in the sidebar, then ",
+          tags$b("Generate formatted table"),
+          ". Review the result below before running NCA.")
+    } else {
+      f <- nca_rv$formatted
+      div(class = "alert alert-success py-2",
+          bsicons::bs_icon("check-circle"),
+          sprintf(" %d subjects · %d doses · %d observations · %d BLQ · %d > ULOQ. ",
+                  attr(f, "n_subj"), attr(f, "n_dose"), attr(f, "n_obs"),
+                  attr(f, "n_blq"), attr(f, "n_alq")),
+          "Edit cells inline if needed, then run NCA.")
+    }
+  })
+
+  # ── Phase 1 editable table (BLQ yellow, ULOQ orange) ────────────────────────
+  output$nca_formatted_table <- renderDT({
+    req(nca_rv$formatted)
+    df <- nca_rv$formatted
+    dt <- datatable(
+      df, editable = TRUE, rownames = FALSE,
+      options = list(pageLength = 25, scrollX = TRUE),
+      class   = "compact stripe"
+    )
+    if ("BLQ" %in% names(df)) {
+      dt <- formatStyle(dt, "BLQ", target = "row",
+                        backgroundColor = styleEqual(1, "#FFF3CD"))
+    }
+    if ("ALQ" %in% names(df)) {
+      dt <- formatStyle(dt, "ALQ", target = "row",
+                        backgroundColor = styleEqual(1, "#FFE0B2"))
+    }
+    dt
+  })
+
+  # Persist inline edits back into the reactive table
+  observeEvent(input$nca_formatted_table_cell_edit, {
+    req(nca_rv$formatted)
+    info <- input$nca_formatted_table_cell_edit
+    df   <- nca_rv$formatted
+    df[info$row, info$col + 1] <- DT::coerceValue(info$value, df[info$row, info$col + 1])
+    nca_rv$formatted <- df
+  })
+
+  # ── Phase 1 downloads + Run NCA button ──────────────────────────────────────
+  output$nca_format_downloads <- renderUI({
+    req(nca_rv$formatted)
+    div(class = "mt-3 d-flex gap-2",
+        downloadButton("nca_dl_formatted",
+                       tagList(bsicons::bs_icon("download"), " Download formatted CSV"),
+                       class = "btn-outline-secondary btn-sm"),
+        actionButton("nca_run",
+                     tagList(bsicons::bs_icon("play-fill"), " Run NCA"),
+                     class = "btn-success btn-sm"))
+  })
+
+  output$nca_dl_formatted <- downloadHandler(
+    filename = function() sprintf("wadhams_nca_formatted_%s.csv", Sys.Date()),
+    content  = function(file) {
+      req(nca_rv$formatted)
+      write.csv(nca_rv$formatted, file, row.names = FALSE)
+    }
+  )
+
+  # ── Phase 2: run PKNCA ──────────────────────────────────────────────────────
+  observeEvent(input$nca_run, {
+    req(nca_rv$formatted)
+    if (!nca_available()) {
+      showNotification(
+        "PKNCA is not installed on this server. Install it with install.packages('PKNCA').",
+        type = "error", duration = 10)
+      return()
+    }
+    withProgress(message = "Running non-compartmental analysis…", value = 0.5, {
+      out <- tryCatch(run_nca(nca_rv$formatted),
+        error = function(e) {
+          showNotification(paste("NCA failed:", conditionMessage(e)),
+                           type = "error", duration = 10)
+          NULL
+        })
+      req(out)
+      nca_rv$results <- out$results
+    })
+    nav_select("nca_phase", "nca_results_panel")
+    showNotification("NCA complete.", type = "message")
+  })
+
+  # ── Phase 2 status + table + download ───────────────────────────────────────
+  output$nca_results_status <- renderUI({
+    if (is.null(nca_rv$results)) {
+      div(class = "alert alert-info",
+          bsicons::bs_icon("info-circle"),
+          " Generate and review the formatted table, then click ",
+          tags$b("Run NCA"), " to compute parameters here.")
+    } else {
+      div(class = "alert alert-success py-2",
+          bsicons::bs_icon("check-circle"),
+          sprintf(" NCA parameters for %d subject(s). Units follow the standardised hours / ng·mL⁻¹ / ng basis.",
+                  nrow(nca_rv$results)))
+    }
+  })
+
+  output$nca_results_table <- renderDT({
+    req(nca_rv$results)
+    datatable(nca_rv$results, rownames = FALSE,
+              options = list(pageLength = 25, scrollX = TRUE),
+              class   = "compact stripe")
+  })
+
+  output$nca_results_downloads <- renderUI({
+    req(nca_rv$results)
+    div(class = "mt-3",
+        downloadButton("nca_dl_results",
+                       tagList(bsicons::bs_icon("download"), " Download NCA results CSV"),
+                       class = "btn-outline-secondary btn-sm"))
+  })
+
+  output$nca_dl_results <- downloadHandler(
+    filename = function() sprintf("wadhams_nca_results_%s.csv", Sys.Date()),
+    content  = function(file) {
+      req(nca_rv$results)
+      write.csv(nca_rv$results, file, row.names = FALSE)
     }
   )
 }

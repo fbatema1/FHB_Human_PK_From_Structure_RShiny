@@ -37,7 +37,7 @@ ui <- page_navbar(
     tags$img(src = "logo.png", height = "30px",
              style = "margin-right:8px; vertical-align:middle;",
              onerror = "this.style.display='none'"),   # hide if no logo yet
-    "Wadhams — A PK Prediction Platform"
+    "Wadhams — A Pharmacometrics Platform"
   ),
   theme = bs_theme(
     bootswatch  = "flatly",
@@ -430,6 +430,73 @@ ui <- page_navbar(
       )   # end navset_card_tab
     )   # end layout_sidebar
   ),   # end Predict nav_panel
+
+  # ── NCA tab ──────────────────────────────────────────────────────────────────
+  nav_panel(
+    title = tagList(bsicons::bs_icon("calculator"), " NCA"),
+    value = "nca_tab",
+
+    layout_sidebar(
+      fillable = TRUE,
+
+      # ── Sidebar: upload → map → units → limits → generate ──────────────────
+      sidebar = sidebar(
+        width = 340,
+        bg    = CLR$bg,
+
+        tags$h6(bsicons::bs_icon("1-circle-fill"), " Upload raw data",
+                class = "fw-bold text-primary mt-1"),
+        fileInput(
+          "nca_file",
+          label    = NULL,
+          accept   = c(".csv", ".xlsx", ".xls"),
+          buttonLabel = "Browse…",
+          placeholder = "CSV or Excel"
+        ),
+        tags$p(
+          class = "text-muted",
+          style = "font-size:0.78rem;",
+          "Raw LCMS output with subject IDs, time, concentration, and dose. ",
+          "Any column names — you map them below."
+        ),
+
+        # Column mapping + units + limits are rendered once a file is loaded
+        uiOutput("nca_config_ui"),
+
+        # Generate button appears with config
+        uiOutput("nca_generate_ui")
+      ),
+
+      # ── Main: two phases ────────────────────────────────────────────────────
+      navset_card_tab(
+        id = "nca_phase",
+
+        # Phase 1 — formatted table
+        nav_panel(
+          title = tagList(bsicons::bs_icon("table"), " Formatted Data"),
+          value = "nca_format_panel",
+          div(
+            class = "p-2",
+            uiOutput("nca_format_status"),
+            DTOutput("nca_formatted_table"),
+            uiOutput("nca_format_downloads")
+          )
+        ),
+
+        # Phase 2 — NCA results
+        nav_panel(
+          title = tagList(bsicons::bs_icon("clipboard-data"), " NCA Results"),
+          value = "nca_results_panel",
+          div(
+            class = "p-2",
+            uiOutput("nca_results_status"),
+            DTOutput("nca_results_table"),
+            uiOutput("nca_results_downloads")
+          )
+        )
+      )
+    )
+  ),   # end NCA nav_panel
 
   # ── ABOUT tab ────────────────────────────────────────────────────────────────
   nav_panel(

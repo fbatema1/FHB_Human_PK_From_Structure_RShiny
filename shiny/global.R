@@ -33,6 +33,14 @@ if (HAS_R3DMOL)     library(r3dmol)
 if (HAS_RETICULATE) library(reticulate)
 if (HAS_DIGEST)     library(digest)
 
+# ── NCA module dependencies ───────────────────────────────────────────────────
+# PKNCA powers the non-compartmental analysis tab; readxl enables Excel upload.
+# Both degrade gracefully — the NCA tab warns the user if PKNCA is absent.
+HAS_PKNCA  <- requireNamespace("PKNCA",  quietly = TRUE)
+HAS_READXL <- requireNamespace("readxl", quietly = TRUE)
+if (HAS_PKNCA)  library(PKNCA)
+if (HAS_READXL) library(readxl)
+
 # ── App-level options ─────────────────────────────────────────────────────────
 options(
   shiny.maxRequestSize = 50 * 1024^2,
