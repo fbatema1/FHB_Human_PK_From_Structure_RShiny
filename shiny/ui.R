@@ -49,6 +49,10 @@ ui <- page_navbar(
   bg       = "#2C3E50",
   fillable = TRUE,
 
+  # Leading spacer — together with the trailing nav_spacer() before the footer
+  # this centres the Predict / NCA / About tabs in the navbar.
+  nav_spacer(),
+
   # ── PREDICT tab ──────────────────────────────────────────────────────────────
   nav_panel(
     title = tagList(bsicons::bs_icon("activity"), " Predict"),
@@ -699,6 +703,82 @@ ui <- page_navbar(
             "Hyperparameters tuned via 300-trial Optuna Bayesian optimisation with 5-fold ",
             "cross-validation (RF and XGB) or 175 trials (GNN)."
           )
+        )
+      )
+    ),
+
+    br(),
+
+    # ── NCA workflow ──────────────────────────────────────────────────────────
+    card(
+      card_header(tagList(bsicons::bs_icon("calculator"),
+                          " Non-Compartmental Analysis (NCA) Workflow")),
+      card_body(
+        tags$p(
+          "The ", tags$strong("NCA tab"), " turns raw bioanalytical output into ",
+          "analysis-ready data and computes non-compartmental PK parameters entirely ",
+          "in the browser — ", tags$strong("no R, PKNCA, or local install required."),
+          " All computation runs on the server; users only need a web browser and their data file."
+        ),
+
+        layout_column_wrap(
+          width = 1/2,
+          fill  = FALSE,
+
+          # Phase 1
+          div(
+            tags$h6(class = "fw-bold text-primary",
+                    bsicons::bs_icon("1-circle-fill"), " Phase 1 — Format & Review"),
+            tags$ul(
+              style = "font-size:0.84rem;",
+              tags$li(tags$strong("Upload"), " a raw CSV or Excel file (any column names, any layout)."),
+              tags$li(tags$strong("Map columns"), " — subject ID, time, concentration, dose, and route ",
+                      "(auto-guessed from headers, mirroring the batch-predict mapping)."),
+              tags$li(tags$strong("Set units"), " for time, concentration, and dose. Molar units ",
+                      "(µmol/L, nmol/L) prompt for molecular weight; per-kg doses prompt for body weight."),
+              tags$li(tags$strong("Define limits"), " — LLOQ and ULOQ. Values below LLOQ are flagged ",
+                      tags$span(class="badge", style="background:#FFF3CD;color:#664d03;", "BLQ"),
+                      " and handled per your rule (set to LLOQ/2, set to 0, or exclude); values above ULOQ are flagged ",
+                      tags$span(class="badge", style="background:#FFE0B2;color:#7a4f01;", "ULOQ"), "."),
+              tags$li(tags$strong("Review & edit"), " the standardised NONMEM-style table ",
+                      "(ID · TIME · CONC · DOSE · EVID · ROUTE) inline before computing anything."),
+              tags$li(tags$strong("Download"), " the formatted dataset for your own records or pipelines.")
+            )
+          ),
+
+          # Phase 2
+          div(
+            tags$h6(class = "fw-bold text-primary",
+                    bsicons::bs_icon("2-circle-fill"), " Phase 2 — Compute & Export"),
+            tags$ul(
+              style = "font-size:0.84rem;",
+              tags$li("The reviewed table is piped directly into ",
+                      tags$strong("PKNCA"), ", the validated R NCA engine."),
+              tags$li("For IV bolus profiles where the first sample is post-dose, ",
+                      tags$strong("C0 is log-linearly back-extrapolated"),
+                      " so AUC integrates from the dose time; extravascular doses use C0 = 0."),
+              tags$li("Returns a tidy subject × parameter table: ",
+                      tags$strong("Cmax, Tmax, Tlast, Clast, AUClast, AUCinf, t½, CL, Vss, Vz, MRT.")),
+              tags$li(tags$strong("Download"), " the NCA results as CSV.")
+            ),
+            div(
+              class = "p-2 rounded mt-2",
+              style = "background:#E8F4F8;border:1px solid #B8DCE8;font-size:0.78rem;color:#0c5460;",
+              bsicons::bs_icon("info-circle"),
+              " All records are standardised to a single basis — ",
+              tags$strong("hours / ng·mL⁻¹ / ng"),
+              " — so CL is reported in mL/h and volumes in mL."
+            )
+          )
+        ),
+
+        tags$p(
+          class = "text-muted mt-2",
+          style = "font-size:0.8rem;",
+          "The reusable NCA modules are open source: ",
+          tags$a("github.com/fbatema1/wadhams-nca",
+                 href   = "https://github.com/fbatema1/wadhams-nca",
+                 target = "_blank"), "."
         )
       )
     ),
