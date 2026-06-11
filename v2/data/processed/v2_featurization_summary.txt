@@ -1,0 +1,18 @@
+V2 FEATURIZATION SUMMARY
+==================================================
+Total compounds:      1434
+Train:                1139
+Test:                 295
+
+Feature dimensions:
+  RDKit desc+FP:      2205
+  New physchem:       5
+  Total:              2210
+
+New features appended: ['fup_final', 'logP', 'logD_74', 'pka_acid_final', 'pka_base_final']
+
+pKa imputation (training median):
+  pka_acid_final: 9.90
+  pka_base_final: 8.50
+
+GNN graphs: skipped (run on Longleaf)

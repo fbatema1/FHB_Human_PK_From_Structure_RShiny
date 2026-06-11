@@ -28,6 +28,14 @@ data/processed/featurizer*.pkl
 
 # training_reference.csv is intentionally tracked (public compound library)
 
+# v2 featurized arrays — large, regenerable from scripts + master_v2 dataset
+v2/data/processed/*.npy
+v2/data/processed/*.npz
+v2/data/processed/*.pt
+
+# Office temp/lock files
+~$*
+
 # Models — serialized model weights (too large for GitHub)
 *.pkl
 *.pt
