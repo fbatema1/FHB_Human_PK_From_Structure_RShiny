@@ -140,8 +140,8 @@ def train_xgb():
 
     # ── Load data ─────────────────────────────────────────────────────────────
     print("\nLoading features and targets...")
-    X_train = np.load(PROC / "v2_X_train_desc_fp.npy")
-    X_test  = np.load(PROC / "v2_X_test_desc_fp.npy")
+    X_train = np.load(PROC / "v2_X_train.npy")
+    X_test  = np.load(PROC / "v2_X_test.npy")
     y_train = np.load(PROC / "v2_y_train.npy")
     y_test  = np.load(PROC / "v2_y_test.npy")
 

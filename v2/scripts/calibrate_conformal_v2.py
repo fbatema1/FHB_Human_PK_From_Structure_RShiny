@@ -74,7 +74,7 @@ def main():
 
     # ── Load training data ────────────────────────────────────────────────────
     print("\nLoading training data...")
-    X_train      = np.load(PROC / "v2_X_train_desc_fp.npy")
+    X_train      = np.load(PROC / "v2_X_train.npy")
     y_train      = np.load(PROC / "v2_y_train.npy")
     train_graphs = torch.load(str(PROC / "v2_train_graphs.pt"), weights_only=False)
     device       = get_device()
