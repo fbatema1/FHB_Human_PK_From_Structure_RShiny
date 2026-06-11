@@ -67,3 +67,6 @@ slurm_logs/
 
 # Raw permeability export (ChEMBL Caco-2) — large raw source
 v2/data/*.csv
+
+# Auxiliary training has its OWN git repo (separate remote)
+auxiliary_training/
