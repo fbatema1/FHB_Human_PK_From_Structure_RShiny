@@ -1,0 +1,21 @@
+MASTER_V3 BUILD SUMMARY
+=======================================================
+Total compounds:            1434
+
+TWO DISTINCT Caco-2 features (different scales — never merged):
+  caco2_flag  — binary permeability class (CL_VD_Data, 0/1):
+  n=346  min/Q1/med/Q3/max = [0.0, 0.0, 0.0, 1.0, 1.0]
+  caco2_papp  — continuous Papp ×10⁻⁶ cm/s (ChEMBL, A→B):
+  n=87  min/Q1/med/Q3/max = [0.1, 1.14, 3.1, 8.95, 66.0]
+
+Coverage:
+  caco2_flag (binary):       346  (24.1%)
+  caco2_papp (continuous):   87  (6.1%)
+  have BOTH:                 45
+
+INTERPRETATION:
+  The legacy 'caco2' (from CL_VD_Data) is a BINARY high/low flag, not a
+  permeability value — kept as caco2_flag. The ChEMBL data is the real
+  continuous Papp (caco2_papp) but only ~6% coverage. For Track B, prefer
+  caco2_papp as a continuous feature; caco2_flag is categorical and only
+  loosely related. Do not average or combine the two.

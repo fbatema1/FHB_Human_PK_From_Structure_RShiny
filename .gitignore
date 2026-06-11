@@ -64,3 +64,6 @@ Thumbs.db
 *.log
 logs/
 slurm_logs/
+
+# Raw permeability export (ChEMBL Caco-2) — large raw source
+v2/data/*.csv
