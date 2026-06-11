@@ -41,7 +41,7 @@ from optuna.pruners  import MedianPruner
 from sklearn.model_selection import KFold
 
 import sys
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from features.rdkit_features import RDKitFeaturizer
